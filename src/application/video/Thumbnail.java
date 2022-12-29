@@ -1,6 +1,6 @@
 package application.video;
 
-import users.channel.Channel;
+import application.users.channel.Channel;
 
 import java.time.LocalDateTime;
 

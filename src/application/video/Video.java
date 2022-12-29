@@ -3,7 +3,7 @@ package application.video;
 import application.utilities.constant.category.AgeCategory;
 import application.utilities.constant.category.Category;
 import application.utilities.generator.Generator;
-import users.channel.Channel;
+import application.users.channel.Channel;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

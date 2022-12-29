@@ -1,48 +1,52 @@
 package application;
 
-import application.database.Database;
-import application.utilities.display.HomePage;
-import application.utilities.display.LogInPage;
-import application.utilities.helper.CustomScanner;
-import users.User;
+import application.database.DatabaseManager;
+import application.controllers.HomePageController;
+import application.users.user.Viewer;
 
 public class Application {
 
-    private Database database;
-    private User currentUser;
-
-    private LogInPage logInPage;
-    private HomePage homePage;
-
+    private DatabaseManager databaseManager;
+    private Viewer currentUser;
+    private HomePageController homePageController;
     public void run(){
-        int userInput = CustomScanner.scanInt("Enter choice");
-        switch (userInput){
-            case 1:
-                homePage.display();
-                break;
-            case 2:
-                 currentUser = logIn();
-                break;
-            default:
-                return;
-        }
-    }
-
-    public User logIn(){
-        return logInPage.signIn();
+        homePageController.navigate();
     }
 
 
     //singleton
-    public  static Application application;
+    private static Application application;
     private Application(){
-        currentUser = null;
+        databaseManager = new DatabaseManager();
+        currentUser = new Viewer();
+        homePageController = new HomePageController();
     }
+
     public static Application getApplication(){
         if(application == null){
             application = new Application();
         }
-        return application;
+        return  application;
     }
 
+    public DatabaseManager getDatabaseManager() {
+        return databaseManager;
+    }
+
+    public void setDatabaseManager(DatabaseManager databaseManager) {
+        this.databaseManager = databaseManager;
+    }
+
+    public Viewer getCurrentUser() {
+        homePageController.setCurrentUserIsSigned(true);
+        if(currentUser == null){
+            currentUser = new Viewer();
+            homePageController.setCurrentUserIsSigned(false);
+        }
+        return currentUser;
+    }
+
+    public void setCurrentUser(Viewer currentUser) {
+        this.currentUser = currentUser;
+    }
 }

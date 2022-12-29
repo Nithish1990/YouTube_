@@ -1,14 +1,13 @@
-package users;
+package application.users.user;
 
+import application.users.channel.members.Member;
 import application.utilities.constant.country.Country;
-import application.video.Thumbnail;
-import application.video.Video;
-import users.channel.Channel;
+import application.users.channel.Channel;
 
 import java.util.ArrayList;
-import java.util.Stack;
+import java.util.HashMap;
 
-public class User {
+public class SignedViewer extends Viewer{
     private String userName = "Not SignIn";
     private String userEmailID;
     private String password;
@@ -17,36 +16,21 @@ public class User {
     private boolean eighteenPlus;// naming is not convenient to be change
     private Country country;
     private boolean primeUser;//doubt
-    private boolean isBannedUser;// doubt // if user is banned cant post cmt
+    private boolean isBannedUser;//if user is banned cant post cmt
     private ArrayList<Channel> subscriptionList;
-    private ArrayList<Thumbnail> watchLaterVideo;
-    private Stack<Thumbnail> notification;
+    private HashMap<Channel, Member> roles;
 
-    private Stack<Thumbnail> watchHistory;
-    private Stack<Video> previousVideo;// stored in local storage
-    /*content creator
-    private long amountEarned;
-    private List<Channel> channelList;
-    private Channel currentChannel;
-    */
-
-
-    public User(String userName, String userEmailID, String password, String userPhoneNumber, String dataOfBirth) {
-
+    public SignedViewer(String userName, String userEmailID, String password, String userPhoneNumber, String dataOfBirth) {
+        super();
         this.userName = userName;
         this.userEmailID = userEmailID;
         this.password = password;
         this.userPhoneNumber = userPhoneNumber;
         this.dataOfBirth = dataOfBirth;
-        this.eighteenPlus = false;
         this.country = Country.INDIA;
-        this.subscriptionList = new ArrayList<>();
-        this.watchLaterVideo = new ArrayList<>();
-        this.notification = new Stack<>();
-        this.watchHistory = new Stack<>();
-        this.previousVideo = new Stack<>();
         this.primeUser = false;
         this.isBannedUser = false;
+        this.roles = new HashMap<>();
     }
 
     public String getUserName() {
@@ -125,39 +109,4 @@ public class User {
         return subscriptionList;
     }
 
-    public void setSubscriptionList(ArrayList<Channel> subscriptionList) {
-        this.subscriptionList = subscriptionList;
-    }
-
-    public ArrayList<Thumbnail> getWatchLaterVideo() {
-        return watchLaterVideo;
-    }
-
-    public void setWatchLaterVideo(ArrayList<Thumbnail> watchLaterVideo) {
-        this.watchLaterVideo = watchLaterVideo;
-    }
-
-    public Stack<Thumbnail> getNotification() {
-        return notification;
-    }
-
-    public void setNotification(Stack<Thumbnail> notification) {
-        this.notification = notification;
-    }
-
-    public Stack<Thumbnail> getWatchHistory() {
-        return watchHistory;
-    }
-
-    public void setWatchHistory(Stack<Thumbnail> watchHistory) {
-        this.watchHistory = watchHistory;
-    }
-
-    public Stack<Video> getPreviousVideo() {
-        return previousVideo;
-    }
-
-    public void setPreviousVideo(Stack<Video> previousVideo) {
-        this.previousVideo = previousVideo;
-    }
 }

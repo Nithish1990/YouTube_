@@ -1,4 +1,4 @@
-package application.authentication;
+package application.utilities.authentication;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;

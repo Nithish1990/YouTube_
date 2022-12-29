@@ -1,4 +1,4 @@
-package application.authentication;
+package application.utilities.authentication;
 
 import application.utilities.helper.CustomScanner;
 
