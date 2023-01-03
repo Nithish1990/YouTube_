@@ -36,7 +36,7 @@ public class Video {
 
         this.videoTitle = videoTitle;
         this.channel = channel;
-        this.url = Generator.urlGenerate(1,channel.getChannelName());
+        this.url = Generator.urlGenerate(channel.getChannelName());
         this.description = description;
         this.visibility = visibility;
         this.ageCategory = ageCategory;

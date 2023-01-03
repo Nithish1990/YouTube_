@@ -30,12 +30,14 @@ public class LoginPage{
     public int signIn(){
 
         System.out.println("========================================================");
-        return CustomScanner.scanInt("Enter the choice\n1 Login(Already having an account)\n2 SignUp(create an account)\n3 Logout");
+        String red = "\u001B[31m";
+        return CustomScanner.scanInt("Enter the choice\n1 Login(Already having an account)\n2 SignUp(create an account)\n3"+red+" Logout"+"\u001B[0m");
+
     }
 
 
     public void showWarningSignIn() {
-        System.err.println("User already Exist");
+        System.out.println("User already Exist");
     }
 
     public void showWarningLogin() {

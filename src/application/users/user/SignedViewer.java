@@ -3,6 +3,8 @@ package application.users.user;
 import application.users.channel.members.Member;
 import application.utilities.constant.country.Country;
 import application.users.channel.Channel;
+import application.utilities.constant.user.types.UserType;
+import application.video.Video;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,11 +19,11 @@ public class SignedViewer extends Viewer{
     private Country country;
     private boolean primeUser;//doubt
     private boolean isBannedUser;//if user is banned cant post cmt
-    private ArrayList<Channel> subscriptionList;
     private HashMap<Channel, Member> roles;
-
+    private HashMap<String,Boolean>subscribedChannels;// string represent url of the video
+    private HashMap<String,Boolean>likedVideo;//String represent url of the video
     public SignedViewer(String userName, String userEmailID, String password, String userPhoneNumber, String dataOfBirth) {
-        super();
+        super(UserType.SIGNED);
         this.userName = userName;
         this.userEmailID = userEmailID;
         this.password = password;
@@ -31,6 +33,8 @@ public class SignedViewer extends Viewer{
         this.primeUser = false;
         this.isBannedUser = false;
         this.roles = new HashMap<>();
+        this.subscribedChannels = new HashMap<>();
+        this.likedVideo = new HashMap<>();
     }
 
     public String getUserName() {
@@ -105,8 +109,20 @@ public class SignedViewer extends Viewer{
         isBannedUser = bannedUser;
     }
 
-    public ArrayList<Channel> getSubscriptionList() {
-        return subscriptionList;
+
+    public HashMap<Channel, Member> getRoles() {
+        return roles;
     }
 
+    public void setRoles(HashMap<Channel, Member> roles) {
+        this.roles = roles;
+    }
+
+    public HashMap<String, Boolean> getSubscribedChannels() {
+        return subscribedChannels;
+    }
+
+    public HashMap<String, Boolean> getLikedVideo() {
+        return likedVideo;
+    }
 }

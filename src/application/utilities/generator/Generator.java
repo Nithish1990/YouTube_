@@ -1,7 +1,9 @@
 package application.utilities.generator;
 
 public class Generator {
-    public static String urlGenerate(int id,String channelName){
-        return "url"+id;
+    private static int id = 0;
+    public static String urlGenerate(String channelName){
+        id++;
+        return "url"+id+channelName;
     }
 }

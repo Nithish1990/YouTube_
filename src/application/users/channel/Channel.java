@@ -36,4 +36,70 @@ public class Channel {
     public String getChannelName() {
         return channelName;
     }
+
+
+    public void setChannelName(String channelName) {
+        this.channelName = channelName;
+    }
+
+    public boolean isBannedChannel() {
+        return isBannedChannel;
+    }
+
+    public void setBannedChannel(boolean bannedChannel) {
+        isBannedChannel = bannedChannel;
+    }
+
+    public String getChannelUrl() {
+        return channelUrl;
+    }
+
+    public String getAbout() {
+        return about;
+    }
+
+    public void setAbout(String about) {
+        this.about = about;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public boolean isMonetized() {
+        return monetized;
+    }
+
+    public void setMonetized(boolean monetized) {
+        this.monetized = monetized;
+    }
+
+    public long getAmountEarned() {
+        return amountEarned;
+    }
+
+    public void setAmountEarned(long amountEarned) {
+        this.amountEarned = amountEarned;
+    }
+
+    public int getSubscribersCount() {
+        return subscribersCount;
+    }
+    public List<Thumbnail> getUploadedVideo() {
+        return uploadedVideo;
+    }
+
+
+    public List<Member> getChannelMembers() {
+        return channelMembers;
+    }
+
+
+    public void setSubscribersCount(int subscribersCount) {
+        this.subscribersCount = subscribersCount;
+    }
 }

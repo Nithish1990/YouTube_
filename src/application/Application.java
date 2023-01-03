@@ -2,6 +2,7 @@ package application;
 
 import application.database.DatabaseManager;
 import application.controllers.HomePageController;
+import application.users.user.UnSignedViewer;
 import application.users.user.Viewer;
 
 public class Application {
@@ -10,7 +11,7 @@ public class Application {
     private Viewer currentUser;
     private HomePageController homePageController;
     public void run(){
-        homePageController.navigate();
+        homePageController.renderHomePage();
     }
 
 
@@ -18,7 +19,7 @@ public class Application {
     private static Application application;
     private Application(){
         databaseManager = new DatabaseManager();
-        currentUser = new Viewer();
+        currentUser = new UnSignedViewer();
         homePageController = new HomePageController();
     }
 
@@ -38,10 +39,8 @@ public class Application {
     }
 
     public Viewer getCurrentUser() {
-        homePageController.setCurrentUserIsSigned(true);
         if(currentUser == null){
-            currentUser = new Viewer();
-            homePageController.setCurrentUserIsSigned(false);
+            currentUser = new UnSignedViewer();
         }
         return currentUser;
     }

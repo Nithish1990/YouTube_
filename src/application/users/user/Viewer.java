@@ -1,44 +1,23 @@
 package application.users.user;
 
+import application.utilities.constant.user.types.UserType;
 import application.video.Thumbnail;
 import application.video.Video;
 
 import java.util.ArrayList;
 import java.util.Stack;
 
-public class Viewer {
-    private ArrayList<Thumbnail> watchLaterVideo;
-    private Stack<Thumbnail> watchHistory;
-    private Stack<Video> previousVideo;// stored in local storage
-    public Viewer() {
-        this.watchLaterVideo = new ArrayList<>();
-        this.watchHistory = new Stack<>();
-        this.previousVideo = new Stack<>();
+public abstract class Viewer {
+    private UserType userType;
+    public Viewer(UserType userType){
+        this.userType = userType;
     }
 
-    public ArrayList<Thumbnail> getWatchLaterVideo() {
-        return watchLaterVideo;
+    public UserType getUserType() {
+        return userType;
     }
 
-    public void setWatchLaterVideo(ArrayList<Thumbnail> watchLaterVideo) {
-        this.watchLaterVideo = watchLaterVideo;
+    public void setUserType(UserType userType) {
+        this.userType = userType;
     }
-
-
-    public Stack<Thumbnail> getWatchHistory() {
-        return watchHistory;
-    }
-
-    public void setWatchHistory(Stack<Thumbnail> watchHistory) {
-        this.watchHistory = watchHistory;
-    }
-
-    public Stack<Video> getPreviousVideo() {
-        return previousVideo;
-    }
-
-    public void setPreviousVideo(Stack<Video> previousVideo) {
-        this.previousVideo = previousVideo;
-    }
-
 }

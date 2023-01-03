@@ -2,36 +2,40 @@ package application.controllers;
 
 import application.Application;
 import application.pages.HomePage;
+import application.pages.WatchPage;
 import application.users.channel.ContentCreator;
 import application.users.user.SignedViewer;
+import application.users.user.UnSignedViewer;
 import application.users.user.Viewer;
+import application.video.Thumbnail;
+import application.video.Video;
+import application.videoPlayer.VideoPlayer;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class HomePageController {
 
     private HomePage homePage;
     private LoginPageController loginPageController;
+    private UploadPageController uploadPageController;
+    private WatchPageController watchPageController;
     private Viewer currentViewer;
-    private boolean isCurrentUserIsSigned;
-    private boolean isCurrentUserIsContentCreator;
-    public int display(Viewer viewer){
-        int userInput = homePage.display(viewer);
-        userInput = 9;
-        return userInput;
-    }
-    public int display(SignedViewer viewer){
-        int userInput = homePage.display(viewer);
-        userInput = 9;
-        return userInput;
-    }
-    public void navigate(){
+
+    public void renderHomePage(){
         while (true) {
-            int userInput = displayAccordingViewerType();
+            int userInput = display(currentViewer);
             switch (userInput) {
                 case 1://select video
+                    userInput = homePage.getVideoPosition();
+                    watchPageController.playVideo(getVideo(userInput));
+                    break;
+                case 2://search
 
                     break;
-                case 2:
-                    //search
+                case 3:// uploading
+                    uploadPageController.upload(currentViewer);
                     break;
                 case 9://login options
                     Application.getApplication().setCurrentUser(loginPageController.login());
@@ -45,27 +49,34 @@ public class HomePageController {
     public HomePageController(){
         homePage = new HomePage();
         loginPageController = new LoginPageController();
+        uploadPageController = new UploadPageController();
+        currentViewer = new UnSignedViewer();
+        watchPageController = new WatchPageController();
     }
-    private int displayAccordingViewerType(){
+    private List<Thumbnail> getThumbnails(){
+        List<Thumbnail>thumbnail = new ArrayList<>();
+        Map<String, Video>videoMap = Application.getApplication().getDatabaseManager().getVideoBucket();
+        for(Map.Entry<String,Video>videoEntry: videoMap.entrySet()){
+            thumbnail.add(videoEntry.getValue().getThumbnail());
+        }
+        return thumbnail;
+    }
+    private Video getVideo(int position){
+          String url  = getThumbnails().get(position).getUrl();
+          return Application.getApplication().getDatabaseManager().getVideo(url);
+    }
+    private int display(Viewer viewer){
         int userInput;
-        if(isCurrentUserIsSigned){
-            userInput = display((SignedViewer) currentViewer);
-        }else if(isCurrentUserIsContentCreator){
-            userInput = display((ContentCreator)currentViewer);
-        }else{
-            userInput = display(currentViewer);
+        switch (viewer.getUserType()){
+            case UN_SIGNED:
+                userInput = homePage.display(viewer,getThumbnails());
+                break;
+            case SIGNED:
+                userInput = homePage.display((SignedViewer) viewer,getThumbnails());
+                break;
+            default:
+                userInput = homePage.display((ContentCreator) viewer,getThumbnails());
         }
         return userInput;
-    }
-
-
-
-
-    public void setCurrentUserIsContentCreator(boolean currentUserIsContentCreator) {
-        isCurrentUserIsContentCreator = currentUserIsContentCreator;
-    }
-
-    public void setCurrentUserIsSigned(boolean currentUserIsSigned) {
-        isCurrentUserIsSigned = currentUserIsSigned;
     }
 }
