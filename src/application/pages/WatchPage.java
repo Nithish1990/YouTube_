@@ -11,11 +11,12 @@ public class WatchPage {
 
 
     private boolean isVideoPlaying;
-    public int  display(Video video){
+    public int  display(Video video,boolean isSubscribed){
         line();
         System.out.println("Video title: "+video.getVideoTitle()+" Channel name:"+video.channel.getChannelName()+" "+video.channel.getSubscribersCount());
         System.out.println("video is "+(isVideoPlaying?"Playing":"Pause"));// is this right
-        int userInput = CustomScanner.scanInt("Enter\n1 pause/play\n2 Like:"+video.getLikesCount()+" DisLike: "+video.getDislikesCount()+" share subscribe");
+        int userInput = CustomScanner.scanInt("Enter\n1 pause/play\n2 Like:"+video.getLikesCount()+" DisLike: "+
+                video.getDislikesCount()+" share "+(isSubscribed?"Subscribe":"UnSubscribe"));
         line();
         return userInput;
     }

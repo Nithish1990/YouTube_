@@ -22,6 +22,7 @@ public class SignedViewer extends Viewer{
     private HashMap<Channel, Member> roles;
     private HashMap<String,Boolean>subscribedChannels;// string represent url of the video
     private HashMap<String,Boolean>likedVideo;//String represent url of the video
+    private HashMap<String,Boolean>dislikedVideo;//String represent url of the video
     public SignedViewer(String userName, String userEmailID, String password, String userPhoneNumber, String dataOfBirth) {
         super(UserType.SIGNED);
         this.userName = userName;
@@ -35,6 +36,7 @@ public class SignedViewer extends Viewer{
         this.roles = new HashMap<>();
         this.subscribedChannels = new HashMap<>();
         this.likedVideo = new HashMap<>();
+        this.dislikedVideo = new HashMap<>();
     }
 
     public String getUserName() {
@@ -124,5 +126,9 @@ public class SignedViewer extends Viewer{
 
     public HashMap<String, Boolean> getLikedVideo() {
         return likedVideo;
+    }
+
+    public HashMap<String, Boolean> getDislikedVideo() {
+        return dislikedVideo;
     }
 }

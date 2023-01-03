@@ -21,11 +21,11 @@ public class HomePageController {
     private LoginPageController loginPageController;
     private UploadPageController uploadPageController;
     private WatchPageController watchPageController;
-    private Viewer currentViewer;
 
     public void renderHomePage(){
+
         while (true) {
-            int userInput = display(currentViewer);
+            int userInput = display(Application.getApplication().getCurrentUser());
             switch (userInput) {
                 case 1://select video
                     userInput = homePage.getVideoPosition();
@@ -35,11 +35,10 @@ public class HomePageController {
 
                     break;
                 case 3:// uploading
-                    uploadPageController.upload(currentViewer);
+                    uploadPageController.upload(Application.getApplication().getCurrentUser());
                     break;
                 case 9://login options
                     Application.getApplication().setCurrentUser(loginPageController.login());
-                    currentViewer =  Application.getApplication().getCurrentUser();
                     break;
                 default://exiting
                     return;
@@ -50,7 +49,6 @@ public class HomePageController {
         homePage = new HomePage();
         loginPageController = new LoginPageController();
         uploadPageController = new UploadPageController();
-        currentViewer = new UnSignedViewer();
         watchPageController = new WatchPageController();
     }
     private List<Thumbnail> getThumbnails(){
@@ -69,13 +67,13 @@ public class HomePageController {
         int userInput;
         switch (viewer.getUserType()){
             case UN_SIGNED:
-                userInput = homePage.display(viewer,getThumbnails());
+                userInput = homePage.display("Not signed in",getThumbnails());
                 break;
             case SIGNED:
-                userInput = homePage.display((SignedViewer) viewer,getThumbnails());
+                userInput = homePage.display(((SignedViewer) viewer).getUserName(),getThumbnails());
                 break;
             default:
-                userInput = homePage.display((ContentCreator) viewer,getThumbnails());
+                userInput = homePage.display(((ContentCreator) viewer).getUserName(),getThumbnails());
         }
         return userInput;
     }

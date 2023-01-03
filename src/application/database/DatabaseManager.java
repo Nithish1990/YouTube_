@@ -27,10 +27,11 @@ public class DatabaseManager {
         database.getUserDB().put(viewer.getUserEmailID(), viewer);
     }
     public void testing(){
-        SignedViewer viewer1 = new SignedViewer("NithishT","Test1234@gmail.com","Test1234@gmail.com","9876543210","11");
+        SignedViewer viewer1 = new SignedViewer("NithishT","Test1234@gmail.com","Test1234@gmail.com","9876543210","11"),viewer2 = new SignedViewer("Nithish_KUMAR","t","t","9876543210","11");
         Video video = new Video("Test",new Channel("Test", Generator.urlGenerate("Test"),"Nothing",Category.DEFAULT),"testing",true, AgeCategory.UA,10, Category.DEFAULT,new ArrayList<>());
         addVideo(video);
         addUser(viewer1);
+        addUser(viewer2);
     }
 
 

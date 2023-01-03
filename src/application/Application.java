@@ -11,11 +11,10 @@ public class Application {
     private Viewer currentUser;
     private HomePageController homePageController;
     public void run(){
+
         homePageController.renderHomePage();
     }
-
-
-    //singleton
+ //singleton
     private static Application application;
     private Application(){
         databaseManager = new DatabaseManager();
