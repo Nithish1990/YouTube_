@@ -1,5 +1,6 @@
 package application.video;
 
+import application.users.user.SignedViewer;
 import application.utilities.constant.category.AgeCategory;
 import application.utilities.constant.category.Category;
 import application.utilities.generator.Generator;
@@ -7,6 +8,7 @@ import application.users.channel.Channel;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
 
@@ -22,14 +24,14 @@ public class Video {
     public LocalDateTime uploadedDateAndTime;
     private int likesCount;
     private int dislikesCount;
-    private Stack<String> comments;
+    private Stack<Comments>comments;
     private int viewsCount;
     private int violationCount;
     private Category category;
     private List<String> tags;
     private List<String> reportList;
     private Thumbnail thumbnail;
-
+    private HashMap<SignedViewer,Boolean> viewedUser;
 
     public Video(String videoTitle, Channel channel,String description, boolean visibility, AgeCategory ageCategory, int duration,
                  Category category, List<String> tags) {
@@ -51,6 +53,7 @@ public class Video {
         this.tags = tags;
         this.reportList = new ArrayList<>();
         this.thumbnail = new Thumbnail(videoTitle,channel,duration,uploadedDateAndTime,url);
+        this.viewedUser = new HashMap<>();
         videoId++;
     }
     public static int getV_id() {
@@ -129,13 +132,10 @@ public class Video {
         this.dislikesCount = dislikesCount;
     }
 
-    public Stack<String> getComments() {
+    public Stack<Comments> getComments() {
         return comments;
     }
 
-    public void setComments(Stack<String> comments) {
-        this.comments = comments;
-    }
 
     public int getViewsCount() {
         return viewsCount;
@@ -173,15 +173,12 @@ public class Video {
         return reportList;
     }
 
-    public void setReportList(List<String> reportList) {
-        this.reportList = reportList;
-    }
-
     public Thumbnail getThumbnail() {
         return thumbnail;
     }
 
-    public void setThumbnail(Thumbnail thumbnail) {
-        this.thumbnail = thumbnail;
+
+    public HashMap<SignedViewer, Boolean> getViewedUser() {
+        return viewedUser;
     }
 }

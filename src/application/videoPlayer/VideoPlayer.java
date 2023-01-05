@@ -15,21 +15,21 @@ public class VideoPlayer {
     private Time currentPosition;
     private Video video;
     private ScreenOrientation screenOrientation;
-    private Video currentVideo;
-
+    private boolean isVideoPlaying;
     public void playVideo(Video video) {
-        while (true) {
-            System.out.println("Video is playing: " + video.getVideoTitle() + " Channel name:" + video.channel.getChannelName()+" "+video.channel.getSubscribersCount());
-            currentVideo = video;
-            int userInput = CustomScanner.scanInt();
-            if(userInput == 9)return;
-        }
+        line();
+        System.out.println("Video title: "+video.getVideoTitle()+" Channel name:"+video.channel.getChannelName()+" "+video.channel.getSubscribersCount()+" Views "+video.getViewsCount());
+        System.out.println("video is "+(isVideoPlaying?"Playing":"Pause"));
+        line();
+        CustomScanner.justScan();
     }
     public void muteAndUnMute(){}
     public void volumeChange(int volume){}
     public void seek(int timeStamp){}
     public void fastForward(int speed){}
-    public void pauseOrPlay(){}
+    public void pauseOrPlay(){
+        isVideoPlaying = isVideoPlaying?false:true;
+    }
     public void plus30Seconds(){}
     public void minus30Seconds(){}
     public void changeScreenOrientation(){}
@@ -39,7 +39,10 @@ public class VideoPlayer {
     public void changeScreen(){}
 
 
-    public Video getCurrentVideo() {
-        return currentVideo;
-    }
+        private void line(){
+            System.out.println("========================================================");
+        }
+        public VideoPlayer(){
+        isVideoPlaying = true;
+        }
 }

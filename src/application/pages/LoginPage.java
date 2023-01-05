@@ -27,14 +27,16 @@ public class LoginPage{
         System.out.println("========================================================");
         return (new SignedViewer(name,emailId,password,number,dob));
     }
-    public int signIn(){
+    public int displayOption(){
 
         System.out.println("========================================================");
         String red = "\u001B[31m";
-        return CustomScanner.scanInt("Enter the choice\n1 Login(Already having an account)\n2 SignUp(create an account)\n3"+red+" Logout"+"\u001B[0m");
-
+        return CustomScanner.scanInt("Enter the choice\n1 Login(Already having an account)\n2 SignUp(create an account)");
     }
-
+    public int displayOption(Viewer viewer){
+        System.out.println("User name :"+((SignedViewer)viewer).getUserName());
+        return CustomScanner.scanInt("Enter 1 to logout");
+    }
 
     public void showWarningSignIn() {
         System.out.println("User already Exist");

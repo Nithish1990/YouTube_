@@ -1,28 +1,29 @@
 package application.users.user;
 
-import application.users.channel.members.Member;
 import application.utilities.constant.country.Country;
-import application.users.channel.Channel;
 import application.utilities.constant.user.types.UserType;
+import application.video.Thumbnail;
 import application.video.Video;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Stack;
 
 public class SignedViewer extends Viewer{
-    private String userName = "Not SignIn";
-    private String userEmailID;
+    private String userName;
+    private final String userEmailID;
     private String password;
     private String userPhoneNumber;
     private String dataOfBirth;//will be changed to date
-    private boolean eighteenPlus;// naming is not convenient to be change
+    // naming is not convenient to be change
     private Country country;
-    private boolean primeUser;//doubt
-    private boolean isBannedUser;//if user is banned cant post cmt
-    private HashMap<Channel, Member> roles;
+    private boolean primeUser;
+    private boolean isBannedUser;//if user is banned cant post ,cmt
     private HashMap<String,Boolean>subscribedChannels;// string represent url of the video
     private HashMap<String,Boolean>likedVideo;//String represent url of the video
     private HashMap<String,Boolean>dislikedVideo;//String represent url of the video
+
+    private Stack<Thumbnail> notification;
     public SignedViewer(String userName, String userEmailID, String password, String userPhoneNumber, String dataOfBirth) {
         super(UserType.SIGNED);
         this.userName = userName;
@@ -33,10 +34,10 @@ public class SignedViewer extends Viewer{
         this.country = Country.INDIA;
         this.primeUser = false;
         this.isBannedUser = false;
-        this.roles = new HashMap<>();
         this.subscribedChannels = new HashMap<>();
         this.likedVideo = new HashMap<>();
         this.dislikedVideo = new HashMap<>();
+        this.notification = new Stack<>();
     }
 
     public String getUserName() {
@@ -51,9 +52,6 @@ public class SignedViewer extends Viewer{
         return userEmailID;
     }
 
-    public void setUserEmailID(String userEmailID) {
-        this.userEmailID = userEmailID;
-    }
 
     public String getPassword() {
         return password;
@@ -79,13 +77,6 @@ public class SignedViewer extends Viewer{
         this.dataOfBirth = dataOfBirth;
     }
 
-    public boolean isEighteenPlus() {
-        return eighteenPlus;
-    }
-
-    public void setEighteenPlus(boolean eighteenPlus) {
-        this.eighteenPlus = eighteenPlus;
-    }
 
     public Country getCountry() {
         return country;
@@ -111,14 +102,6 @@ public class SignedViewer extends Viewer{
         isBannedUser = bannedUser;
     }
 
-
-    public HashMap<Channel, Member> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(HashMap<Channel, Member> roles) {
-        this.roles = roles;
-    }
 
     public HashMap<String, Boolean> getSubscribedChannels() {
         return subscribedChannels;

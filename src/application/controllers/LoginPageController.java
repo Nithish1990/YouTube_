@@ -1,42 +1,64 @@
 package application.controllers;
 
+import application.Application;
 import application.pages.LoginPage;
+import application.users.channel.ContentCreator;
 import application.users.user.SignedViewer;
+import application.users.user.UnSignedViewer;
 import application.users.user.Viewer;
 import application.utilities.authentication.Authenticator;
+import application.utilities.constant.user.types.UserType;
 
-public class LoginPageController {
+public class LoginPageController implements Controller{
 
     private LoginPage loginPage;
     private Authenticator authenticator;
 
 
 
-    public Viewer login(){
-
-        int userInput = loginPage.signIn();
+    public void renderPage(){
         Viewer viewer = null;
-        switch (userInput){
-            case 1:
-                String []emailIdPwd = loginPage.login();
-                viewer = authenticator.logIn(emailIdPwd[0],emailIdPwd[1]);
-                if(viewer == null){
-                    loginPage.showWarningLogin();
-                }
-                break;
-            case 2:
-                viewer = authenticator.signUp(loginPage.signUP());
-                if(viewer == null){
-                    loginPage.showWarningSignIn();
-                }
-                break;
-            default:
-                break;
+        if(Application.getCurrentUser().getUserType() == UserType.UN_SIGNED) {
+            int userInput = loginPage.displayOption();
+            switch (userInput) {
+                case 1:
+                    String[] emailIdPwd = loginPage.login();
+                    viewer = authenticator.logIn(emailIdPwd[0], emailIdPwd[1]);
+                    if (viewer == null) {
+                        loginPage.showWarningLogin();
+                    }
+                    Application.getApplication().setCurrentUser(viewer);
+                    break;
+                case 2:
+                    viewer = authenticator.signUp(loginPage.signUP());
+                    if (viewer == null) {
+                        loginPage.showWarningSignIn();
+                    }
+                    Application.getApplication().setCurrentUser(viewer);
+                    break;
+                default:
+                    break;
+            }
+        }else{
+            if(loginPage.displayOption(Application.getCurrentUser())==1) {
+                Application.getApplication().setCurrentUser(new UnSignedViewer());
+            }
         }
-        return viewer;
     }
-    public LoginPageController(){
+    private static LoginPageController loginPageController;
+    private LoginPageController(){
         loginPage = new LoginPage();
         authenticator = new Authenticator();
+    }
+
+    public static LoginPageController getLoginPageController(){
+        if(loginPageController == null){
+            loginPageController = new LoginPageController();
+        }
+        return loginPageController;
+    }
+
+    public void storeViewer(ContentCreator contentCreator){
+        authenticator.signUp(contentCreator);
     }
 }

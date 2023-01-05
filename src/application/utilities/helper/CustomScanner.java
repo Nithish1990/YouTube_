@@ -33,4 +33,19 @@ public class CustomScanner {
             }
         }
     }
+    public static String scanNextLine(String str){
+        System.out.println(str);
+        while (true){
+            try {
+                return new Scanner(System.in).nextLine();
+            }
+            catch (InputMismatchException e){
+                System.out.println("Enter valid Input ");
+            }
+        }
+    }
+    public static void justScan(){
+        System.out.println("Press any to back");
+        new Scanner(System.in).next();
+    }
 }

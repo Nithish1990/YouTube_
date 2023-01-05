@@ -1,5 +1,6 @@
 package application;
 
+import application.controllers.Controller;
 import application.database.DatabaseManager;
 import application.controllers.HomePageController;
 import application.users.user.UnSignedViewer;
@@ -8,11 +9,10 @@ import application.users.user.Viewer;
 public class Application {
 
     private DatabaseManager databaseManager;
-    private Viewer currentUser;
+    private static Viewer currentUser;
     private HomePageController homePageController;
     public void run(){
-
-        homePageController.renderHomePage();
+        homePageController.renderPage();
     }
  //singleton
     private static Application application;
@@ -37,7 +37,7 @@ public class Application {
         this.databaseManager = databaseManager;
     }
 
-    public Viewer getCurrentUser() {
+    public static Viewer getCurrentUser() {
         if(currentUser == null){
             currentUser = new UnSignedViewer();
         }
