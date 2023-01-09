@@ -15,7 +15,7 @@ public class ChannelPageController implements Controller{
         ContentCreator contentCreator = (ContentCreator)Application.getCurrentUser();
         if(contentCreator.getChannels().isEmpty()){
             if(channelPage.showWarning()==1){
-
+//
             }
         }
     }
