@@ -33,6 +33,7 @@ public class SearchPageController implements Controller{
         return true;
     }
     public SearchPageController(){
+        System.out.println(this+" searcch p c");
         searchPage = new SearchPage();
     }
 }

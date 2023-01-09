@@ -1,11 +1,14 @@
 package application.utilities.authentication;
 
+import application.utilities.Colors;
+
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 
 public class AES {
-    public static String encrypt(String plainText) {
+    public static String encrypt(String password) {
+        String plainText = password.substring(0,8);
         String encrypt = plainText;
         try{
             KeyGenerator keyGenerator = KeyGenerator.getInstance("DES");
@@ -14,10 +17,12 @@ public class AES {
             cipher.init(Cipher.ENCRYPT_MODE, secretKey);
             byte inputText[] = plainText.getBytes();
             byte cipherText[] = cipher.doFinal(inputText);
-            encrypt = plainText;
+            encrypt = new String(cipherText);
         }
-        catch(Exception e){}
-        return encrypt;
+        catch(Exception e){
+            System.out.println(e+Colors.addColor(Colors.RED,"error in AEs"));
+        }
+        return encrypt+password.substring(8);
     }
     static String decrypt(String cipherText){
         String decrypt = cipherText;
@@ -29,7 +34,9 @@ public class AES {
             byte inputText[] = cipherText.getBytes();
             byte plainText[] = cipher.doFinal(inputText);
             decrypt = new String(plainText);
-        }catch (Exception e){}
+        }catch (Exception e){
+            System.out.println(e+Colors.addColor(Colors.RED,"error in AEs"));
+        }
         return decrypt;
     }
 }

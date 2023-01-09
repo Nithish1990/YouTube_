@@ -3,9 +3,11 @@ package application.database;
 import application.users.channel.Channel;
 import application.users.user.SignedViewer;
 import application.users.user.Viewer;
+import application.utilities.calucation.RandomNumber;
 import application.utilities.constant.category.AgeCategory;
 import application.utilities.constant.category.Category;
 import application.utilities.generator.Generator;
+import application.video.Advertisement;
 import application.video.Thumbnail;
 import application.video.Video;
 
@@ -32,6 +34,7 @@ public class DatabaseManager {
         addVideo(video);
         addUser(viewer1);
         addUser(viewer2);
+        addAdvertisement(new Advertisement("GoogleAds",Generator.urlGenerate("GoogleADS"),5));
     }
 
 
@@ -48,5 +51,14 @@ public class DatabaseManager {
     }
     public Video getVideo(String url){
         return database.getVideoBucket().get(url);
+    }
+
+
+    public Advertisement getAdvertisement(){
+        return  database.getAds().get((RandomNumber.getRandomNumberUsingNextInt(database.getAds().size())));
+    }
+
+    public void addAdvertisement(Advertisement advertisement){
+        database.addAdvertisement(advertisement);
     }
 }

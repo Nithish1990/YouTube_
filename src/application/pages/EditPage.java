@@ -13,11 +13,12 @@ public class EditPage extends Page {
         System.out.println("Phone number "+viewer.getUserPhoneNumber());
 
     }
-    public int  display(ContentCreator contentCreator){
+    public int  display(ContentCreator viewer){
         line();
-        System.out.println(
-                "profile edit"
-        );
+        //rep
+        System.out.println("Current user "+viewer.getUserName()+" Type: "+viewer.getUserType());
+        System.out.println("Date of birth "+viewer.getDataOfBirth());
+        System.out.println("Phone number "+viewer.getUserPhoneNumber());
         System.out.println("Channel settings");
         int userInput = CustomScanner.scanInt();
         line();
@@ -36,7 +37,7 @@ public class EditPage extends Page {
         System.out.println("Prime user");
         line();
         options();
-        System.out.println("5 Want to downgrade prime?");
+        System.out.println("5 Want to cancel prime?");
         int userInput =  CustomScanner.scanInt();
         line();
         return userInput;
@@ -74,6 +75,6 @@ public class EditPage extends Page {
     }
 
     public int askConfirmation() {
-        return CustomScanner.scanInt("Do you want change plan yes to press 1");
+        return CustomScanner.scanInt("Do you want change the plan press 1 to yes");
     }
 }

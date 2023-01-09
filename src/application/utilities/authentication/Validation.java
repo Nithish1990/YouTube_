@@ -2,6 +2,8 @@ package application.utilities.authentication;
 
 import application.utilities.helper.CustomScanner;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -22,6 +24,12 @@ public class Validation{
         return validate(number,"(0/91)?[7-9][0-9]{9}","PhoneNumber");
     }
     public static String validateDOB(String dob){
+        DateTimeFormatter format2 = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        try {
+            LocalDate date = LocalDate.parse(dob, format2);
+        }catch (Exception e){
+            dob = validateDOB(CustomScanner.scanString("Enter Correct date (dd/mm/yyyy)"));
+        }
         return dob;
     }
     public static String checkPasswordIsValid(String password){

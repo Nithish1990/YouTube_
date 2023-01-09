@@ -14,7 +14,7 @@ import java.util.Map;
 
 public class Database {
 
-    private int numberOfTrendingVideos = 10;
+    private int numberOfTrendingVideos;
     private Thumbnail[] trendingVideo;
     private Map<String, SignedViewer> userDB;
     private Map<String, Video> videoBucket;
@@ -26,9 +26,11 @@ public class Database {
 
 
 
+
     //Singleton
     private static Database database;
     private Database(){
+        numberOfTrendingVideos = 10;
         trendingVideo = new Thumbnail[numberOfTrendingVideos];
         userDB = new HashMap<>();
         videoBucket = new HashMap<>();
@@ -45,44 +47,37 @@ public class Database {
 
 
 
-    // all should change to no modifers because onnly dbManager should have access
-    public int getNumberOfTrendingVideos() {
+    // why all r no modifers because onnly dbManager should have access
+    int getNumberOfTrendingVideos() {
         return numberOfTrendingVideos;
     }
 
-    public void setNumberOfTrendingVideos(int numberOfTrendingVideos) {
+    void setNumberOfTrendingVideos(int numberOfTrendingVideos) {
         this.numberOfTrendingVideos = numberOfTrendingVideos;
     }
 
-    public Thumbnail[] getTrendingVideo() {
+    Thumbnail[] getTrendingVideo() {
         return trendingVideo;
     }
 
-    public void setTrendingVideo(Thumbnail[] trendingVideo) {
+    void setTrendingVideo(Thumbnail[] trendingVideo) {
         this.trendingVideo = trendingVideo;
     }
 
-    public Map<String,SignedViewer> getUserDB() {
+    Map<String,SignedViewer> getUserDB() {
         return userDB;
     }
 
-    public void setUserDB(Map<String, SignedViewer> userDB) {
-        this.userDB = userDB;
-    }
 
-    public Map<String, Video> getVideoBucket() {
+    Map<String, Video> getVideoBucket() {
         return videoBucket;
     }
 
-    public void setVideoBucket(Map<String, Video> videoBucket) {
-        this.videoBucket = videoBucket;
-    }
 
-    public List<Advertisement> getAds() {
+    List<Advertisement> getAds() {
         return ads;
     }
-
-    public void setAds(List<Advertisement> ads) {
-        this.ads = ads;
+    void addAdvertisement (Advertisement advertisement){
+        ads.add(advertisement);
     }
 }

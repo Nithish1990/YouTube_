@@ -45,20 +45,9 @@ public class LoginPageController implements Controller{
             }
         }
     }
-    private static LoginPageController loginPageController;
-    private LoginPageController(){
+    public LoginPageController(){
         loginPage = new LoginPage();
         authenticator = new Authenticator();
     }
 
-    public static LoginPageController getLoginPageController(){
-        if(loginPageController == null){
-            loginPageController = new LoginPageController();
-        }
-        return loginPageController;
-    }
-
-    public void storeViewer(ContentCreator contentCreator){
-        authenticator.signUp(contentCreator);
-    }
 }

@@ -1,17 +1,14 @@
 package application.pages;
 
+import application.users.channel.Channel;
 import application.users.channel.ContentCreator;
 import application.users.user.SignedViewer;
 import application.utilities.helper.CustomScanner;
 
+import java.util.ArrayList;
+
 public class SettingPage extends Page {
-    public int display() {
-        displayName("Not signed");
-        System.out.println("1 Account Settings");
-        int userInput = CustomScanner.scanInt();
-        line();
-        return userInput;
-    }
+
     public int display(SignedViewer viewer){
         displayName(viewer.getUserName());
         option();
@@ -26,6 +23,7 @@ public class SettingPage extends Page {
         System.out.println("Current channel "+contentCreator.getCurrentChannel());
         option();
         System.out.println("3 switch channel");
+        //channel set
         int userInput = CustomScanner.scanInt();
         line();
         return userInput;

@@ -5,22 +5,22 @@ import application.pages.EditPage;
 import application.users.channel.ContentCreator;
 import application.users.user.SignedViewer;
 import application.users.user.Viewer;
+import application.utilities.authentication.Authenticator;
 import application.utilities.constant.user.types.UserType;
 
 public class EditPageController implements Controller{
     private EditPage editPage;
 
-    private boolean loop;
 
     @Override
     public void renderPage() {
         SignedViewer viewer = (SignedViewer) Application.getCurrentUser();
-
         if(viewer.getUserType() == UserType.SIGNED){
-            if(!viewer.isPrimeUser()) {
+            if(viewer.isPrimeUser() == false) {
                 editPage.display(viewer);
                 int userInput = editPage.toEnablePrime();//naming is not gud
-                if(userInput!=5)edit(viewer,userInput);
+                if(userInput != 5)
+                    edit(viewer,userInput);
                 else{
                     if(editPage.askConfirmation() == 1){
                         viewer.setPrimeUser(true);
@@ -29,7 +29,8 @@ public class EditPageController implements Controller{
             }else{
                 editPage.display(viewer);
                 int userInput = editPage.toDisablePrime();//naming is not gud
-                if(userInput!=5)edit(viewer,userInput);
+                if(userInput!=5)
+                    edit(viewer,userInput);
                 else{
                     if(editPage.askConfirmation() == 1){
                         viewer.setPrimeUser(false);
@@ -46,27 +47,38 @@ public class EditPageController implements Controller{
         this.editPage = new EditPage();
     }
 
-    public void edit(SignedViewer viewer,int userInput){
-
+    public void edit(SignedViewer viewer,int userInput){// total  method is wrong
+        String name = viewer.getUserName(),password = viewer.getPassword(),dateOfBirth = viewer.getDataOfBirth(),phoneNumber = viewer.getUserPhoneNumber();
         switch (userInput){
             case 1:
-                viewer.setUserName(editPage.getName());
+                name = (editPage.getName());
                 break;
             case 2:
-                String oldPassword = editPage.getOldPassword();
-                if(viewer.getPassword().equals(oldPassword)){
-                    viewer.setPassword(editPage.getPassword());
-                }else{
-                    editPage.showPasswordWrongWarning();
-                }
+                password = editPassWord(viewer);
                 break;
             case 3:
-                viewer.setDataOfBirth(editPage.getDateOfBirth());
+                dateOfBirth = (editPage.getDateOfBirth());
                 break;
             case 4:
-                viewer.setUserPhoneNumber(editPage.getPhoneNumber());
+                phoneNumber = (editPage.getPhoneNumber());
                 break;
         }
+
+//        Application.getApplication().getDatabaseManager().addUser();
         //
+
+        viewer.setUserPhoneNumber(phoneNumber);
+        viewer.setPassword(password);
+        viewer.setUserName(name);
+        viewer.setDataOfBirth(dateOfBirth);
+    }
+    private String editPassWord(SignedViewer viewer){
+        String oldPassword = editPage.getOldPassword();
+        if(Authenticator.logIn(viewer.getUserEmailID(),oldPassword) != null)
+           return editPage.getPassword();
+
+        editPage.showPasswordWrongWarning();
+
+        return editPassWord(viewer);
     }
 }

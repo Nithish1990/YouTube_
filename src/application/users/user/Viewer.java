@@ -1,5 +1,6 @@
 package application.users.user;
 
+import application.users.channel.ContentCreator;
 import application.utilities.constant.user.types.UserType;
 import application.video.Thumbnail;
 import application.video.Video;
@@ -12,12 +13,15 @@ public abstract class Viewer {
 
     private ArrayList<Thumbnail> watchLaterVideo;
     private Stack<Thumbnail> history;
-    private Video currentVideo;
     public Viewer(UserType userType){
         this.userType = userType;
         this.watchLaterVideo = new ArrayList<>();
         this.history = new Stack<>();
-        this.currentVideo = null;
+    }
+    public Viewer(UserType userType, SignedViewer viewer){
+        this.userType = userType;
+        this.watchLaterVideo = viewer.getWatchLaterVideo();
+        this.history = viewer.getHistory();
     }
 
     public UserType getUserType() {
@@ -34,11 +38,4 @@ public abstract class Viewer {
         return history;
     }
 
-    public Video getCurrentVideo() {
-        return currentVideo;
-    }
-
-    public void setCurrentVideo(Video currentVideo) {
-        this.currentVideo = currentVideo;
-    }
 }

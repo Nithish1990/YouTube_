@@ -3,6 +3,7 @@ package application.users.channel;
 import application.users.channel.Channel;
 import application.users.channel.members.Member;
 import application.users.user.SignedViewer;
+import application.utilities.constant.user.types.UserType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,13 +14,8 @@ public class ContentCreator extends SignedViewer {
     private Channel currentChannel;
     private HashMap<Channel, Member> roles;
 //    private boolean monet
-    public ContentCreator(String userName, String userEmailID, String password, String userPhoneNumber, String dataOfBirth) {
-
-        super(userName, userEmailID, password, userPhoneNumber, dataOfBirth);
-
-    }
     public ContentCreator(SignedViewer viewer){
-        super(viewer.getUserName(),viewer.getUserEmailID(), viewer.getPassword(), viewer.getUserPhoneNumber(), viewer.getDataOfBirth());
+        super(viewer);
         this.moneyEarned = 0;
         channels = new ArrayList<>();
     }

@@ -14,11 +14,11 @@ public class LoginPage{
         return new String[]{emailId,password};
 
     }
-    public Viewer signUP(){
+    public SignedViewer signUP(){
         String name = CustomScanner.scanString("Enter your name");
         String emailId = CustomScanner.scanString("Enter your EmailId");
         emailId = Validation.checkEmailIdIsValid(emailId);
-        String password = CustomScanner.scanString("Enter your password 8-20 char, atleast 1 uppercase, 1number,1 special char,1 lower case");
+        String password = CustomScanner.scanString("Enter your password (8-20 char, atleast 1 uppercase, 1number,1 special char,1 lower case)");
         password = Validation.checkPasswordIsValid(password);
         String number = CustomScanner.scanString("Enter your Phone number");
         number = Validation.validatePhoneNumber(number);

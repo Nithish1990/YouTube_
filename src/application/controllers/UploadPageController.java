@@ -17,12 +17,12 @@ import application.video.Video;
 public class UploadPageController implements Controller{
     private UploadPage uploadPage;
 
-
+    @Override
     public void renderPage(){
         Viewer viewer  = Application.getCurrentUser();
         switch (viewer.getUserType()) {
             case UN_SIGNED:
-                upload((UnSignedViewer) viewer);
+                upload();
                 break;
             case SIGNED:
                 upload((SignedViewer) viewer);
@@ -35,10 +35,11 @@ public class UploadPageController implements Controller{
         String details[] = uploadPage.getTitle();
         ContentCreator contentCreator = new ContentCreator(viewer);
         contentCreator.addChannel( new Channel(viewer.getUserName(), Generator.urlGenerate(viewer.getUserName()),null,Category.DEFAULT));
-        LoginPageController.getLoginPageController().storeViewer(contentCreator);
+        Authenticator.storeContentCreator(contentCreator);
         Application.getApplication().setCurrentUser(contentCreator);
         Video video = new Video(details[0],contentCreator.getChannels().get(0),"",true,AgeCategory.UA,10,Category.DEFAULT, null);
         Application.getApplication().getDatabaseManager().addVideo(video);
+
 
     }
     private void upload(ContentCreator contentCreator){
@@ -47,17 +48,16 @@ public class UploadPageController implements Controller{
                 uploadPage.displayWarning(contentCreator);
             }
             int channelPosition = uploadPage.getChannel(contentCreator);
-            if(channelPosition-1>contentCreator.getChannels().size()){
+            if(channelPosition - 1 > contentCreator.getChannels().size()){
                 uploadPage.displayWarning(contentCreator);
                 uploadPage.getChannel(contentCreator);
             }
             Video video = new Video(details[0],contentCreator.getChannels().get(channelPosition-1),details[1],true,AgeCategory.UA,10,Category.DEFAULT,null);
             Application.getApplication().getDatabaseManager().addVideo(video);
     }
-    private void upload(UnSignedViewer viewer){
+    private void upload(){
         uploadPage.displayWarning();
-        Controller controller = LoginPageController.getLoginPageController();
-        controller.renderPage();
+        Application.getApplication().getLoginPageController().renderPage();
     }
 
     //constructor

@@ -44,8 +44,8 @@ public class CustomScanner {
             }
         }
     }
-    public static void justScan(){
-        System.out.println("Press any to back");
+    public static void justScan(String str){
+        System.out.println(str);
         new Scanner(System.in).next();
     }
 }
