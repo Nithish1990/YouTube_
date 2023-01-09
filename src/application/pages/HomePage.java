@@ -19,7 +19,7 @@ public class HomePage extends Page{
         int n = 1;
         System.out.println("Home page");
         for(Thumbnail thumbnail1:thumbnail){
-            System.out.println(n+" "+thumbnail1.getVideoTitle());
+            System.out.println(n+" "+thumbnail1.getVideoTitle()+" Views: "+thumbnail1.getViews());
             n++;
         }
     }

@@ -10,19 +10,14 @@ import java.util.Scanner;
 public class WatchPage extends  Page{
 
 
-    private boolean isVideoPlaying;
     public int  display(Video video,boolean isSubscribed){
         line();
-        int userInput = CustomScanner.scanInt("Enter\n1 go back\n2 Like:"+video.getLikesCount()+"\n3 DisLike: "+
-                video.getDislikesCount()+"\n4 share "+(isSubscribed?"\n5 UnSubscribe":"\n5 Subscribe") +"\n6 Comments: "+video.getComments().size());
+        int userInput = CustomScanner.scanInt("Enter\n1 pause/play\n2 Like:"+video.getLikesCount()+"\n3 DisLike: "+
+                video.getDislikesCount()+"\n4 share "+(isSubscribed?"\n5 UnSubscribe":"\n5 Subscribe") +"\n6 Comments: "+video.getComments().size()+"\n7 Vist Channel");
         line();
         return userInput;
     }
 
-
-    public WatchPage(){
-        isVideoPlaying = true;
-    }
     public int displayLikeShareSubscribeOption(){
         return CustomScanner.scanInt("1 to like, 2 to Dislike, 3 to Share, 4 subscribe");
     }

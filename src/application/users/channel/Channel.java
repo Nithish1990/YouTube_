@@ -33,6 +33,7 @@ public class Channel {
         this.uploadedVideo = new ArrayList<>();
     }
 
+
     public String getChannelName() {
         return channelName;
     }

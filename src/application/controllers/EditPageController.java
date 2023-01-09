@@ -15,7 +15,7 @@ public class EditPageController implements Controller{
     @Override
     public void renderPage() {
         SignedViewer viewer = (SignedViewer) Application.getCurrentUser();
-        if(viewer.getUserType() == UserType.SIGNED){
+        if(viewer.getUserType() != UserType.UN_SIGNED){
             if(viewer.isPrimeUser() == false) {
                 editPage.display(viewer);
                 int userInput = editPage.toEnablePrime();//naming is not gud
@@ -78,7 +78,6 @@ public class EditPageController implements Controller{
            return editPage.getPassword();
 
         editPage.showPasswordWrongWarning();
-
         return editPassWord(viewer);
     }
 }

@@ -8,7 +8,6 @@ import application.utilities.helper.CustomScanner;
 public class UploadPage {
 
     public String[] getTitle(){
-        System.out.println("Welcome to Studio");
         String title = CustomScanner.scanString("Enter title"),description = CustomScanner.scanString("Enter Description");
         return new String[]{title,description};
     }
@@ -29,5 +28,9 @@ public class UploadPage {
     }
     public void displayWarning(boolean bool) {
         System.out.println("Invalid input");
+    }
+
+    public void displayWelcomeMessage() {
+        System.out.println("Welcome to Studio");
     }
 }

@@ -52,7 +52,7 @@ public class Video {
         this.violationCount = 0;
         this.tags = tags;
         this.reportList = new ArrayList<>();
-        this.thumbnail = new Thumbnail(videoTitle,channel,duration,uploadedDateAndTime,url);
+        this.thumbnail = new Thumbnail(videoTitle,channel,duration,uploadedDateAndTime,url,viewsCount);
         this.viewedUser = new HashMap<>();
         videoId++;
     }

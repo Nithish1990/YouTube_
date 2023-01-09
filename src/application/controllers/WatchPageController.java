@@ -1,10 +1,12 @@
 package application.controllers;
 
 import application.Application;
+import application.pages.ChannelPage;
 import application.pages.WatchPage;
 import application.users.channel.Channel;
 import application.users.user.SignedViewer;
 import application.users.user.Viewer;
+import application.utilities.Colors;
 import application.utilities.constant.user.types.UserType;
 import application.video.Comments;
 import application.video.Video;
@@ -38,21 +40,26 @@ public class WatchPageController implements Controller{
                         watchPage.displayUrl(video);
                         break;
                     case 5:
-                        subscribe();
+                        subscribe(video.channel);
                         break;
                     case 6://comments
                         comments(Application.getCurrentUser());
                         break;
+                    case 7:
+                        ChannelPageController controller = new ChannelPageController();
+                        controller.renderPage(video.channel);
+                        break;
                     default://
+                        addViews(video);
                         return;
                 }
-                addViews(video);
+
             }
     }
 
     private void addViews(Video video) {
-        if(Application.getCurrentUser().getUserType() == UserType.SIGNED){
-            if(!video.getViewedUser().getOrDefault(Application.getCurrentUser(),false)){
+        if(Application.getCurrentUser().getUserType() != UserType.UN_SIGNED){
+            if(video.getViewedUser().getOrDefault(Application.getCurrentUser(),false) == false){
                 video.getViewedUser().put((SignedViewer)Application.getCurrentUser(),true);
                 video.setViewsCount(video.getViewsCount()+1);
             }
@@ -125,15 +132,15 @@ public class WatchPageController implements Controller{
         ((SignedViewer) Application.getCurrentUser()).getDislikedVideo().put(videoUrl, bool);
     }
 
-    private void subscribe(){
+    public void subscribe(Channel channel){
         if(Application.getCurrentUser().getUserType() != UserType.UN_SIGNED){
-        if(!((SignedViewer) Application.getCurrentUser()).getSubscribedChannels().getOrDefault(video.channel.getChannelUrl(), false)){//not !
-            ((SignedViewer) Application.getCurrentUser()).getSubscribedChannels().put(video.channel.getChannelUrl(),true);
-            video.channel.setSubscribersCount(video.channel.getSubscribersCount()+1);
+        if(((SignedViewer) Application.getCurrentUser()).getSubscribedChannels().getOrDefault(channel.getChannelUrl(), false) == false){//not !
+            ((SignedViewer) Application.getCurrentUser()).getSubscribedChannels().put(channel.getChannelUrl(),true);
+            channel.setSubscribersCount(channel.getSubscribersCount()+1);
         }else{
             if(video.channel.getSubscribersCount() !=0) {
-                ((SignedViewer) Application.getApplication().getCurrentUser()).getSubscribedChannels().put(video.channel.getChannelUrl(),false);
-                video.channel.setSubscribersCount(video.channel.getSubscribersCount() - 1);
+                ((SignedViewer) Application.getApplication().getCurrentUser()).getSubscribedChannels().put(channel.getChannelUrl(),false);
+                channel.setSubscribersCount(channel.getSubscribersCount() - 1);
             }
         }
     }else{
@@ -147,7 +154,6 @@ public class WatchPageController implements Controller{
         if(userInput == 1) {
             if (viewer.getUserType() != UserType.UN_SIGNED) {
                 if (!((SignedViewer) Application.getCurrentUser()).isBannedUser()) {
-
                     String comment = watchPage.getComment();
                     video.getComments().push(new Comments((SignedViewer) viewer,comment));
                 }
@@ -168,17 +174,25 @@ public class WatchPageController implements Controller{
         return Application.getApplication().getDatabaseManager().getVideo(Application.getCurrentUser().getHistory().peek().getUrl());
     }
 
-private void playAds(){
+private void playAds(){//code is redundant else
     Viewer viewer = Application.getCurrentUser();
         if(viewer.getUserType() != UserType.UN_SIGNED){
             if(((SignedViewer)viewer).isPrimeUser() == true ){
 
+            }else{
+                try {
+                    watchPage.displayAds(Application.getApplication().getDatabaseManager().getAdvertisement());
+                }catch (IndexOutOfBoundsException e){
+                    System.out.println(Colors.addColor(Colors.RED,"IOB E ADS"));
+                }
             }
         }
         else {
             try {
                 watchPage.displayAds(Application.getApplication().getDatabaseManager().getAdvertisement());
-            }catch (IndexOutOfBoundsException e){}
+            }catch (IndexOutOfBoundsException e){
+                System.out.println(Colors.addColor(Colors.RED,"IOB E ADS"));
+            }
         }
 }
 private void setDislikes(boolean bool){

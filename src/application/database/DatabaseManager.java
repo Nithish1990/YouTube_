@@ -1,8 +1,10 @@
 package application.database;
 
 import application.users.channel.Channel;
+import application.users.channel.ContentCreator;
 import application.users.user.SignedViewer;
 import application.users.user.Viewer;
+import application.utilities.Colors;
 import application.utilities.calucation.RandomNumber;
 import application.utilities.constant.category.AgeCategory;
 import application.utilities.constant.category.Category;
@@ -29,12 +31,24 @@ public class DatabaseManager {
         database.getUserDB().put(viewer.getUserEmailID(), viewer);
     }
     public void testing(){
-        SignedViewer viewer1 = new SignedViewer("NithishT","Test1234@gmail.com","Test1234@gmail.com","9876543210","11"),viewer2 = new SignedViewer("Nithish_KUMAR","t","t","9876543210","11");
-        Video video = new Video("Test",new Channel("Test", Generator.urlGenerate("Test"),"Nothing",Category.DEFAULT),"testing",true, AgeCategory.UA,10, Category.DEFAULT,new ArrayList<>());
+//        String userName, String userEmailID, String password, String userPhoneNumber, String dataOfBirth
+        SignedViewer viewer1 = new SignedViewer("Prime","p","p","0","0");
+        ContentCreator contentCreator = new ContentCreator(viewer1);
+        Channel channel = new Channel(contentCreator.getUserName(), Generator.urlGenerate(contentCreator.getUserName()),"nothing",Category.DEFAULT);
+        contentCreator.addChannel(channel);
+        contentCreator.setCurrentChannel(channel);
+        Video video = new Video("Test",new Channel(contentCreator.getUserName(),Generator.urlGenerate(contentCreator.getUserName()),
+                "Nothing",Category.DEFAULT),"Nothig",true,AgeCategory.A,1,Category.DEFAULT,null);
+
+        contentCreator.getCurrentChannel().getUploadedVideo().add(video.getThumbnail());
+
         addVideo(video);
-        addUser(viewer1);
+        addUser(contentCreator);
+        SignedViewer viewer2 = new SignedViewer("Tester","t","t","0","0");
         addUser(viewer2);
-        addAdvertisement(new Advertisement("GoogleAds",Generator.urlGenerate("GoogleADS"),5));
+        viewer2.setPrimeUser(true);
+        contentCreator.setPrimeUser(true);
+        addAdvertisement(new Advertisement("GoogleAds",Generator.urlGenerate("GoogleADS"),1));
     }
 
 
