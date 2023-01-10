@@ -1,18 +1,16 @@
 package application.database;
 
+import application.users.channel.Channel;
 import application.users.user.SignedViewer;
 import application.video.Advertisement;
 import application.video.Thumbnail;
 import application.video.Video;
-import application.users.user.Viewer;
-
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Database {
+class Database {
 
     private int numberOfTrendingVideos;
     private Thumbnail[] trendingVideo;
@@ -20,6 +18,7 @@ public class Database {
     private Map<String, Video> videoBucket;
     private List<Advertisement> ads;
 
+    private Map<String, Channel>channel;
 
 
 
@@ -35,6 +34,7 @@ public class Database {
         userDB = new HashMap<>();
         videoBucket = new HashMap<>();
         ads = new ArrayList<>();
+        channel = new HashMap<>();
     }
 
     static Database setUpDatabase(){
@@ -47,7 +47,7 @@ public class Database {
 
 
 
-    // why all r no modifers because onnly dbManager should have access
+    // why all r no modifiers because only db-Manager should have access
     int getNumberOfTrendingVideos() {
         return numberOfTrendingVideos;
     }
@@ -79,5 +79,8 @@ public class Database {
     }
     void addAdvertisement (Advertisement advertisement){
         ads.add(advertisement);
+    }
+     Map<String, Channel> getChannel() {
+        return channel;
     }
 }

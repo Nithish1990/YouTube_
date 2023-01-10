@@ -2,11 +2,16 @@ package application.controllers;
 
 import application.Application;
 import application.pages.EditPage;
+import application.users.channel.Channel;
 import application.users.channel.ContentCreator;
 import application.users.user.SignedViewer;
-import application.users.user.Viewer;
+import application.utilities.Colors;
 import application.utilities.authentication.Authenticator;
 import application.utilities.constant.user.types.UserType;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class EditPageController implements Controller{
     private EditPage editPage;
@@ -17,7 +22,7 @@ public class EditPageController implements Controller{
         SignedViewer viewer = (SignedViewer) Application.getCurrentUser();
         if(viewer.getUserType() != UserType.UN_SIGNED){
             if(viewer.isPrimeUser() == false) {
-                editPage.display(viewer);
+                editPage.display(viewer,getViewerSubscribedChannel(viewer));
                 int userInput = editPage.toEnablePrime();//naming is not gud
                 if(userInput != 5)
                     edit(viewer,userInput);
@@ -27,7 +32,7 @@ public class EditPageController implements Controller{
                     }
                 }
             }else{
-                editPage.display(viewer);
+                editPage.display(viewer,getViewerSubscribedChannel(viewer));
                 int userInput = editPage.toDisablePrime();//naming is not gud
                 if(userInput!=5)
                     edit(viewer,userInput);
@@ -79,5 +84,14 @@ public class EditPageController implements Controller{
 
         editPage.showPasswordWrongWarning();
         return editPassWord(viewer);
+    }
+    private List<Channel> getViewerSubscribedChannel(SignedViewer viewer){
+        List<Channel> channels = new ArrayList<>();
+        for (Map.Entry<String,Boolean> entry : viewer.getSubscribedChannels().entrySet()){
+            if(entry.getValue()){
+               channels.add(Application.getApplication().getDatabaseManager().getChannel().getOrDefault(entry.getKey(),null));
+            }
+        }
+        return channels;
     }
 }

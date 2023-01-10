@@ -15,22 +15,23 @@ public class HomePage extends Page{
         System.out.println("9 Settings");
         System.out.println("Any other to exit(int)");
     }
-    private void display( List<Thumbnail>thumbnail){
-        int n = 1;
+    private void display( Thumbnail []thumbnails){
+        int i = 1;
         System.out.println("Home page");
-        for(Thumbnail thumbnail1:thumbnail){
-            System.out.println(n+" "+thumbnail1.getVideoTitle()+" Views: "+thumbnail1.getViews());
-            n++;
+        for(Thumbnail thumbnail1:thumbnails){
+            if(thumbnail1 !=null)
+            System.out.println(i+" "+thumbnail1.getVideoTitle()+" Views: "+thumbnail1.getViews());
+            i++;
         }
     }
     public int getVideoPosition(){
         return CustomScanner.scanInt("Enter video position")-1;
     }
-    public int display(String name,List<Thumbnail>thumbnail){
+    public int display(String name,Thumbnail[] thumbnails){
         line();
         displayName(name);
         line();
-        display(thumbnail);
+        display(thumbnails);
         line();
         option();
         return CustomScanner.scanInt();

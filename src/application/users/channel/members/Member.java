@@ -1,5 +1,5 @@
 package application.users.channel.members;
 
-public class Member {
+public abstract class Member {
 
 }

@@ -56,7 +56,7 @@ private void play(Video video,boolean isSubscribe,boolean isDisliked,boolean isL
             ""+ (isVideoPlaying?Colors.addColor(Colors.GREEN,"Playing"):Colors.addColor(Colors.BLACK_BACKGROUND_BRIGHT,"Paused "))+"                          |" );
     printEdges();
     line();
-    System.out.println(video.getVideoTitle()+" Views"+video.getViewsCount());
+    System.out.println(video.getVideoTitle()+" Views: "+video.getViewsCount());
     System.out.print(Colors.addColor(Colors.CYAN_BOLD, video.channel.getChannelName()+" "+video.channel.getSubscribersCount())+"  ");
     System.out.print((isSubscribe?Colors.addColor(Colors.BLACK_BRIGHT,"UnSubscribe"):
             Colors.addColor(Colors.RED_BACKGROUND_BRIGHT,"Subscribe"))+"             ");

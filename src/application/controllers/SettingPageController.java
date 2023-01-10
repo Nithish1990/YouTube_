@@ -18,7 +18,8 @@ public class SettingPageController implements Controller {
         Viewer viewer= Application.getCurrentUser();
         switch (viewer.getUserType()){
             case UN_SIGNED:
-                    Application.getApplication().getLoginPageController().renderPage();
+                    Controller controller = new LoginPageController();
+                    controller.renderPage();
                 break;
             case SIGNED:
                     settings(settingPage.display(((SignedViewer) viewer)));
@@ -38,7 +39,8 @@ public class SettingPageController implements Controller {
     private void settings(int userInput){
         switch (userInput){
             case 1:
-                Application.getApplication().getLoginPageController().renderPage();
+                Controller controller = new LoginPageController();
+                controller.renderPage();
                 break;
             case 2://edit page
                 editPageController.renderPage();

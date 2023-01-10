@@ -10,6 +10,7 @@ import application.utilities.authentication.Authenticator;
 import application.utilities.constant.category.AgeCategory;
 import application.utilities.constant.category.Category;
 import application.utilities.generator.Generator;
+import application.video.Thumbnail;
 import application.video.Video;
 
 public class UploadPageController implements Controller{
@@ -20,7 +21,7 @@ public class UploadPageController implements Controller{
         Viewer viewer  = Application.getCurrentUser();
         switch (viewer.getUserType()) {
             case UN_SIGNED:
-                upload();
+                showWarning();
                 break;
             case SIGNED:
                 upload((SignedViewer) viewer);
@@ -34,7 +35,7 @@ public class UploadPageController implements Controller{
         Channel channel  =  new Channel(viewer.getUserName(), Generator.urlGenerate(viewer.getUserName()),null,Category.DEFAULT);
         contentCreator.addChannel(channel);
         contentCreator.setCurrentChannel(channel);
-        Authenticator.storeContentCreator(contentCreator);
+        Authenticator.addChannel(contentCreator,channel);
         Application.getApplication().setCurrentUser(contentCreator);
         uploadPage.displayWelcomeMessage();
         upload(contentCreator);
@@ -42,16 +43,26 @@ public class UploadPageController implements Controller{
     private void upload(ContentCreator contentCreator){
             String details[] = uploadPage.getTitle();
             Video video = new Video(details[0],contentCreator.getCurrentChannel(),details[1],true,AgeCategory.UA,10,Category.DEFAULT,null);
-            contentCreator.getCurrentChannel().getUploadedVideo().add(video.getThumbnail());
+            Channel channel = contentCreator.getCurrentChannel();
+            channel.getUploadedVideo().add(video.getThumbnail());
+            sendNotification(channel,video.getThumbnail());
             Application.getApplication().getDatabaseManager().addVideo(video);
     }
-    private void upload(){
+    private void showWarning(){
         uploadPage.displayWarning();
-        Application.getApplication().getLoginPageController().renderPage();
+        Controller controller = new LoginPageController();
+        controller.renderPage();
     }
 
     //constructor
     public UploadPageController(){
         uploadPage = new UploadPage();
+    }
+
+
+    private void sendNotification(Channel channel, Thumbnail thumbnail){
+        for(SignedViewer viewer: channel.getSubscribers()){
+            viewer.getNotification().push(thumbnail);
+        }
     }
 }

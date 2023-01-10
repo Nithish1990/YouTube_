@@ -11,9 +11,9 @@ public class Application {
 
     private DatabaseManager databaseManager;
     private Viewer currentUser;
-    private LoginPageController loginPageController;
-    private Controller homePageController;
+
     public void run(){
+        Controller homePageController = new HomePageController();
         homePageController.renderPage();
     }
     //singleton
@@ -21,8 +21,6 @@ public class Application {
     private Application(){
         databaseManager = new DatabaseManager();
         currentUser = new UnSignedViewer();
-        loginPageController = new LoginPageController();
-        homePageController = new HomePageController();
     }
 
     public static Application getApplication(){
@@ -42,11 +40,6 @@ public class Application {
         }
         return application.currentUser;
     }
-
-    public LoginPageController getLoginPageController() {
-        return loginPageController;
-    }
-
     public void setCurrentUser(Viewer currentUser) {
         this.currentUser = currentUser;
     }

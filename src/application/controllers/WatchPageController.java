@@ -60,8 +60,13 @@ public class WatchPageController implements Controller{
     private void addViews(Video video) {
         if(Application.getCurrentUser().getUserType() != UserType.UN_SIGNED){
             if(video.getViewedUser().getOrDefault(Application.getCurrentUser(),false) == false){
+
+
+
+                // should
                 video.getViewedUser().put((SignedViewer)Application.getCurrentUser(),true);
                 video.setViewsCount(video.getViewsCount()+1);
+                video.getThumbnail().setViews(getVideo().getViewsCount());
             }
         }
     }
@@ -101,7 +106,8 @@ public class WatchPageController implements Controller{
         else{
             // user is unsigned
             if(watchPage.showWarning()==1){
-                Application.getApplication().getLoginPageController().renderPage();
+                Controller controller = new LoginPageController();
+                controller.renderPage();
             }
         }
     }
@@ -134,18 +140,22 @@ public class WatchPageController implements Controller{
 
     public void subscribe(Channel channel){
         if(Application.getCurrentUser().getUserType() != UserType.UN_SIGNED){
-        if(((SignedViewer) Application.getCurrentUser()).getSubscribedChannels().getOrDefault(channel.getChannelUrl(), false) == false){//not !
-            ((SignedViewer) Application.getCurrentUser()).getSubscribedChannels().put(channel.getChannelUrl(),true);
+            SignedViewer viewer = ((SignedViewer) Application.getCurrentUser());
+        if(viewer.getSubscribedChannels().getOrDefault(channel.getChannelUrl(), false) == false){//not !
+            viewer.getSubscribedChannels().put(channel.getChannelUrl(),true);
             channel.setSubscribersCount(channel.getSubscribersCount()+1);
+            channel.addSubscriber((SignedViewer) Application.getCurrentUser());
         }else{
-            if(video.channel.getSubscribersCount() !=0) {
+
                 ((SignedViewer) Application.getApplication().getCurrentUser()).getSubscribedChannels().put(channel.getChannelUrl(),false);
                 channel.setSubscribersCount(channel.getSubscribersCount() - 1);
-            }
+                channel.deleteSubscriber((SignedViewer) Application.getCurrentUser());
         }
     }else{
-            if(watchPage.showWarning()==1)
-               Application.getApplication().getLoginPageController().renderPage();
+            if(watchPage.showWarning()==1) {
+                Controller controller = new LoginPageController();
+                controller.renderPage();
+            }
         }
     }
 
@@ -159,7 +169,8 @@ public class WatchPageController implements Controller{
                 }
             } else {
                 if(watchPage.showWarning()==1) {
-                    Application.getApplication().getLoginPageController().renderPage();
+                    Controller controller = new LoginPageController();
+                    controller.renderPage();
                 }
             }
         }

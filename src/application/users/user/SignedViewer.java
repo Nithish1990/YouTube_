@@ -1,6 +1,8 @@
 package application.users.user;
 
 import application.admin.SystemAdmin;
+import application.users.channel.Channel;
+import application.users.channel.members.Member;
 import application.utilities.constant.country.Country;
 import application.utilities.constant.user.types.UserType;
 import application.video.Thumbnail;
@@ -8,6 +10,7 @@ import application.video.Video;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Stack;
 
 public class SignedViewer extends Viewer{
@@ -20,6 +23,7 @@ public class SignedViewer extends Viewer{
     private Country country;
     private boolean primeUser;
     private boolean isBannedUser;//if user is banned cant post ,cmt
+    private List<Channel>member;
     private HashMap<String,Boolean>subscribedChannels;// string represent url of the video
     private HashMap<String,Boolean>likedVideo;//String represent url of the video
     private HashMap<String,Boolean>dislikedVideo;//String represent url of the video
@@ -39,6 +43,7 @@ public class SignedViewer extends Viewer{
         this.likedVideo = new HashMap<>();
         this.dislikedVideo = new HashMap<>();
         this.notification = new Stack<>();
+        this.member = new ArrayList<>();
     }
     public SignedViewer(SignedViewer viewer){
         super(UserType.CONTENT_CREATOR,viewer);
@@ -54,6 +59,7 @@ public class SignedViewer extends Viewer{
         this.likedVideo = viewer.likedVideo;
         this.dislikedVideo = viewer.dislikedVideo;
         this.notification = viewer.notification;
+        this.member = viewer.member;
     }
     public SignedViewer(SystemAdmin viewer){
         super(UserType.ADMIN);
@@ -68,7 +74,8 @@ public class SignedViewer extends Viewer{
         this.subscribedChannels = viewer.getSubscribedChannels();
         this.likedVideo = viewer.getLikedVideo();
         this.dislikedVideo = viewer.getDislikedVideo();
-        this.notification = viewer.notification;
+        this.notification = viewer.getNotification();
+        this.member = viewer.getMember();
     }
     public String getUserName() {
         return userName;
@@ -143,5 +150,14 @@ public class SignedViewer extends Viewer{
 
     public HashMap<String, Boolean> getDislikedVideo() {
         return dislikedVideo;
+    }
+
+
+    public List<Channel> getMember() {
+        return member;
+    }
+
+    public Stack<Thumbnail> getNotification() {
+        return notification;
     }
 }

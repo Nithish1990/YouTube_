@@ -3,8 +3,6 @@ package application.database;
 import application.users.channel.Channel;
 import application.users.channel.ContentCreator;
 import application.users.user.SignedViewer;
-import application.users.user.Viewer;
-import application.utilities.Colors;
 import application.utilities.calucation.RandomNumber;
 import application.utilities.constant.category.AgeCategory;
 import application.utilities.constant.category.Category;
@@ -20,7 +18,7 @@ public class DatabaseManager {
     private Database database;
     public DatabaseManager(){
         database = Database.setUpDatabase();
-        testing();
+//        testing();
     }
 
 
@@ -42,7 +40,7 @@ public class DatabaseManager {
 
         contentCreator.getCurrentChannel().getUploadedVideo().add(video.getThumbnail());
 
-        addVideo(video);
+        this.addVideo(video);
         addUser(contentCreator);
         SignedViewer viewer2 = new SignedViewer("Tester","t","t","0","0");
         addUser(viewer2);
@@ -74,5 +72,9 @@ public class DatabaseManager {
 
     public void addAdvertisement(Advertisement advertisement){
         database.addAdvertisement(advertisement);
+    }
+
+    public Map<String,Channel> getChannel(){
+        return database.getChannel();
     }
 }

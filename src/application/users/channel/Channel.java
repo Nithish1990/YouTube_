@@ -1,5 +1,6 @@
 package application.users.channel;
 
+import application.users.user.SignedViewer;
 import application.utilities.constant.category.Category;
 import application.video.Thumbnail;
 
@@ -19,7 +20,7 @@ public class Channel {
     private int subscribersCount;
     private List<Thumbnail> uploadedVideo;
     private List<Member> channelMembers;
-
+    private List<SignedViewer>subscribers;
 
     public Channel(String channelName, String channelUrl, String about,Category category) {
         this.channelName = channelName;
@@ -31,6 +32,7 @@ public class Channel {
         this.subscribersCount = 0;
         this.channelMembers = new ArrayList<>();
         this.uploadedVideo = new ArrayList<>();
+        this.subscribers = new ArrayList<>();
     }
 
 
@@ -102,5 +104,17 @@ public class Channel {
 
     public void setSubscribersCount(int subscribersCount) {
         this.subscribersCount = subscribersCount;
+    }
+
+
+    public List<SignedViewer> getSubscribers() {
+        return subscribers;
+    }
+
+    public void addSubscriber(SignedViewer subscriber){
+        subscribers.add(subscriber);
+    }
+    public void deleteSubscriber(SignedViewer signedViewer){
+        subscribers.remove(signedViewer);
     }
 }

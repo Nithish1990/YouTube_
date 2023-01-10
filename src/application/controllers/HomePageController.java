@@ -14,61 +14,77 @@ public class HomePageController implements Controller{
 
     private HomePage homePage;
     private Controller watchPageController,searchBarController, settingPageController,uploadPageController;
+    private int displayVideoSize;
+    private Thumbnail[] displayThumbnail;
     public void renderPage(){
 
         while (true) {
+            getThumbnails();
             int userInput = display(Application.getCurrentUser());
             switch (userInput) {
                 case 1://select video
-                    Application.getCurrentUser().getHistory().push(getVideo(homePage.getVideoPosition()));
+                    userInput = (homePage.getVideoPosition());
+                    Thumbnail selectedThumbnail = getVideo(userInput);
+                    if(selectedThumbnail == null )continue;
+                    Application.getCurrentUser().getHistory().push(selectedThumbnail);
+                    if(watchPageController == null)
+                        watchPageController = new WatchPageController();
                     watchPageController.renderPage();
                     break;
                 case 2://search
+                    if(searchBarController == null)
+                        searchBarController = new SearchPageController();
                     searchBarController.renderPage();
                     break;
                 case 3:// uploading
+                    if(uploadPageController == null)
+                        uploadPageController = new UploadPageController();
                     uploadPageController.renderPage();
                     break;
                 case 9://setting options
+                    if(settingPageController == null)
+                        settingPageController = new SettingPageController();
                     settingPageController.renderPage();
                      break;
                 default://exiting
+
+
+
                     return;
             }
         }
     }
     public HomePageController(){
-        watchPageController = new WatchPageController();
-        searchBarController = new SearchPageController();
-        uploadPageController = new UploadPageController();
-        settingPageController = new SettingPageController();
         this.homePage = new HomePage();
+        this.displayVideoSize = 10;
+        this.displayThumbnail = new Thumbnail[displayVideoSize];
     }
-    private List<Thumbnail> getThumbnails(){
-        List<Thumbnail>thumbnail = new ArrayList<>();
+
+
+    private void getThumbnails(){
+        int i = 0;
         Map<String, Video>videoMap = Application.getApplication().getDatabaseManager().getVideoBucket();
         for(Map.Entry<String,Video>videoEntry: videoMap.entrySet()){
-            thumbnail.add(videoEntry.getValue().getThumbnail());
+            displayThumbnail[i] = (videoEntry.getValue().getThumbnail());
+            i++;
         }
-
-        return thumbnail;
     }
     private Thumbnail getVideo(int position){
         try{
-            return getThumbnails().get(position);
+            return displayThumbnail[position];
         }catch (IndexOutOfBoundsException e){
             homePage.warning();
-            return getVideo(homePage.getVideoPosition());
+            return null;
         }
     }
     private int display(Viewer viewer){
         int userInput;
         switch (viewer.getUserType()){
             case UN_SIGNED:
-                userInput = homePage.display("Not signed in",getThumbnails());
+                userInput = homePage.display("Not signed in",displayThumbnail);
                 break;
             default:
-                userInput = homePage.display(((SignedViewer) viewer).getUserName(),getThumbnails());
+                userInput = homePage.display(((SignedViewer) viewer).getUserName(),displayThumbnail);
                 break;
         }
         return userInput;

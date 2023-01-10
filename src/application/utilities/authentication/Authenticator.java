@@ -1,5 +1,6 @@
 package application.utilities.authentication;
 import application.Application;
+import application.users.channel.Channel;
 import application.users.channel.ContentCreator;
 import application.users.user.SignedViewer;
 import application.users.user.Viewer;
@@ -26,8 +27,9 @@ public class Authenticator {
         }
         return user;
     }
-    public static void storeContentCreator(ContentCreator contentCreator){
+    public static void addChannel(ContentCreator contentCreator, Channel channel){
         Application.getApplication().getDatabaseManager().accessViewerDatabase().put(contentCreator.getUserEmailID(),contentCreator);
+        Application.getApplication().getDatabaseManager().getChannel().put(channel.getChannelUrl(),channel);
     }
 }
 
