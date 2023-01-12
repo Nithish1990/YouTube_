@@ -1,10 +1,8 @@
 package application.users.channel;
 
-import application.users.channel.Channel;
+import application.Application;
 import application.users.channel.members.Member;
 import application.users.user.SignedViewer;
-import application.utilities.constant.category.Category;
-import application.utilities.constant.user.types.UserType;
 import application.utilities.generator.Generator;
 
 import java.util.ArrayList;
@@ -12,7 +10,7 @@ import java.util.HashMap;
 
 public class ContentCreator extends SignedViewer {
     private int moneyEarned;
-    private ArrayList<Channel>channels;
+    private ArrayList<String>channels;
     private Channel currentChannel;
     private HashMap<Channel, Member> roles;
 //    private boolean monet
@@ -24,20 +22,24 @@ public class ContentCreator extends SignedViewer {
 
     public int getMoneyEarned() {return moneyEarned;}
     public void setMoneyEarned(int moneyEarned) {this.moneyEarned = moneyEarned;}
-    public ArrayList<Channel> getChannels() {return channels;}
-    public void addChannel(Channel channel){
+    public ArrayList<String> getChannels() {return channels;}
+    public void addChannel(String channel){
         channels.add(channel);
     }
     public void removeChannel(Channel channel){
         channels.remove(channel);
-
     }
 
     public Channel getCurrentChannel() {
-        if(channels.isEmpty()  || currentChannel == null){
-            Channel channel = new Channel(this.getUserName(), Generator.urlGenerate(this.getUserName()),null, Category.DEFAULT);
-            currentChannel = channel;
-            channels.add(channel);
+        if(currentChannel == null){
+            if(channels.isEmpty()) {
+                Channel channel = new Channel(this.getUserName(), Generator.urlGenerate(this.getUserName()),this.getUserEmailID());
+                currentChannel = channel;
+                channels.add(channel.getChannelUrl());
+                Application.getApplication().getDatabaseManager().addChannel(channel);
+            }else{
+                currentChannel = Application.getApplication().getDatabaseManager().getChannel().get(channels.get(0));
+            }
         }
         return currentChannel;
     }

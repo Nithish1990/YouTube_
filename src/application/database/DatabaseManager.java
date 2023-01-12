@@ -1,5 +1,6 @@
 package application.database;
 
+import application.admin.SystemAdmin;
 import application.users.channel.Channel;
 import application.users.channel.ContentCreator;
 import application.users.user.SignedViewer;
@@ -11,7 +12,10 @@ import application.video.Advertisement;
 import application.video.Thumbnail;
 import application.video.Video;
 
+import javax.print.DocFlavor;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 
 public class DatabaseManager {
@@ -19,8 +23,9 @@ public class DatabaseManager {
     public DatabaseManager(){
         database = Database.setUpDatabase();
 //        testing();
+        addAdmin();
+        addAds();
     }
-
 
     public Map<String, SignedViewer> accessViewerDatabase(){
         return database.getUserDB();
@@ -29,38 +34,22 @@ public class DatabaseManager {
         database.getUserDB().put(viewer.getUserEmailID(), viewer);
     }
     public void testing(){
-//        String userName, String userEmailID, String password, String userPhoneNumber, String dataOfBirth
-        SignedViewer viewer1 = new SignedViewer("Prime","p","p","0","0");
-        ContentCreator contentCreator = new ContentCreator(viewer1);
-        Channel channel = new Channel(contentCreator.getUserName(), Generator.urlGenerate(contentCreator.getUserName()),"nothing",Category.DEFAULT);
-        contentCreator.addChannel(channel);
-        contentCreator.setCurrentChannel(channel);
-        Video video = new Video("Test",new Channel(contentCreator.getUserName(),Generator.urlGenerate(contentCreator.getUserName()),
-                "Nothing",Category.DEFAULT),"Nothig",true,AgeCategory.A,1,Category.DEFAULT,null);
-
-        contentCreator.getCurrentChannel().getUploadedVideo().add(video.getThumbnail());
-
-        this.addVideo(video);
-        addUser(contentCreator);
-        SignedViewer viewer2 = new SignedViewer("Tester","t","t","0","0");
-        addUser(viewer2);
-        viewer2.setPrimeUser(true);
-        contentCreator.setPrimeUser(true);
-        addAdvertisement(new Advertisement("GoogleAds",Generator.urlGenerate("GoogleADS"),1));
+//        (String channelName, String channelUrl,String about,String ownBy)
+        Channel channel = new Channel("NAME","URL","ABOUT","OWNBY");
+        Video video = new Video("NAME","URL","NAME","DESC");
+        addVideo(video);
+        addChannel(channel);
     }
 
 
     public void addVideo(Video video){
-        database.getVideoBucket().put(video.getUrl(), video);
+        database.getVideoBucket().put(video.getVideoUrl(), video);
     }
 
     public Map<String,Video> getVideoBucket(){
         return database.getVideoBucket();
     }
 
-    public Thumbnail[] getTrendingVideos(){
-        return  database.getTrendingVideo();
-    }
     public Video getVideo(String url){
         return database.getVideoBucket().get(url);
     }
@@ -76,5 +65,36 @@ public class DatabaseManager {
 
     public Map<String,Channel> getChannel(){
         return database.getChannel();
+    }
+    public void addChannel(Channel channel){
+        database.getChannel().put(channel.getChannelUrl(),channel);
+    }
+
+    public boolean withdraw(Channel channel) {
+        database.getChannel().get(channel.getChannelUrl()).setAmountEarned(0);
+        return true;
+    }
+    public void addMonetizationRequest(String url) {
+        database.getMonetizationRequest().add(url);
+    }
+    public void addAdmin() {
+        SystemAdmin admin1 = new SystemAdmin("Admin", "Admin123@app.com", "Admin123@", "9876543210", "01/01/2001");
+        addUser(admin1);
+        SystemAdmin admin2 = new SystemAdmin("Admin", "a", "a", "1", "1");
+        addUser(admin2);
+    }
+    private void addAds() {
+        addAdvertisement(new Advertisement("GoogleAds",Generator.urlGenerate("ads"),1));
+    }
+
+    public List<Channel> getMonetizationRequestList(){
+        ArrayList<Channel>channels = new ArrayList<>();
+        for(String url:database.getMonetizationRequest()){
+            Channel channel = database.getChannel().getOrDefault(url,null);
+            if(channel != null){
+                channels.add(channel);
+            }
+        }
+        return channels;
     }
 }

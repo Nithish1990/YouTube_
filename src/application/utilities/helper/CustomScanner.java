@@ -1,9 +1,11 @@
 package application.utilities.helper;
 
+import application.pages.Page;
+
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class CustomScanner {
+public class CustomScanner extends Page {
     public static int scanInt(String str){
         System.out.println(str);
         return scanInt();
@@ -47,5 +49,11 @@ public class CustomScanner {
     public static void justScan(String str){
         System.out.println(str);
         new Scanner(System.in).next();
+    }
+
+    public static int scanIntLine(String s) {
+        System.out.println(s);
+        line();
+        return scanInt();
     }
 }

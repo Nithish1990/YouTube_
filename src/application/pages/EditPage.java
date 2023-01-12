@@ -8,7 +8,6 @@ import application.utilities.helper.CustomScanner;
 import application.video.Thumbnail;
 
 import java.util.List;
-import java.util.Map;
 
 public class EditPage extends Page {
     public void display(SignedViewer viewer, List<Channel> channels){
@@ -17,16 +16,14 @@ public class EditPage extends Page {
         System.out.println("Date of birth "+viewer.getDataOfBirth());
         System.out.println("Phone number "+viewer.getUserPhoneNumber());
 
-        System.out.println("Subscribed Channel");
-        try{
-            for (Channel channel : channels) {
-                System.out.println(channel.getChannelName() + " " + channel.getSubscribersCount());
-            }
+        System.out.println("\tSubscribed Channel");
+        for (Channel channel : channels) {
+            System.out.println("Name :"+ channel.getChannelName() + ":" + channel.getSubscribersCount());
+        }
             System.out.println();
-        }catch (NullPointerException e){}
-        System.out.println("Notification");
+        System.out.println("\tNotification");
         for(Thumbnail thumbnail: viewer.getNotification()){
-            System.out.println("    "+thumbnail.getVideoTitle()+" "+thumbnail.getViews());
+            System.out.println("Video Title: "+thumbnail.getVideoTitle()+": "+thumbnail.getViews());
         }
 
     }

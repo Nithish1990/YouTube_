@@ -1,6 +1,7 @@
 package application.controllers;
 
 import application.Application;
+import application.admin.SystemAdmin;
 import application.pages.UploadPage;
 import application.users.channel.Channel;
 import application.users.channel.ContentCreator;
@@ -26,14 +27,17 @@ public class UploadPageController implements Controller{
             case SIGNED:
                 upload((SignedViewer) viewer);
                 break;
+            case ADMIN:
+                uploadPage.displayWarning((SystemAdmin)viewer);
+                break;
             default:
                 upload((ContentCreator) viewer);
         }
     }
     private void upload(SignedViewer viewer){
         ContentCreator contentCreator = new ContentCreator(viewer);
-        Channel channel  =  new Channel(viewer.getUserName(), Generator.urlGenerate(viewer.getUserName()),null,Category.DEFAULT);
-        contentCreator.addChannel(channel);
+        Channel channel  =  new Channel(viewer.getUserName(), Generator.urlGenerate(viewer.getUserName()),contentCreator.getUserEmailID());
+        contentCreator.addChannel(channel.getChannelUrl());
         contentCreator.setCurrentChannel(channel);
         Authenticator.addChannel(contentCreator,channel);
         Application.getApplication().setCurrentUser(contentCreator);
@@ -42,14 +46,14 @@ public class UploadPageController implements Controller{
     }
     private void upload(ContentCreator contentCreator){
             String details[] = uploadPage.getTitle();
-            Video video = new Video(details[0],contentCreator.getCurrentChannel(),details[1],true,AgeCategory.UA,10,Category.DEFAULT,null);
+            Video video = new Video(details[0],contentCreator.getCurrentChannel().getChannelUrl(),contentCreator.getCurrentChannel().getChannelName(),details[1]);
             Channel channel = contentCreator.getCurrentChannel();
             channel.getUploadedVideo().add(video.getThumbnail());
             sendNotification(channel,video.getThumbnail());
             Application.getApplication().getDatabaseManager().addVideo(video);
     }
     private void showWarning(){
-        uploadPage.displayWarning();
+        uploadPage.displayLoginWarning();
         Controller controller = new LoginPageController();
         controller.renderPage();
     }

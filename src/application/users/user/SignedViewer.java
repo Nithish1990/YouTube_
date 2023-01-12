@@ -61,21 +61,21 @@ public class SignedViewer extends Viewer{
         this.notification = viewer.notification;
         this.member = viewer.member;
     }
-    public SignedViewer(SystemAdmin viewer){
-        super(UserType.ADMIN);
-        this.userName = viewer.getUserName();
-        this.userEmailID = viewer.getUserEmailID();
-        this.password = viewer.getPassword();
-        this.userPhoneNumber = viewer.getUserPhoneNumber();
-        this.dataOfBirth = viewer.getDataOfBirth();
+    public SignedViewer(String userName, String userEmailID, String password, String userPhoneNumber, String dataOfBirth,UserType userType) {
+        super(userType);
+        this.userName = userName;
+        this.userEmailID = userEmailID;
+        this.password = password;
+        this.userPhoneNumber = userPhoneNumber;
+        this.dataOfBirth = dataOfBirth;
         this.country = Country.INDIA;
-        this.primeUser = viewer.isPrimeUser();
-        this.isBannedUser = viewer.isBannedUser();
-        this.subscribedChannels = viewer.getSubscribedChannels();
-        this.likedVideo = viewer.getLikedVideo();
-        this.dislikedVideo = viewer.getDislikedVideo();
-        this.notification = viewer.getNotification();
-        this.member = viewer.getMember();
+        this.primeUser = false;
+        this.isBannedUser = false;
+        this.subscribedChannels = new HashMap<>();
+        this.likedVideo = new HashMap<>();
+        this.dislikedVideo = new HashMap<>();
+        this.notification = new Stack<>();
+        this.member = new ArrayList<>();
     }
     public String getUserName() {
         return userName;

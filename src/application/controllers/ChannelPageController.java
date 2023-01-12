@@ -1,8 +1,8 @@
 package application.controllers;
 
 import application.Application;
+import application.admin.SystemAdmin;
 import application.pages.ChannelPage;
-import application.pages.Page;
 import application.users.channel.Channel;
 import application.users.channel.ContentCreator;
 import application.users.channel.members.ChannelManager;
@@ -17,21 +17,28 @@ public class ChannelPageController{
 
 
     private ChannelPage channelPage;
-    private WatchPageController controller;
+    private WatchPageController watchPageController;
 
     public void renderPage(Channel channel) {
         channelPage.display(channel);
-        if(channel.getUploadedVideo().isEmpty())channelPage.uploadedVideo();
+        if(channel.getUploadedVideo().isEmpty())
+            channelPage.uploadedVideo();
         else channelPage.uploadedVideo(channel);
+
+
+        if(Application.getCurrentUser().getUserType() != UserType.ADMIN)
         display(channel);
+        else{
+            display((SystemAdmin)Application.getCurrentUser(),channel);
+        }
     }
     private void display(Channel channel){
         channelPage.options();
         if(Application.getCurrentUser().getUserType() == UserType.CONTENT_CREATOR
-                && ((ContentCreator)Application.getCurrentUser()).getChannels().contains(channel)){
+                && ((ContentCreator)Application.getCurrentUser()).getChannels().contains(channel.getChannelUrl())){
+
             channelPage.options((ContentCreator) Application.getCurrentUser());
-            int userInput = channelPage.getInput(null);
-            switch (userInput){
+            switch (channelPage.getInput()){
                 case 3:
                     //edit name about
                     switch (channelPage.displayEditOption()){
@@ -55,7 +62,7 @@ public class ChannelPageController{
                         Application.getApplication().getDatabaseManager().getChannel().get(channel.getChannelUrl()).getChannelMembers().add(member);
                     }
                     else{
-                        channelPage.displayWarning();
+                        channelPage.displayIndexOfOutBound();
                     }
                     break;
                 default:
@@ -67,7 +74,7 @@ public class ChannelPageController{
     }
     public ChannelPageController(){
         channelPage = new ChannelPage();
-        controller = new WatchPageController();
+        watchPageController  = new WatchPageController();
     }
     private void meth(Channel channel){
         int userInput = channelPage.getInput("Select any option");
@@ -76,13 +83,14 @@ public class ChannelPageController{
                 try {
                     Thumbnail thumbnail = channel.getUploadedVideo().get(channelPage.getInput("Select video Position") - 1);
                     Application.getCurrentUser().getHistory().push(thumbnail);
-                    controller.renderPage();
+                    watchPageController = new WatchPageController();
+                    watchPageController.renderPage();
                 }catch (IndexOutOfBoundsException e){
-                    channelPage.displayWarning();
+                    channelPage.displayIndexOfOutBound();
                 }
             }
         }else if(userInput == 2){
-            controller.subscribe(channel);
+            watchPageController.subscribe(channel);
         }
     }
 
@@ -100,4 +108,23 @@ public class ChannelPageController{
         return null;
     }
 
+    private void display(SystemAdmin admin,Channel channel){
+        channelPage.displayAdminOption();
+       switch (channelPage.getInput()){
+           case 1:
+               int userInput = channelPage.getInput("Select video Position") - 1;
+               if(channel.getUploadedVideo().size()>userInput) {
+                   Thumbnail thumbnail = channel.getUploadedVideo().get(userInput);
+                   admin.getHistory().push(thumbnail);
+                   watchPageController.renderPage();
+               }else{
+                   channelPage.displayIndexOfOutBound();
+                   renderPage(channel);
+               }
+           break;
+           case 2:
+               channel.setIsBannedChannel(true);
+               break;
+        }
+    }
 }

@@ -75,6 +75,15 @@ public class Colors {
 
 
 
+
+
+
+
+    //
+
+
+    public static final String eligibleColor = GREEN;
+    public static final String nonEligibleColor = RED;
     public static String addColor(String color,String text){
         return color+text+RESET;
     }

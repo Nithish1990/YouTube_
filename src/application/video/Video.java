@@ -15,8 +15,8 @@ import java.util.Stack;
 public class Video {
     private static int videoId;
     private String videoTitle;
-    public final Channel channel;
-    private final String url;
+    public final String channelURL;
+    private final String videoUrl;
     private String description;
     private boolean visibility;
     private AgeCategory ageCategory;
@@ -33,26 +33,25 @@ public class Video {
     private Thumbnail thumbnail;
     private HashMap<SignedViewer,Boolean> viewedUser;
 
-    public Video(String videoTitle, Channel channel,String description, boolean visibility, AgeCategory ageCategory, int duration,
-                 Category category, List<String> tags) {
+    public Video(String videoTitle,String channelURL,String channelName,String description) {
 
         this.videoTitle = videoTitle;
-        this.channel = channel;
-        this.url = Generator.urlGenerate(channel.getChannelName());
+        this.channelURL = channelURL;
+        this.videoUrl = Generator.urlGenerate(channelName);
         this.description = description;
-        this.visibility = visibility;
-        this.ageCategory = ageCategory;
-        this.category = category;
-        this.duration = duration;
+        this.visibility = true;
+        this.ageCategory = AgeCategory.UA;
+        this.category = Category.DEFAULT;
+        this.duration = 10;
         this.uploadedDateAndTime= LocalDateTime.now();
         this.likesCount = 0;
         this.dislikesCount = 0;
         this.comments = new Stack<>();
         this.viewsCount = 0;
         this.violationCount = 0;
-        this.tags = tags;
+        this.tags = new ArrayList<>();
         this.reportList = new ArrayList<>();
-        this.thumbnail = new Thumbnail(videoTitle,channel,duration,uploadedDateAndTime,url,viewsCount);
+        this.thumbnail = new Thumbnail(videoTitle,channelName,duration,uploadedDateAndTime,videoUrl,viewsCount);
         this.viewedUser = new HashMap<>();
         videoId++;
     }
@@ -72,12 +71,12 @@ public class Video {
         this.videoTitle = videoTitle;
     }
 
-    public Channel getChannel() {
-        return channel;
+    public String getChannelURL() {
+        return channelURL;
     }
 
-    public String getUrl() {
-        return url;
+    public String getVideoUrl() {
+        return videoUrl;
     }
 
     public String getDescription() {
@@ -181,4 +180,5 @@ public class Video {
     public HashMap<SignedViewer, Boolean> getViewedUser() {
         return viewedUser;
     }
+
 }

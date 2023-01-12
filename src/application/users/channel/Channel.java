@@ -17,25 +17,45 @@ public class Channel {
     private Category category;
     private boolean monetized;
     private long amountEarned;
+    private int totalViews;
     private int subscribersCount;
+    private boolean isAppliedForMonetization;
+
+    private final String ownBy;
     private List<Thumbnail> uploadedVideo;
     private List<Member> channelMembers;
     private List<SignedViewer>subscribers;
 
-    public Channel(String channelName, String channelUrl, String about,Category category) {
+    public Channel(String channelName, String channelUrl,String ownBy) {
         this.channelName = channelName;
         this.channelUrl = channelUrl;
-        this.about = about;
-        this.category = category;
+        this.about = "Nothing here";
+        this.category = Category.DEFAULT;
         this.monetized = false;
         this.amountEarned = 0;
         this.subscribersCount = 0;
         this.channelMembers = new ArrayList<>();
         this.uploadedVideo = new ArrayList<>();
         this.subscribers = new ArrayList<>();
+        this.totalViews = 0;
+        this.isAppliedForMonetization = false;
+        this.ownBy = ownBy;
     }
-
-
+    public Channel(String channelName, String channelUrl,String about,String ownBy) {
+        this.channelName = channelName;
+        this.channelUrl = channelUrl;
+        this.about = about;
+        this.category = Category.DEFAULT;
+        this.monetized = false;
+        this.amountEarned = 0;
+        this.subscribersCount = 0;
+        this.channelMembers = new ArrayList<>();
+        this.uploadedVideo = new ArrayList<>();
+        this.subscribers = new ArrayList<>();
+        this.totalViews = 0;
+        this.isAppliedForMonetization = false;
+        this.ownBy = ownBy;
+    }
     public String getChannelName() {
         return channelName;
     }
@@ -49,7 +69,7 @@ public class Channel {
         return isBannedChannel;
     }
 
-    public void setBannedChannel(boolean bannedChannel) {
+    public void setIsBannedChannel(boolean bannedChannel) {
         isBannedChannel = bannedChannel;
     }
 
@@ -116,5 +136,24 @@ public class Channel {
     }
     public void deleteSubscriber(SignedViewer signedViewer){
         subscribers.remove(signedViewer);
+    }
+
+    public void addViews(){
+        totalViews++;
+    }
+    public int getTotalViews(){
+        return totalViews;
+    }
+
+    public boolean isAppliedForMonetization() {
+        return isAppliedForMonetization;
+    }
+
+    public void setAppliedForMonetization(boolean appliedForMonetization) {
+        isAppliedForMonetization = appliedForMonetization;
+    }
+
+    public String getOwnBy() {
+        return ownBy;
     }
 }

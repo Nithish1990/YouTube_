@@ -5,10 +5,8 @@ import application.users.user.SignedViewer;
 import application.video.Advertisement;
 import application.video.Thumbnail;
 import application.video.Video;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
 
 class Database {
 
@@ -20,9 +18,7 @@ class Database {
 
     private Map<String, Channel>channel;
 
-
-
-
+    private List<String>monetizationRequest;
 
 
 
@@ -35,6 +31,7 @@ class Database {
         videoBucket = new HashMap<>();
         ads = new ArrayList<>();
         channel = new HashMap<>();
+        this.monetizationRequest = new ArrayList<>();
     }
 
     static Database setUpDatabase(){
@@ -82,5 +79,9 @@ class Database {
     }
      Map<String, Channel> getChannel() {
         return channel;
+    }
+
+    public List<String> getMonetizationRequest() {
+        return monetizationRequest;
     }
 }

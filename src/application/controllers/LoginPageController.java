@@ -49,5 +49,4 @@ public class LoginPageController implements Controller{
         loginPage = new LoginPage();
         authenticator = new Authenticator();
     }
-
 }

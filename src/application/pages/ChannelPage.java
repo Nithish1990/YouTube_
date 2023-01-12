@@ -9,7 +9,6 @@ public class ChannelPage extends Page{
         line();
         System.out.println("\t"+channel.getChannelName()+" "+channel.getSubscribersCount() +" Subscribe");
         System.out.println(channel.getAbout()+" Category "+channel.getCategory());
-        int i = 1;
         System.out.println("Uploaded videos");
     }
 
@@ -31,13 +30,13 @@ public class ChannelPage extends Page{
         System.out.println(str);
         return CustomScanner.scanInt();
     }
+    public int getInput(){
+        return CustomScanner.scanInt();
+    }
 
     public int showWarning() {
         System.out.println("Oops you didn't login ");
         return CustomScanner.scanInt("Enter 1 to Login");
-    }
-    public void displayWarning(){
-        System.out.println("Invalid Input");
     }
     public void uploadedVideo(Channel channel){
         int i = 1;
@@ -67,5 +66,14 @@ public class ChannelPage extends Page{
 
     public int selectRoleOfTheMember(){
         return CustomScanner.scanInt("1 Moderator\n2 Editor \n3 Manager");
+    }
+
+    public void displayAdminOption() {
+        System.out.println("1 View Video");
+        System.out.println("2 Delete Channel");
+    }
+
+    public int getDeleteConfirmation() {
+        return CustomScanner.scanInt("To Delete The Channel enter 1 else any int");
     }
 }

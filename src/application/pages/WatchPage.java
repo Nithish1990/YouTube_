@@ -37,7 +37,7 @@ public class WatchPage extends  Page{
 
     }
     public void displayUrl(Video video) {
-        System.out.println(Colors.addColor(Colors.GREEN,"Video url "+video.getUrl()));
+        System.out.println(Colors.addColor(Colors.GREEN,"Video url "+video.getVideoUrl()));
         try{
             Thread.sleep(500);
         }
@@ -54,5 +54,9 @@ public class WatchPage extends  Page{
             Thread.sleep(advertisement.getSeconds()* 1000);
         }catch (Exception e){}
         CustomScanner.justScan("press any to skip ad");
+    }
+
+    public void displayChannelNotAvailable() {
+        System.out.println("Wrong url");
     }
 }

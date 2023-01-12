@@ -6,15 +6,15 @@ import java.time.LocalDateTime;
 
 public class Thumbnail {
     private String videoTitle;
-    private final Channel channel;
+    private final String channelURL;
     private final int duration;//to be change to time;
     private final LocalDateTime uploadedDateAndTime;
     private final String url;
     private int views;
 
-    public Thumbnail(String videoTitle, Channel channel, int duration, LocalDateTime uploadedDateAndTime, String url,int views) {
+    public Thumbnail(String videoTitle, String channelURL, int duration, LocalDateTime uploadedDateAndTime, String url,int views) {
         this.videoTitle = videoTitle;
-        this.channel = channel;
+        this.channelURL = channelURL;
         this.duration = duration;
         this.uploadedDateAndTime = uploadedDateAndTime;
         this.url = url;
@@ -32,8 +32,8 @@ public class Thumbnail {
         this.videoTitle = videoTitle;
     }
 
-    public Channel getChannel() {
-        return channel;
+    public String getChannelURL() {
+        return channelURL;
     }
 
     public int getDuration() {

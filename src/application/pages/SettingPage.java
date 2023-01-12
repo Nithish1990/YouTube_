@@ -1,9 +1,9 @@
 package application.pages;
 
+
 import application.users.channel.Channel;
 import application.users.channel.ContentCreator;
 import application.users.user.SignedViewer;
-import application.utilities.constant.category.Category;
 import application.utilities.helper.CustomScanner;
 
 import java.util.ArrayList;
@@ -11,6 +11,7 @@ import java.util.ArrayList;
 public class SettingPage extends Page {
 
     public int display(SignedViewer viewer){
+        System.out.println("\t"+"Setting Page");
         displayName(viewer.getUserName());
         option();
         int userInput = CustomScanner.scanInt();
@@ -19,13 +20,14 @@ public class SettingPage extends Page {
     }
     public int display(ContentCreator contentCreator){
 
-
+        System.out.println("\t"+"Setting Page");
         displayName(contentCreator.getUserName());
         System.out.println("Current channel "+contentCreator.getCurrentChannel().getChannelName() +" " +contentCreator.getCurrentChannel().getSubscribersCount());
 
         option();
-        System.out.println("3 switch channel");
-        System.out.println("4 to Create new Channel");
+        System.out.println("3 Switch channel");
+        System.out.println("4 Create new Channel");
+        System.out.println("5 Revenue menu");
         //channel set
         int userInput = CustomScanner.scanInt();
         line();
@@ -61,7 +63,4 @@ public class SettingPage extends Page {
         return new String[]{name,about};
     }
 
-    public void showWarning() {
-        System.out.println("Invalid input");
-    }
 }

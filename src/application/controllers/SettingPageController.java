@@ -6,14 +6,17 @@ import application.users.channel.Channel;
 import application.users.channel.ContentCreator;
 import application.users.user.SignedViewer;
 import application.users.user.Viewer;
-import application.utilities.constant.category.Category;
+import application.utilities.calucation.RevenueCalculator;
 import application.utilities.generator.Generator;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class SettingPageController implements Controller {
     private SettingPage settingPage;
     private Controller editPageController;
-    private ChannelPageController channelPageController;
+    private ArrayList<Channel> contentCreatorChannels;
     public void renderPage() {
         Viewer viewer= Application.getCurrentUser();
         switch (viewer.getUserType()){
@@ -24,17 +27,18 @@ public class SettingPageController implements Controller {
             case SIGNED:
                     settings(settingPage.display(((SignedViewer) viewer)));
                 break;
+            case ADMIN:
+                Controller adminPageController = new AdminPageController();
+                adminPageController.renderPage();
+                break;
             default:
-                    settingsContentViewer(settingPage.display(((ContentCreator) viewer)));
+                settingsContentViewer(settingPage.display(((ContentCreator) viewer)));
                 break;
         }
     }
-
-
     public SettingPageController(){
         this.settingPage = new SettingPage();
         this.editPageController = new EditPageController();
-        this.channelPageController= new ChannelPageController();
     }
     private void settings(int userInput){
         switch (userInput){
@@ -45,35 +49,54 @@ public class SettingPageController implements Controller {
             case 2://edit page
                 editPageController.renderPage();
                 break;
+            default:
+                return;
         }
     }
     private void settingsContentViewer(int userInput) {
-        switch (userInput) {
-            case 3:
-                userInput = settingPage.switchChannel(((ContentCreator) Application.getCurrentUser()).getChannels());
-                Channel selectedChannel = null;
-                try {
-                    selectedChannel = ((ContentCreator) Application.getCurrentUser()).getChannels().get(userInput - 1);
-                }catch (IndexOutOfBoundsException e){
-                    settingPage.showWarning();
-                    settingsContentViewer(3);
-                }
-                ((ContentCreator) Application.getCurrentUser()).setCurrentChannel(selectedChannel);
-                break;
-            case 4:
-                String details[] = settingPage.getChannel();
-                Channel channel = new Channel(details[0], Generator.urlGenerate(details[0]),details[1], Category.DEFAULT);
-                ((ContentCreator) Application.getCurrentUser()).getChannels().add(channel);
-                ((ContentCreator) Application.getCurrentUser()).setCurrentChannel(channel);
-                break;
-            case 5:
-                //channel settings;
+        ContentCreator contentCreator = (ContentCreator)Application.getCurrentUser();
+            switch (userInput) {
+                case 3:
+                    switchChannel(contentCreator);
+                    break;
+                case 4:
+                    String details[] = settingPage.getChannel();
+                    createChannel(details[0],details[1],contentCreator);
+                    break;
+                case 5:
+                    Controller controller = new MonetizationPageController();
+                    controller.renderPage();
+                    break;
+                default:
+                    settings(userInput);
+                    break;
+            }
+    }
 
-                break;
-            default:
-                settings(userInput);
-                break;
+    private void getChannels(ContentCreator contentCreator){
+        contentCreatorChannels = new ArrayList<>();
+        for(String url:contentCreator.getChannels()){
+            contentCreatorChannels.add(Application.getApplication().getChannel(url));
         }
+    }
 
+
+    private void switchChannel(ContentCreator contentCreator){
+        getChannels(contentCreator);
+        int userInput = settingPage.switchChannel(contentCreatorChannels);
+        try {
+            Channel  selectedChannel = Application.getApplication().getChannel(contentCreator.getChannels().get(userInput - 1));
+            contentCreator.setCurrentChannel(selectedChannel);
+        }
+        catch (IndexOutOfBoundsException e) {
+            settingPage.displayIndexOfOutBound();
+            settingsContentViewer(3);
+        }
+    }
+    private void createChannel(String name,String about,ContentCreator contentCreator){
+        Channel channel = new Channel(name, Generator.urlGenerate(name), about);
+        contentCreator.setCurrentChannel(channel);
+        contentCreator.addChannel(channel.getChannelUrl());
+        Application.getApplication().getDatabaseManager().addChannel(channel);
     }
 }

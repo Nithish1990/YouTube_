@@ -4,6 +4,7 @@ import application.Application;
 import application.pages.HomePage;
 import application.users.user.SignedViewer;
 import application.users.user.Viewer;
+import application.utilities.helper.CustomScanner;
 import application.video.Thumbnail;
 import application.video.Video;
 import java.util.ArrayList;
@@ -15,7 +16,6 @@ public class HomePageController implements Controller{
     private HomePage homePage;
     private Controller watchPageController,searchBarController, settingPageController,uploadPageController;
     private int displayVideoSize;
-    private Thumbnail[] displayThumbnail;
     public void renderPage(){
 
         while (true) {
@@ -24,11 +24,11 @@ public class HomePageController implements Controller{
             switch (userInput) {
                 case 1://select video
                     userInput = (homePage.getVideoPosition());
-                    Thumbnail selectedThumbnail = getVideo(userInput);
+                    Thumbnail selectedThumbnail = getVideo(getThumbnails(),userInput);
                     if(selectedThumbnail == null )continue;
-                    Application.getCurrentUser().getHistory().push(selectedThumbnail);
                     if(watchPageController == null)
                         watchPageController = new WatchPageController();
+                    Application.getCurrentUser().getHistory().push(selectedThumbnail);
                     watchPageController.renderPage();
                     break;
                 case 2://search
@@ -46,32 +46,33 @@ public class HomePageController implements Controller{
                         settingPageController = new SettingPageController();
                     settingPageController.renderPage();
                      break;
-                default://exiting
+                default:
 
+                    userInput = CustomScanner.scanInt("Really want to exit press 1");
+                    if(userInput == 1)
+                        return;
 
-
-                    return;
             }
         }
     }
     public HomePageController(){
         this.homePage = new HomePage();
         this.displayVideoSize = 10;
-        this.displayThumbnail = new Thumbnail[displayVideoSize];
     }
 
 
-    private void getThumbnails(){
-        int i = 0;
+    private List<Thumbnail> getThumbnails(){
+       ArrayList<Thumbnail> thumbnails = new ArrayList<>();
         Map<String, Video>videoMap = Application.getApplication().getDatabaseManager().getVideoBucket();
         for(Map.Entry<String,Video>videoEntry: videoMap.entrySet()){
-            displayThumbnail[i] = (videoEntry.getValue().getThumbnail());
-            i++;
+            thumbnails.add(videoEntry.getValue().getThumbnail());
+
         }
+        return thumbnails;
     }
-    private Thumbnail getVideo(int position){
+    private Thumbnail getVideo(List<Thumbnail>thumbnails,int position){
         try{
-            return displayThumbnail[position];
+            return thumbnails.get(position);
         }catch (IndexOutOfBoundsException e){
             homePage.warning();
             return null;
@@ -81,10 +82,10 @@ public class HomePageController implements Controller{
         int userInput;
         switch (viewer.getUserType()){
             case UN_SIGNED:
-                userInput = homePage.display("Not signed in",displayThumbnail);
+                userInput = homePage.display("Not signed in",getThumbnails());
                 break;
             default:
-                userInput = homePage.display(((SignedViewer) viewer).getUserName(),displayThumbnail);
+                userInput = homePage.display(((SignedViewer) viewer).getUserName(),getThumbnails());
                 break;
         }
         return userInput;

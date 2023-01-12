@@ -15,7 +15,7 @@ public class HomePage extends Page{
         System.out.println("9 Settings");
         System.out.println("Any other to exit(int)");
     }
-    private void display( Thumbnail []thumbnails){
+    private void display(List<Thumbnail> thumbnails){
         int i = 1;
         System.out.println("Home page");
         for(Thumbnail thumbnail1:thumbnails){
@@ -27,7 +27,7 @@ public class HomePage extends Page{
     public int getVideoPosition(){
         return CustomScanner.scanInt("Enter video position")-1;
     }
-    public int display(String name,Thumbnail[] thumbnails){
+    public int display(String name,List<Thumbnail> thumbnails){
         line();
         displayName(name);
         line();
