@@ -22,16 +22,16 @@ public class UploadPage extends  Page{
         for(Channel channel:channels){
             System.out.println(i+" "+channel.getChannelName());
         }
-        return (CustomScanner.scanInt("Enter Channel position"));
+        return (CustomScanner.scanInt("Enter Channel Position"));
     }
     public void displayWelcomeMessage() {
         line();
         System.out.println("\tUpload Page");
-        System.out.println("  Welcome to Studio");
+        System.out.println("  Welcome To Studio");
     }
 
     public void displayWarning(SystemAdmin admin){
         System.out.println("\tName: "+admin.getUserName());
-        System.out.println("You Signed as Admin please use Un Official Account");
+        System.out.println("You Signed as Admin please Use Un-Official Account");
     }
 }

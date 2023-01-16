@@ -2,12 +2,15 @@ package application.database;
 
 import application.Application;
 import application.admin.SystemAdmin;
+import application.pages.Page;
 import application.users.channel.Channel;
+import application.users.channel.ContentCreator;
 import application.users.channel.Member;
 import application.users.user.SignedViewer;
 import application.utilities.calucation.RandomNumber;
 import application.utilities.generator.Generator;
 import application.video.Advertisement;
+import application.video.Thumbnail;
 import application.video.Video;
 
 import java.util.ArrayList;
@@ -113,5 +116,18 @@ public class DatabaseManager {
 
     public void deleteMember(String channelUrl,String emailID) {
         database.getChannel().get(channelUrl).getChannelMembers().remove(emailID);
+    }
+    public Member getMember(String channelUrl,String emailID){
+        return  database.getChannel().get(channelUrl).getChannelMembers().getOrDefault(emailID,null);
+    }
+
+    public void deleteChannel(Channel channel) {
+//        ContentCreator contentCreator = (ContentCreator) database.getUserDB().get(channel.getOwnBy());
+//        contentCreator.removeChannel(channel);
+//        for(Thumbnail thumbnail: channel.getUploadedVideo()){
+//            database.getVideoBucket().remove(thumbnail.getUrl());
+//        }
+//        database.getChannel().remove(channel.getChannelUrl());
+        System.out.println("UnderDevelopment");
     }
 }

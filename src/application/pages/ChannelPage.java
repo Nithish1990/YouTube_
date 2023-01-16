@@ -9,7 +9,7 @@ import application.video.Thumbnail;
 import java.util.List;
 
 public class ChannelPage extends Page{
-    public void display(Channel channel) {
+    public void displayChannelInfo(Channel channel) {
         line();
         System.out.println("\t"+channel.getChannelName()+" "+channel.getSubscribersCount() +" Subscribe");
         System.out.println("\t"+channel.getChannelUrl());
@@ -18,28 +18,31 @@ public class ChannelPage extends Page{
     }
 
     public int getVideoPosition() {
-        return CustomScanner.scanInt("Enter position");
+        return CustomScanner.scanInt("Enter Position");
     }
 
 
-    public void options(){
+    public void commonOption(){
         System.out.println("1 View Video");
         System.out.println("2 Subscribe");
     }
-    public void options(ContentCreator contentCreator){
+    public int pageOwnerOption(ContentCreator contentCreator){
+        System.out.println("1 View Video");
+        showEditorOption();
+        showMemberManagementOption();
+        System.out.println("8 Delete The Channel");
+        return  CustomScanner.scanInt();
+    }
+    public void showEditorOption() {
         System.out.println("3 Edit Channel (name, about)");
+    }
+    public void showMemberManagementOption(){
         System.out.println("4 Add Members (Manager,Moderator,Editor)");
-    }
-    public int  getInput(String str){
-        if(str !=  null)
-        System.out.println(str);
-        return CustomScanner.scanInt();
-    }
-    public int getInput(){
-        return CustomScanner.scanInt();
+        System.out.println("5 To Member Menu");
     }
 
-    public int showWarning() {
+
+    public int showLoginWarning() {
         System.out.println("Oops you didn't login ");
         return CustomScanner.scanInt("Enter 1 to Login");
     }
@@ -92,7 +95,7 @@ public class ChannelPage extends Page{
     public String   memberMenu(List<Member>moderators, List<Member> editors, List<Member>managers) {
         line();
         System.out.println("\tMembers");
-        System.out.println("\tTotal Count: "+managers.size()+ moderators.size()+editors.size());
+        System.out.println("\tTotal Count: "+(managers.size()+ moderators.size()+editors.size()));
         System.out.println("\t"+"Moderators");
         printMemberInformation(moderators);
         System.out.println("\t"+"Editors");
@@ -108,5 +111,15 @@ public class ChannelPage extends Page{
         }
         System.out.println();
     }
+    public int  getInput(String str){
+        System.out.println(str);
+        return CustomScanner.scanInt();
+    }
+    public int getInput(){
+        return CustomScanner.scanInt();
+    }
 
+    public void showWarning(String str) {
+        System.out.println(str);
+    }
 }

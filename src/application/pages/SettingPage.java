@@ -7,6 +7,7 @@ import application.users.user.SignedViewer;
 import application.utilities.helper.CustomScanner;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class SettingPage extends Page {
 
@@ -35,22 +36,21 @@ public class SettingPage extends Page {
     }
     public void displayName(String name){
         line();
-        System.out.println("Setting page");
         System.out.println("Current user is "+ name);
     }
     public void option(){
         System.out.println("1 Account Settings");
-        System.out.println("2 Edit profile");
+        System.out.println("2 Edit Profile");
     }
 
-    public int switchChannel(ArrayList<Channel>channels) {
+    public int switchChannel(List<Channel> channels) {
         line();
         int i = 1;
-        System.out.println("List of channels"+channels);
+        System.out.println("List Of Channels"+channels);
         for(Channel channel:channels){
-            System.out.println("Channel name "+channel.getChannelName() + " "+channel.getSubscribersCount());
+            System.out.println("Channel Name "+channel.getChannelName() + " "+channel.getSubscribersCount());
         }
-       int userInput =  CustomScanner.scanInt("Enter position of the channel to set Current channel");
+       int userInput =  CustomScanner.scanInt("Enter Position Of The Channel To Set Current Channel");
         line();
         return userInput;
     }
@@ -63,4 +63,7 @@ public class SettingPage extends Page {
         return new String[]{name,about};
     }
 
+    public void showWarning() {
+        System.out.println("No Channel Found");
+    }
 }

@@ -3,6 +3,7 @@ package application.controllers;
 import application.Application;
 import application.admin.SystemAdmin;
 import application.pages.ChannelPage;
+import application.pages.HomePage;
 import application.users.channel.Channel;
 import application.users.channel.ContentCreator;
 import application.users.channel.Member;
@@ -10,11 +11,10 @@ import application.users.channel.members.ChannelManager;
 import application.users.channel.members.Editor;
 import application.users.channel.members.Moderator;
 import application.users.user.SignedViewer;
+import application.utilities.Colors;
 import application.utilities.constant.user.types.MemberType;
 import application.utilities.constant.user.types.UserType;
 import application.video.Thumbnail;
-import com.sun.org.apache.bcel.internal.generic.LUSHR;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -27,39 +27,67 @@ public class ChannelPageController{
     private WatchPageController watchPageController;
 
     public void renderPage(Channel channel) {
-        channelPage.display(channel);
-        if(channel.getUploadedVideo().isEmpty())
-            channelPage.uploadedVideo();
-        else
-            channelPage.uploadedVideo(channel);
+        channelPage.displayChannelInfo(channel);
+        channelPage.uploadedVideo(channel);
         if(Application.getCurrentUser().getUserType() != UserType.ADMIN)
             display(channel);
         else
             display((SystemAdmin)Application.getCurrentUser(),channel);
     }
-    private void display(Channel channel){
-        channelPage.options();
-        if(Application.getCurrentUser().getUserType() == UserType.CONTENT_CREATOR
-                && ((ContentCreator)Application.getCurrentUser()).getChannels().contains(channel.getChannelUrl())){
-            channelPage.options((ContentCreator) Application.getCurrentUser());
-            switch (channelPage.getInput()) {
-                case 1:
+    public void display(Channel channel){
+        if(Application.getCurrentUser().getUserType() == UserType.CONTENT_CREATOR){
+            if(((ContentCreator)Application.getCurrentUser()).getChannels().contains(channel.getChannelUrl())){
+                int userInput = channelPage.pageOwnerOption((ContentCreator) Application.getCurrentUser());
+                if(userInput == 1)
                     seeVideo(channel);
-                    break;
-                case 2:
-                    watchPageController.subscribe(channel);
-                    break;
-                case 3:
-                    editPage(channel);
-                    break;
-                case 4:
-                    setMember(channel);
-                    break;
-                case 5:
-                    memberMenu(channel);
+                else {
+                    editorOption(channel, userInput);
+                    managerOption(channel, userInput);
+                    if(userInput == 8){
+                        if(channelPage.getDeleteConfirmation()==1){
+                            Application.getApplication().getDatabaseManager().deleteChannel(channel);
+                        }
+                    }
+                }
             }
-        }else{
-            meth(channel);
+        }
+        else if(Application.getCurrentUser().getUserType() != UserType.UN_SIGNED) {
+            Member member = ((SignedViewer) Application.getCurrentUser()).getMemberInChannels().getOrDefault(channel.getChannelUrl(), null);
+            if (member != null) {
+                switch (member.getMemberType()) {
+                    case MODERATOR:
+                        commonOption(channel);
+                    case EDITOR:
+                        editorOption(channel);
+                        break;
+                    case CHANNEL_MANAGER:
+                        channelPage.commonOption();
+                        channelPage.showEditorOption();
+                        channelPage.showMemberManagementOption();
+                        int userInput = channelPage.getInput();
+                        switch (userInput) {
+                            case 1:
+                                seeVideo(channel);
+                                break;
+                            case 2:
+                                watchPageController.subscribe(channel);
+                                break;
+                            case 3:
+                                editPage(channel);
+                                break;
+                            case 4:
+                            case 5:
+                                managerOption(channel, userInput);
+                                break;
+                        }
+                        break;
+                }
+            }else {
+                commonOption(channel);
+            }
+        }
+        else{
+            commonOption(channel);
         }
     }
 
@@ -76,18 +104,23 @@ public class ChannelPageController{
                     editor.add(map.getValue());
                     break;
                 case CHANNEL_MANAGER:
-                    channelManager.add(map.getValue());
+                    if(map.getValue().getUserEmailID().equals(channel.getOwnBy())==false)
+                        channelManager.add(map.getValue());
                     break;
             }
         }
         String userInput = channelPage.memberMenu(moderator, editor, channelManager);
-        if(userInput.equals("-1") == false){
-            Member member = channel.getChannelMembers().getOrDefault(userInput,null);
-            if(member != null){
-                Application.getApplication().getDatabaseManager().deleteMember(channel.getChannelUrl(),userInput);
+        if(userInput.equals("-1") == false ){
+            if(channel.getOwnBy().equals(userInput) == false){
+                Member member = channel.getChannelMembers().getOrDefault(userInput,null);
+                if(member != null){
+                    Application.getApplication().getDatabaseManager().deleteMember(channel.getChannelUrl(),userInput);
+                }
             }else{
-                channelPage.displayUserNotFound();
+                channelPage.showWarning("You Dont Have Permission To Remove");
             }
+        }else{
+            channelPage.displayUserNotFound();
         }
     }
 
@@ -95,7 +128,8 @@ public class ChannelPageController{
         channelPage = new ChannelPage();
         watchPageController  = new WatchPageController();
     }
-    private void meth(Channel channel){
+    private void commonOption(Channel channel){
+        channelPage.commonOption();
         switch (channelPage.getInput()){
             case 1:
                 seeVideo(channel);
@@ -137,7 +171,7 @@ public class ChannelPageController{
                }
            break;
            case 2:
-               channel.setIsBannedChannel(true);
+               Application.getApplication().getDatabaseManager().deleteChannel(channel);
                break;
         }
 
@@ -167,19 +201,27 @@ public class ChannelPageController{
     }
     private void setMember(Channel channel){
         String emailID = channelPage.getEmailId();
-        if(emailID.equals(((ContentCreator)Application.getCurrentUser()).getUserEmailID()) == false){
-        int role = channelPage.selectRoleOfTheMember();
-        SignedViewer signedViewer = Application.getApplication().getDatabaseManager().accessViewerDatabase().getOrDefault(emailID,null);
-        if(signedViewer == null){
-            channelPage.displayUserNotFound();
-        }
-        Member member = getMember(role, emailID,channel.getChannelUrl());
-        if (member != null) {
-            Application.getApplication().getDatabaseManager().addMember(channel.getChannelUrl(), emailID,member);
-            signedViewer.addMember(member);
-        } else {
-            channelPage.displayIndexOfOutBound();
-        }
+        if(emailID.equals(((SignedViewer)Application.getCurrentUser()).getUserEmailID()) == false) {
+            if (emailID.equals(channel.getOwnBy()) == false) {
+                int role = channelPage.selectRoleOfTheMember();
+                SignedViewer signedViewer = Application.getApplication().getDatabaseManager().getUser(emailID);
+                if (signedViewer == null) {
+                    channelPage.displayUserNotFound();
+                    renderPage(channel);
+                    return;
+                }
+                Member member = getMember(role, emailID, channel.getChannelUrl());
+                if (member != null) {
+                    Application.getApplication().getDatabaseManager().addMember(channel.getChannelUrl(), emailID, member);
+                    signedViewer.addMember(member);
+                } else {
+                    channelPage.displayIndexOfOutBound();
+                }
+            } else {
+                System.out.println(Colors.addColor(Colors.RED, "You cant add Owner as a member cpc  setMember()"));
+            }
+        }else{
+            System.out.println(Colors.addColor(Colors.RED,"cant remove own"));
         }
     }
     public void seeVideo(Channel channel){
@@ -194,7 +236,36 @@ public class ChannelPageController{
         }
     }
 
-    private String getUser(String emailId){
-       return Application.getApplication().getDatabaseManager().getUser(emailId).getUserName();
+    public void managerOption(Channel channel,int userInput){
+        switch (userInput) {
+            case 4:
+                setMember(channel);
+                break;
+            case 5:
+                memberMenu(channel);
+        }
+    }
+    public void editorOption(Channel channel,int userInput){
+        switch (userInput) {
+            case 3:
+                editPage(channel);
+                break;
+        }
+    }
+
+    private void editorOption(Channel channel){
+        channelPage.commonOption();
+        channelPage.showEditorOption();
+        switch (channelPage.getInput()){
+            case 1:
+                seeVideo(channel);
+                break;
+            case 2:
+                watchPageController.subscribe(channel);
+                break;
+            case 3:
+                editPage(channel);
+                break;
+        }
     }
 }

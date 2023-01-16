@@ -25,12 +25,13 @@ public class HomePage extends Page{
         }
     }
     public int getVideoPosition(){
-        return CustomScanner.scanInt("Enter video position")-1;
+        return CustomScanner.scanInt("Enter Video Position")-1;
     }
     public int display(String name,List<Thumbnail> thumbnails){
         line();
         displayName(name);
-        line();
+
+        System.out.println("Videos:");
         display(thumbnails);
         line();
         option();

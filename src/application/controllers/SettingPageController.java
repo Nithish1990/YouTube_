@@ -6,6 +6,7 @@ import application.users.channel.Channel;
 import application.users.channel.ContentCreator;
 import application.users.user.SignedViewer;
 import application.users.user.Viewer;
+import application.utilities.Colors;
 import application.utilities.calucation.RevenueCalculator;
 import application.utilities.generator.Generator;
 
@@ -16,7 +17,6 @@ import java.util.List;
 public class SettingPageController implements Controller {
     private SettingPage settingPage;
     private Controller editPageController;
-    private ArrayList<Channel> contentCreatorChannels;
     public void renderPage() {
         Viewer viewer= Application.getCurrentUser();
         switch (viewer.getUserType()){
@@ -73,24 +73,29 @@ public class SettingPageController implements Controller {
             }
     }
 
-    private void getChannels(ContentCreator contentCreator){
-        contentCreatorChannels = new ArrayList<>();
+    private List<Channel> getChannels(ContentCreator contentCreator){
+        List<Channel>channelList = new ArrayList<>();
         for(String url:contentCreator.getChannels()){
-            contentCreatorChannels.add(Application.getApplication().getChannel(url));
+            Channel channel = (Application.getApplication().getChannel(url));
+            if(channel!=null)channelList.add(channel);
         }
+        return channelList;
     }
 
 
     private void switchChannel(ContentCreator contentCreator){
-        getChannels(contentCreator);
-        int userInput = settingPage.switchChannel(contentCreatorChannels);
-        try {
-            Channel  selectedChannel = Application.getApplication().getChannel(contentCreator.getChannels().get(userInput - 1));
-            contentCreator.setCurrentChannel(selectedChannel);
-        }
-        catch (IndexOutOfBoundsException e) {
-            settingPage.displayIndexOfOutBound();
-            settingsContentViewer(3);
+        List<Channel>channels = getChannels(contentCreator);
+        if(channels.isEmpty()==false) {
+            int userInput = settingPage.switchChannel(channels);
+            try {
+                Channel selectedChannel = Application.getApplication().getChannel(contentCreator.getChannels().get(userInput - 1));
+                contentCreator.setCurrentChannel(selectedChannel);
+            } catch (IndexOutOfBoundsException e) {
+                settingPage.displayIndexOfOutBound();
+                settingsContentViewer(3);
+            }
+        }else{
+            settingPage.showWarning();
         }
     }
     private void createChannel(String name,String about,ContentCreator contentCreator){

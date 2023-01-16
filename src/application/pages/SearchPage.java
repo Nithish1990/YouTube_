@@ -17,7 +17,7 @@ public class SearchPage extends Page{
     public int displayResult(List<Thumbnail> thumbnails,List<Channel> channels) {
 
        iterateSearchList(thumbnails,channels);
-       return CustomScanner.scanInt("Enter position to redirect or 0 to back");
+       return CustomScanner.scanInt("Enter Position To Redirect Or 0 To Back");
     }
     private void iterateChannels(List<Channel>channels,int i){
         System.out.println();

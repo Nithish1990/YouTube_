@@ -31,18 +31,18 @@ public class EditPage extends Page {
         line();
         //rep
         System.out.println("Current user "+viewer.getUserName()+" Type: "+viewer.getUserType());
-        System.out.println("Date of birth "+viewer.getDataOfBirth());
-        System.out.println("Phone number "+viewer.getUserPhoneNumber());
-        System.out.println("Channel settings");
+        System.out.println("Date Of Birth "+viewer.getDataOfBirth());
+        System.out.println("Phone Number "+viewer.getUserPhoneNumber());
+        System.out.println("Channel Settings");
         int userInput = CustomScanner.scanInt();
         line();
         return userInput;
     }
     public int toEnablePrime(){
-        System.out.println("non Prime");
+        System.out.println("Non Prime");
         line();
         options();
-        System.out.println("5 Want to upgrade to prime $1 per month ?");
+        System.out.println("5 Want To Upgrade To Prime $1 Per Month ?");
         int userInput =  CustomScanner.scanInt();
         line();
         return userInput;
@@ -51,7 +51,7 @@ public class EditPage extends Page {
         System.out.println("Prime user");
         line();
         options();
-        System.out.println("5 Want to cancel prime?");
+        System.out.println("5 Want To Cancel Prime?");
         int userInput =  CustomScanner.scanInt();
         line();
         return userInput;
@@ -59,8 +59,8 @@ public class EditPage extends Page {
     public void options(){
         System.out.println("1 Change Name");
         System.out.println("2 Change Password");
-        System.out.println("3 Change DOB");
-        System.out.println("4 Change phone Number");
+        System.out.println("3 Change Date Of Birth");
+        System.out.println("4 Change Phone Number");
     }
 
     public String getName() {
@@ -71,7 +71,7 @@ public class EditPage extends Page {
        return CustomScanner.scanString("Enter old password");
     }
     public String getPassword(){
-        String password = CustomScanner.scanString("Enter your password 8-20 char, atleast 1 uppercase, 1number,1 special char,1 lower case");
+        String password = CustomScanner.scanString("Enter your password (8-20 char, at least 1 uppercase,1 number,1 special char,1 lower case)");
         return Validation.checkPasswordIsValid(password);
     }
 
@@ -85,10 +85,10 @@ public class EditPage extends Page {
     }
 
     public void showPasswordWrongWarning() {
-        System.out.println("Old password is wrong");
+        System.out.println("Old Password Is Wrong");
     }
 
     public int askConfirmation() {
-        return CustomScanner.scanInt("Do you want change the plan press 1 to yes");
+        return CustomScanner.scanInt("Do You Want Change The Plan Press 1 To Yes");
     }
 }

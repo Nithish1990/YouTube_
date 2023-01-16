@@ -17,12 +17,12 @@ public class HomePageController implements Controller{
     private Controller watchPageController,searchBarController, settingPageController,uploadPageController;
     public void renderPage(){
         while (true) {
-            getThumbnails();
             int userInput = display(Application.getCurrentUser());
             switch (userInput) {
                 case 1://select video
                     userInput = (homePage.getVideoPosition());
                     Thumbnail selectedThumbnail = getVideo(getThumbnails(),userInput);
+                    if(selectedThumbnail == null)break;
                     if(watchPageController == null)
                         watchPageController = new WatchPageController();
                     Application.getCurrentUser().getHistory().push(selectedThumbnail);

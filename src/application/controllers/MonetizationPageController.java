@@ -12,13 +12,12 @@ import java.util.List;
 public class MonetizationPageController implements Controller{
 
     private MonetizationPage monetizationPage;
-    private List<Channel> contentCreatorChannels;
     @Override
     public void renderPage() {
         ContentCreator contentCreator = (ContentCreator) Application.getCurrentUser();
         getChannels(contentCreator);
         Channel currentChannel = contentCreator.getCurrentChannel();
-        monetizationPage.displayRevenue(contentCreator.getUserName(),currentChannel.getChannelName(),contentCreatorChannels);
+        monetizationPage.displayRevenue(contentCreator.getUserName(),currentChannel.getChannelName(),getChannels(contentCreator));
 
         if(currentChannel.isMonetized()){
             // ie the channel monetized and want to withdraw amount
@@ -45,11 +44,12 @@ public class MonetizationPageController implements Controller{
     }
 
 
-    public void getChannels(ContentCreator contentCreator){
-        contentCreatorChannels = new ArrayList<>();
+    public List<Channel> getChannels(ContentCreator contentCreator){
+       List<Channel>channels =  new ArrayList<>();
         for(String url:contentCreator.getChannels()){
-            contentCreatorChannels.add(Application.getApplication().getDatabaseManager().getChannel().get(url));
+            channels.add(Application.getApplication().getDatabaseManager().getChannel().get(url));
         }
+        return channels;
     }
 
     public void withdraw(Channel currentChannel){

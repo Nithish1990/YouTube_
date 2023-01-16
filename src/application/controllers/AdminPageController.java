@@ -23,6 +23,10 @@ public class AdminPageController implements Controller{
                     adminPage.line();
                     Application.getApplication().setCurrentUser(new UnSignedViewer());
                     break;
+                case 4:
+                    //add ads
+
+                    break;
             }
     }
 

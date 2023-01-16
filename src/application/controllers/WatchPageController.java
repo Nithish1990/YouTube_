@@ -13,9 +13,6 @@ import application.video.Comments;
 import application.video.Video;
 import application.videoPlayer.VideoPlayer;
 
-import java.util.List;
-import java.util.Map;
-
 public class WatchPageController implements Controller{
     private WatchPage watchPage;
     private VideoPlayer videoPlayer;
@@ -23,7 +20,6 @@ public class WatchPageController implements Controller{
     private boolean loop;
 
     public void renderPage() {
-
         video = Application.getApplication().getDatabaseManager().getVideo(Application.getCurrentUser().getHistory().peek().getUrl());
         Channel channel = Application.getApplication().getChannel(video.getChannelURL());
         playAds();
@@ -134,25 +130,33 @@ public class WatchPageController implements Controller{
             if (viewer.getUserType() != UserType.UN_SIGNED) {
                 SignedViewer signedViewer = (SignedViewer) viewer;
                 if (signedViewer.isBannedUser() == false) {
-                    if(watchPage.askWantToComment()==1) {
-                        String comment = watchPage.getComment();
-                        video.getComments().push(new Comments((SignedViewer) viewer, comment));
-                    }
-                    Member member = Application.getApplication().getDatabaseManager().getChannel().get(video.channelURL).
-                            getChannelMembers().getOrDefault(video.channelURL,null);
-
+                    watchPage.askWantToComment();
+                    Member member = Application.getApplication().getDatabaseManager().getMember(video.channelURL, signedViewer.getUserEmailID());
                     if(member != null){
-                            int userInput = watchPage.displayCommentDeletion();
-                            if(userInput != 0){
-                                video.getComments().remove(userInput-1);
-                            }
+                            remove(signedViewer);
+                    }else {
+                        if(watchPage.getInput()==0)addComment(signedViewer);
                     }
-                }
 
-            else {
+                }
+        }   else {
                 login();
             }
+    }
+    private void remove(SignedViewer signedViewer) {
+        int userInput = watchPage.displayCommentDeletion();
+        if (userInput == 0) {
+            addComment(signedViewer);
+        } else {
+            try {
+                video.getComments().remove(userInput - 1);
+            } catch (IndexOutOfBoundsException e) {
+                watchPage.displayIndexOfOutBound();
+            }
         }
+    }
+    private void addComment(SignedViewer viewer){
+        video.getComments().push(new Comments(viewer, watchPage.getComment()));
     }
 
 

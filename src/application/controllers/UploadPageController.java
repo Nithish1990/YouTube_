@@ -23,7 +23,7 @@ public class UploadPageController implements Controller{
         Viewer viewer  = Application.getCurrentUser();
         switch (viewer.getUserType()) {
             case UN_SIGNED:
-                showWarning();
+                login();
                 break;
             case SIGNED:
                 upload((SignedViewer) viewer);
@@ -57,7 +57,7 @@ public class UploadPageController implements Controller{
             sendNotification(channel,video.getThumbnail());
             Application.getApplication().getDatabaseManager().addVideo(video);
     }
-    private void showWarning(){
+    private void login(){
         uploadPage.displayLoginWarning();
         Controller controller = new LoginPageController();
         controller.renderPage();

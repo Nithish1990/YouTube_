@@ -11,9 +11,7 @@ public class Application {
 
     private DatabaseManager databaseManager;
     private Viewer currentUser;
-    public Channel getChannel(String url) {
-        return getApplication().getDatabaseManager().getChannel().get(url);
-    }
+
 
     public void run(){
         Controller homePageController = new HomePageController();
@@ -52,5 +50,8 @@ public class Application {
     }
     public int getMinViewCountForMonetization(){
         return databaseManager.getMinViewCountForMonetization();
+    }
+    public Channel getChannel(String url) {
+        return getApplication().getDatabaseManager().getChannel().get(url);
     }
 }

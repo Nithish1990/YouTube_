@@ -13,8 +13,8 @@ public class WatchPage extends  Page{
 
     public void display(Video video,boolean isSubscribed){
         line();
-        System.out.println(("Enter\n1 pause/play\n2 Like:"+video.getLikesCount()+"\n3 DisLike: "+
-                video.getDislikesCount()+"\n4 share "+(isSubscribed?"\n5 UnSubscribe":"\n5 Subscribe") +"\n6 Comments: "+video.getComments().size()+"\n7 Vist Channel"));
+        System.out.println(("Enter\n1 Pause/Play\n2 Like:"+video.getLikesCount()+"\n3 DisLike: "+
+                video.getDislikesCount()+"\n4 Share "+(isSubscribed?"\n5 UnSubscribe":"\n5 Subscribe") +"\n6 Comments: "+video.getComments().size()+"\n7 Vist Channel"));
     }
 
     public int  showWarning() {
@@ -51,8 +51,8 @@ public class WatchPage extends  Page{
         CustomScanner.justScan("press any to skip ad");
     }
 
-    public int askWantToComment(){
-        return CustomScanner.scanInt("Want To Comment Enter 1");
+    public void askWantToComment(){
+        System.out.println("0 To Enter Comment");
     }
     public void displayChannelNotAvailable() {
         System.out.println("Wrong url");

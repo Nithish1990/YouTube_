@@ -36,8 +36,8 @@ public class MonetizationPage extends  Page{
         System.out.println("Not Eligible for Monetization");
     }
     public int getRequestConfirmation(){
-        System.out.println(Colors.GREEN+"Eligible for Monetization"+Colors.RESET);
-        return CustomScanner.scanInt("To Send Request for Monetization press 1");
+        System.out.println(Colors.GREEN+"Eligible For Monetization"+Colors.RESET);
+        return CustomScanner.scanInt("To Send Request For Monetization Press 1");
     }
 
 

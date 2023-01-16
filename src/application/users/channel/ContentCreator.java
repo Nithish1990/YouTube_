@@ -37,7 +37,9 @@ public class ContentCreator extends SignedViewer {
                 currentChannel = channel;
                 channels.add(channel.getChannelUrl());
                 Application.getApplication().getDatabaseManager().addChannel(channel);
-            }else{
+            }
+            else
+            {
                 currentChannel = Application.getApplication().getDatabaseManager().getChannel().get(channels.get(0));
             }
         }
