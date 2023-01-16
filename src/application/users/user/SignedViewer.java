@@ -1,17 +1,11 @@
 package application.users.user;
 
-import application.admin.SystemAdmin;
-import application.users.channel.Channel;
-import application.users.channel.members.Member;
+import application.users.channel.Member;
 import application.utilities.constant.country.Country;
 import application.utilities.constant.user.types.UserType;
 import application.video.Thumbnail;
-import application.video.Video;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 public class SignedViewer extends Viewer{
     private String userName;
@@ -23,16 +17,20 @@ public class SignedViewer extends Viewer{
     private Country country;
     private boolean primeUser;
     private boolean isBannedUser;//if user is banned cant post ,cmt
-    private List<Channel>member;
     private HashMap<String,Boolean>subscribedChannels;// string represent url of the video
     private HashMap<String,Boolean>likedVideo;//String represent url of the video
     private HashMap<String,Boolean>dislikedVideo;//String represent url of the video
 
-    protected Stack<Thumbnail> notification;
+    private Stack<Thumbnail> notification;
+
+    private Map<String,Member> memberInChannels;
     public SignedViewer(String userName, String userEmailID, String password, String userPhoneNumber, String dataOfBirth) {
         super(UserType.SIGNED);
-        this.userName = userName;
         this.userEmailID = userEmailID;
+        constructor(userName,password,userPhoneNumber,dataOfBirth);
+    }
+    public void constructor(String userName, String password, String userPhoneNumber, String dataOfBirth){
+        this.userName = userName;
         this.password = password;
         this.userPhoneNumber = userPhoneNumber;
         this.dataOfBirth = dataOfBirth;
@@ -43,39 +41,17 @@ public class SignedViewer extends Viewer{
         this.likedVideo = new HashMap<>();
         this.dislikedVideo = new HashMap<>();
         this.notification = new Stack<>();
-        this.member = new ArrayList<>();
+        this.memberInChannels = new HashMap<>();
     }
     public SignedViewer(SignedViewer viewer){
         super(UserType.CONTENT_CREATOR,viewer);
-        this.userName = viewer.getUserName();
         this.userEmailID = viewer.getUserEmailID();
-        this.password = viewer.getPassword();
-        this.userPhoneNumber = viewer.getUserPhoneNumber();
-        this.dataOfBirth = viewer.dataOfBirth;
-        this.country = Country.INDIA;
-        this.primeUser = viewer.primeUser;
-        this.isBannedUser = viewer.isBannedUser;
-        this.subscribedChannels = viewer.subscribedChannels;
-        this.likedVideo = viewer.likedVideo;
-        this.dislikedVideo = viewer.dislikedVideo;
-        this.notification = viewer.notification;
-        this.member = viewer.member;
+        constructor(viewer.getUserName(), viewer.getPassword(), viewer.getUserPhoneNumber(), viewer.dataOfBirth);
     }
     public SignedViewer(String userName, String userEmailID, String password, String userPhoneNumber, String dataOfBirth,UserType userType) {
         super(userType);
-        this.userName = userName;
-        this.userEmailID = userEmailID;
-        this.password = password;
-        this.userPhoneNumber = userPhoneNumber;
-        this.dataOfBirth = dataOfBirth;
-        this.country = Country.INDIA;
-        this.primeUser = false;
-        this.isBannedUser = false;
-        this.subscribedChannels = new HashMap<>();
-        this.likedVideo = new HashMap<>();
-        this.dislikedVideo = new HashMap<>();
-        this.notification = new Stack<>();
-        this.member = new ArrayList<>();
+       this.userEmailID = userEmailID;
+       constructor(userName,password,userPhoneNumber,dataOfBirth);
     }
     public String getUserName() {
         return userName;
@@ -153,11 +129,16 @@ public class SignedViewer extends Viewer{
     }
 
 
-    public List<Channel> getMember() {
-        return member;
-    }
 
     public Stack<Thumbnail> getNotification() {
         return notification;
+    }
+
+    public Map<String,Member> getMemberInChannels(){
+        return memberInChannels;
+    }
+
+    public void addMember(Member member){
+        memberInChannels.put(member.getChannelURL(),member);
     }
 }

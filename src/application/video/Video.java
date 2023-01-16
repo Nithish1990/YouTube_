@@ -26,7 +26,6 @@ public class Video {
     private int dislikesCount;
     private Stack<Comments>comments;
     private int viewsCount;
-    private int violationCount;
     private Category category;
     private List<String> tags;
     private List<String> reportList;
@@ -48,7 +47,6 @@ public class Video {
         this.dislikesCount = 0;
         this.comments = new Stack<>();
         this.viewsCount = 0;
-        this.violationCount = 0;
         this.tags = new ArrayList<>();
         this.reportList = new ArrayList<>();
         this.thumbnail = new Thumbnail(videoTitle,channelName,duration,uploadedDateAndTime,videoUrl,viewsCount);
@@ -69,6 +67,7 @@ public class Video {
 
     public void setVideoTitle(String videoTitle) {
         this.videoTitle = videoTitle;
+        this.thumbnail.setVideoTitle(videoTitle);
     }
 
     public String getChannelURL() {
@@ -144,13 +143,6 @@ public class Video {
         this.viewsCount = viewsCount;
     }
 
-    public int getViolationCount() {
-        return violationCount;
-    }
-
-    public void setViolationCount(int violationCount) {
-        this.violationCount = violationCount;
-    }
 
     public Category getCategory() {
         return category;

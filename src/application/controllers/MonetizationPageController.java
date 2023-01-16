@@ -26,10 +26,10 @@ public class MonetizationPageController implements Controller{
         }else {
             int subscriberCount = currentChannel.getSubscribersCount(), viewsCount = currentChannel.getTotalViews();
             boolean isSubscribeCountEligible = false, isViewsCountEligible = false, isAppliedMonetize = currentChannel.isAppliedForMonetization();
-            if (subscriberCount >= Application.getMinSubscribeForMonetization()) {
+            if (subscriberCount >= Application.getApplication().getMinSubscribeForMonetization()) {
                 isSubscribeCountEligible = true;
             }
-            if (viewsCount >= Application.getMinViewCountForMonetization()) {
+            if (viewsCount >= Application.getApplication().getMinViewCountForMonetization()) {
                 isViewsCountEligible = true;
             }
             monetizationPage.displayMonetizationOption(subscriberCount, viewsCount, isSubscribeCountEligible, isViewsCountEligible);

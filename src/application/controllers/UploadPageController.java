@@ -5,17 +5,18 @@ import application.admin.SystemAdmin;
 import application.pages.UploadPage;
 import application.users.channel.Channel;
 import application.users.channel.ContentCreator;
+import application.users.channel.Member;
+import application.users.channel.members.ChannelManager;
 import application.users.user.SignedViewer;
 import application.users.user.Viewer;
-import application.utilities.authentication.Authenticator;
-import application.utilities.constant.category.AgeCategory;
-import application.utilities.constant.category.Category;
+import application.utilities.constant.user.types.MemberType;
 import application.utilities.generator.Generator;
 import application.video.Thumbnail;
 import application.video.Video;
 
 public class UploadPageController implements Controller{
     private UploadPage uploadPage;
+    private Authenticator authenticator;
 
     @Override
     public void renderPage(){
@@ -30,7 +31,7 @@ public class UploadPageController implements Controller{
             case ADMIN:
                 uploadPage.displayWarning((SystemAdmin)viewer);
                 break;
-            default:
+            case CONTENT_CREATOR:
                 upload((ContentCreator) viewer);
         }
     }
@@ -39,7 +40,11 @@ public class UploadPageController implements Controller{
         Channel channel  =  new Channel(viewer.getUserName(), Generator.urlGenerate(viewer.getUserName()),contentCreator.getUserEmailID());
         contentCreator.addChannel(channel.getChannelUrl());
         contentCreator.setCurrentChannel(channel);
-        Authenticator.addChannel(contentCreator,channel);
+        Member member = new ChannelManager(contentCreator.getUserEmailID(), MemberType.CHANNEL_MANAGER,channel.getChannelUrl());
+        contentCreator.addMember(member);
+        authenticator.addChannel(contentCreator,channel);
+        Application.getApplication().getDatabaseManager().addMember(channel.getChannelUrl(),contentCreator.getUserEmailID(),member);
+        authenticator.addUser(contentCreator);
         Application.getApplication().setCurrentUser(contentCreator);
         uploadPage.displayWelcomeMessage();
         upload(contentCreator);
@@ -61,6 +66,7 @@ public class UploadPageController implements Controller{
     //constructor
     public UploadPageController(){
         uploadPage = new UploadPage();
+        this.authenticator = new Authenticator();
     }
 
 

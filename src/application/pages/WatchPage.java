@@ -5,21 +5,16 @@ import application.video.Advertisement;
 import application.video.Comments;
 import application.video.Video;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class WatchPage extends  Page{
 
 
-    public int  display(Video video,boolean isSubscribed){
+    public void display(Video video,boolean isSubscribed){
         line();
-        int userInput = CustomScanner.scanInt("Enter\n1 pause/play\n2 Like:"+video.getLikesCount()+"\n3 DisLike: "+
-                video.getDislikesCount()+"\n4 share "+(isSubscribed?"\n5 UnSubscribe":"\n5 Subscribe") +"\n6 Comments: "+video.getComments().size()+"\n7 Vist Channel");
-        line();
-        return userInput;
-    }
-
-    public int displayLikeShareSubscribeOption(){
-        return CustomScanner.scanInt("1 to like, 2 to Dislike, 3 to Share, 4 subscribe");
+        System.out.println(("Enter\n1 pause/play\n2 Like:"+video.getLikesCount()+"\n3 DisLike: "+
+                video.getDislikesCount()+"\n4 share "+(isSubscribed?"\n5 UnSubscribe":"\n5 Subscribe") +"\n6 Comments: "+video.getComments().size()+"\n7 Vist Channel"));
     }
 
     public int  showWarning() {
@@ -28,12 +23,12 @@ public class WatchPage extends  Page{
                 "Want to login press 1"
         );
     }
-    public int displayComments(Video video){
+    public void displayComments(Video video){
+        int i = 1;
         for(Comments comments : video.getComments()){
-            System.out.println("Comment by "+Colors.addColor(Colors.YELLOW_UNDERLINED,comments.getCommentedBy().getUserName()));
+            System.out.println(i+++" Comment by "+Colors.addColor(Colors.YELLOW_UNDERLINED,comments.getCommentedBy().getUserName()));
             System.out.println("    Comment "+comments.getComment());
         }
-        return CustomScanner.scanInt("Want add comments press 1");
 
     }
     public void displayUrl(Video video) {
@@ -56,7 +51,27 @@ public class WatchPage extends  Page{
         CustomScanner.justScan("press any to skip ad");
     }
 
+    public int askWantToComment(){
+        return CustomScanner.scanInt("Want To Comment Enter 1");
+    }
     public void displayChannelNotAvailable() {
         System.out.println("Wrong url");
+    }
+
+    public int displayCommentDeletion() {
+        return CustomScanner.scanInt("Enter Position To Delete Chat Or 0 To Go Back");
+    }
+    public int displayEditOption(){
+        System.out.println("8 To Edit Title");
+        System.out.println("9 To Edit Description");
+        return CustomScanner.scanIntLine();
+    }
+
+    public String getDetail(String enter_description) {
+        return CustomScanner.scanNextLine(enter_description);
+    }
+
+    public int getInput() {
+        return CustomScanner.scanIntLine();
     }
 }

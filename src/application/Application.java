@@ -1,7 +1,6 @@
 package application;
 
 import application.controllers.Controller;
-import application.controllers.LoginPageController;
 import application.database.DatabaseManager;
 import application.controllers.HomePageController;
 import application.users.channel.Channel;
@@ -12,8 +11,6 @@ public class Application {
 
     private DatabaseManager databaseManager;
     private Viewer currentUser;
-    private static int minSubscribeForMonetization,minViewCountForMonetization;
-
     public Channel getChannel(String url) {
         return getApplication().getDatabaseManager().getChannel().get(url);
     }
@@ -21,15 +18,12 @@ public class Application {
     public void run(){
         Controller homePageController = new HomePageController();
         homePageController.renderPage();
-
     }
     //singleton
     private static Application application;
     private Application(){
         databaseManager = new DatabaseManager();
-        currentUser = new UnSignedViewer();
-        minSubscribeForMonetization = 1;
-        minViewCountForMonetization = 1;
+        currentUser = databaseManager.accessViewerDatabase().get("e");
     }
 
     public static Application getApplication(){
@@ -53,20 +47,10 @@ public class Application {
         this.currentUser = currentUser;
     }
 
-
-    public static int getMinSubscribeForMonetization() {
-        return minSubscribeForMonetization;
+    public int getMinSubscribeForMonetization(){
+        return databaseManager.getMinSubscribeForMonetization();
     }
-
-    public static void setMinSubscribeForMonetization(int minSubscribeForMonetization) {
-        Application.minSubscribeForMonetization = minSubscribeForMonetization;
-    }
-
-    public static int getMinViewCountForMonetization() {
-        return minViewCountForMonetization;
-    }
-
-    public static void setMinViewCountForMonetization(int minViewCountForMonetization) {
-        Application.minViewCountForMonetization = minViewCountForMonetization;
+    public int getMinViewCountForMonetization(){
+        return databaseManager.getMinViewCountForMonetization();
     }
 }

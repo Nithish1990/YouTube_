@@ -1,18 +1,18 @@
 package application.users.channel;
 
 import application.Application;
-import application.users.channel.members.Member;
 import application.users.user.SignedViewer;
 import application.utilities.generator.Generator;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import application.users.channel.Member;
 public class ContentCreator extends SignedViewer {
     private int moneyEarned;
     private ArrayList<String>channels;
     private Channel currentChannel;
-    private HashMap<Channel, Member> roles;
+    private HashMap<Channel,Member> roles;
 //    private boolean monet
     public ContentCreator(SignedViewer viewer){
         super(viewer);

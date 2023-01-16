@@ -56,4 +56,8 @@ public class CustomScanner extends Page {
         line();
         return scanInt();
     }
+    public static int scanIntLine(){
+        line();
+        return scanInt();
+    }
 }

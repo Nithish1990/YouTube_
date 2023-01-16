@@ -2,7 +2,7 @@ package application.pages;
 
 import application.users.user.SignedViewer;
 import application.users.user.Viewer;
-import application.utilities.authentication.Authenticator;
+import application.controllers.Authenticator;
 import application.utilities.authentication.Validation;
 import application.utilities.helper.CustomScanner;
 

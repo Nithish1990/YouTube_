@@ -1,20 +1,16 @@
 package application.database;
 
+import application.Application;
 import application.admin.SystemAdmin;
 import application.users.channel.Channel;
-import application.users.channel.ContentCreator;
+import application.users.channel.Member;
 import application.users.user.SignedViewer;
 import application.utilities.calucation.RandomNumber;
-import application.utilities.constant.category.AgeCategory;
-import application.utilities.constant.category.Category;
 import application.utilities.generator.Generator;
 import application.video.Advertisement;
-import application.video.Thumbnail;
 import application.video.Video;
 
-import javax.print.DocFlavor;
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -22,7 +18,7 @@ public class DatabaseManager {
     private Database database;
     public DatabaseManager(){
         database = Database.setUpDatabase();
-//        testing();
+        testing();
         addAdmin();
         addAds();
     }
@@ -35,10 +31,8 @@ public class DatabaseManager {
     }
     public void testing(){
 //        (String channelName, String channelUrl,String about,String ownBy)
-        Channel channel = new Channel("NAME","URL","ABOUT","OWNBY");
-        Video video = new Video("NAME","URL","NAME","DESC");
-        addVideo(video);
-        addChannel(channel);
+        SignedViewer signedViewer = new SignedViewer("Name","e","e","N","D");
+        addUser(signedViewer);
     }
 
 
@@ -82,6 +76,8 @@ public class DatabaseManager {
         addUser(admin1);
         SystemAdmin admin2 = new SystemAdmin("Admin", "a", "a", "1", "1");
         addUser(admin2);
+        database.setMinSubscribeForMonetization(1);
+        database.setMinViewCountForMonetization(1);
     }
     private void addAds() {
         addAdvertisement(new Advertisement("GoogleAds",Generator.urlGenerate("ads"),1));
@@ -96,5 +92,26 @@ public class DatabaseManager {
             }
         }
         return channels;
+    }
+
+    public void addMember(String channelUrl,String emailID, Member member) {
+
+        database.getChannel().get(channelUrl).getChannelMembers().put(emailID,member);
+
+    }
+
+    public int getMinSubscribeForMonetization() {
+        return database.getMinSubscribeForMonetization();
+    }
+    public int getMinViewCountForMonetization(){
+        return database.getMinViewCountForMonetization();
+    }
+
+    public SignedViewer getUser(String emailId) {
+        return database.getUserDB().get(emailId);
+    }
+
+    public void deleteMember(String channelUrl,String emailID) {
+        database.getChannel().get(channelUrl).getChannelMembers().remove(emailID);
     }
 }

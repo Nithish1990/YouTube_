@@ -2,12 +2,17 @@ package application.pages;
 
 import application.users.channel.Channel;
 import application.users.channel.ContentCreator;
+import application.users.channel.Member;
 import application.utilities.helper.CustomScanner;
 import application.video.Thumbnail;
+
+import java.util.List;
+
 public class ChannelPage extends Page{
     public void display(Channel channel) {
         line();
         System.out.println("\t"+channel.getChannelName()+" "+channel.getSubscribersCount() +" Subscribe");
+        System.out.println("\t"+channel.getChannelUrl());
         System.out.println(channel.getAbout()+" Category "+channel.getCategory());
         System.out.println("Uploaded videos");
     }
@@ -76,4 +81,32 @@ public class ChannelPage extends Page{
     public int getDeleteConfirmation() {
         return CustomScanner.scanInt("To Delete The Channel enter 1 else any int");
     }
+
+    public int getConfirmationForApproval() {
+        return  CustomScanner.scanInt("Enter To Accept Monetization");
+    }
+    public void displayUserNotFound(){
+        System.out.println("User EmailID Is Wrong Else");
+    }
+
+    public String   memberMenu(List<Member>moderators, List<Member> editors, List<Member>managers) {
+        line();
+        System.out.println("\tMembers");
+        System.out.println("\tTotal Count: "+managers.size()+ moderators.size()+editors.size());
+        System.out.println("\t"+"Moderators");
+        printMemberInformation(moderators);
+        System.out.println("\t"+"Editors");
+        printMemberInformation(editors);
+        System.out.println("\t"+"Managers");
+        printMemberInformation(managers);
+
+        return CustomScanner.scanString("Want Remove Any Member Enter emailId Else No Enter -1");
+    }
+    private void printMemberInformation(List<Member>membersInformation){
+        for (Member member:membersInformation){
+            System.out.println("EmailID: "+member.getUserEmailID());
+        }
+        System.out.println();
+    }
+
 }

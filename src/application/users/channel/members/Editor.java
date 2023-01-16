@@ -1,4 +1,10 @@
 package application.users.channel.members;
 
-public class Editor extends Member{
+import application.utilities.constant.user.types.MemberType;
+
+public class Editor extends Moderator{
+
+    public Editor(String userEmailID, MemberType memberType, String channelURL) {
+        super(userEmailID, memberType, channelURL);
+    }
 }

@@ -5,8 +5,6 @@ import application.pages.EditPage;
 import application.users.channel.Channel;
 import application.users.channel.ContentCreator;
 import application.users.user.SignedViewer;
-import application.utilities.Colors;
-import application.utilities.authentication.Authenticator;
 import application.utilities.constant.user.types.UserType;
 
 import java.util.ArrayList;
@@ -15,8 +13,7 @@ import java.util.Map;
 
 public class EditPageController implements Controller{
     private EditPage editPage;
-
-
+    private Authenticator authenticator;
     @Override
     public void renderPage() {
         SignedViewer viewer = (SignedViewer) Application.getCurrentUser();
@@ -50,6 +47,7 @@ public class EditPageController implements Controller{
 
     public EditPageController(){
         this.editPage = new EditPage();
+        this.authenticator = new Authenticator();
     }
 
     public void edit(SignedViewer viewer,int userInput){// total  method is wrong
@@ -76,12 +74,13 @@ public class EditPageController implements Controller{
         viewer.setPassword(password);
         viewer.setUserName(name);
         viewer.setDataOfBirth(dateOfBirth);
+        Application.getApplication().getDatabaseManager().addUser(viewer);
     }
     private String editPassWord(SignedViewer viewer){
         String oldPassword = editPage.getOldPassword();
-        if(Authenticator.logIn(viewer.getUserEmailID(),oldPassword) != null)
+        if(authenticator.logIn(viewer.getUserEmailID(),oldPassword) != null)
            return editPage.getPassword();
-
+        else
         editPage.showPasswordWrongWarning();
         return editPassWord(viewer);
     }

@@ -15,9 +15,7 @@ public class HomePageController implements Controller{
 
     private HomePage homePage;
     private Controller watchPageController,searchBarController, settingPageController,uploadPageController;
-    private int displayVideoSize;
     public void renderPage(){
-
         while (true) {
             getThumbnails();
             int userInput = display(Application.getCurrentUser());
@@ -25,7 +23,6 @@ public class HomePageController implements Controller{
                 case 1://select video
                     userInput = (homePage.getVideoPosition());
                     Thumbnail selectedThumbnail = getVideo(getThumbnails(),userInput);
-                    if(selectedThumbnail == null )continue;
                     if(watchPageController == null)
                         watchPageController = new WatchPageController();
                     Application.getCurrentUser().getHistory().push(selectedThumbnail);
@@ -47,7 +44,6 @@ public class HomePageController implements Controller{
                     settingPageController.renderPage();
                      break;
                 default:
-
                     userInput = CustomScanner.scanInt("Really want to exit press 1");
                     if(userInput == 1)
                         return;
@@ -57,7 +53,6 @@ public class HomePageController implements Controller{
     }
     public HomePageController(){
         this.homePage = new HomePage();
-        this.displayVideoSize = 10;
     }
 
 

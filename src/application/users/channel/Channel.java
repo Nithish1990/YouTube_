@@ -3,11 +3,12 @@ package application.users.channel;
 import application.users.user.SignedViewer;
 import application.utilities.constant.category.Category;
 import application.video.Thumbnail;
-
-import application.users.channel.members.Member;
-
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import application.users.channel.Member;
 
 public class Channel {
     private String channelName;
@@ -23,7 +24,7 @@ public class Channel {
 
     private final String ownBy;
     private List<Thumbnail> uploadedVideo;
-    private List<Member> channelMembers;
+    private Map<String,Member> channelMembers; // String is url of the user
     private List<SignedViewer>subscribers;
 
     public Channel(String channelName, String channelUrl,String ownBy) {
@@ -34,7 +35,7 @@ public class Channel {
         this.monetized = false;
         this.amountEarned = 0;
         this.subscribersCount = 0;
-        this.channelMembers = new ArrayList<>();
+        this.channelMembers = new HashMap<>();
         this.uploadedVideo = new ArrayList<>();
         this.subscribers = new ArrayList<>();
         this.totalViews = 0;
@@ -49,7 +50,7 @@ public class Channel {
         this.monetized = false;
         this.amountEarned = 0;
         this.subscribersCount = 0;
-        this.channelMembers = new ArrayList<>();
+        this.channelMembers = new HashMap<>();
         this.uploadedVideo = new ArrayList<>();
         this.subscribers = new ArrayList<>();
         this.totalViews = 0;
@@ -117,7 +118,7 @@ public class Channel {
     }
 
 
-    public List<Member> getChannelMembers() {
+    public Map<String,Member> getChannelMembers() {
         return channelMembers;
     }
 

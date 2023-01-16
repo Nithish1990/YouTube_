@@ -20,8 +20,8 @@ class Database {
 
     private List<String>monetizationRequest;
 
-
-
+    private int minSubscribeForMonetization;
+    private int minViewCountForMonetization;
     //Singleton
     private static Database database;
     private Database(){
@@ -83,5 +83,25 @@ class Database {
 
     public List<String> getMonetizationRequest() {
         return monetizationRequest;
+    }
+
+    void setUserDB(Map<String, SignedViewer> userDB) {
+        this.userDB = userDB;
+    }
+
+    int getMinSubscribeForMonetization() {
+        return minSubscribeForMonetization;
+    }
+
+    void setMinSubscribeForMonetization(int minSubscribeForMonetization) {
+        this.minSubscribeForMonetization = minSubscribeForMonetization;
+    }
+
+    int getMinViewCountForMonetization() {
+        return minViewCountForMonetization;
+    }
+
+    public void setMinViewCountForMonetization(int minViewCountForMonetization) {
+        this.minViewCountForMonetization = minViewCountForMonetization;
     }
 }

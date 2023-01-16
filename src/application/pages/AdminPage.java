@@ -26,4 +26,8 @@ public class AdminPage extends Page{
     public void report() {
         System.out.println("Under Development");
     }
+
+    public void displayNoPending() {
+        System.out.println("No Request is there...!");
+    }
 }

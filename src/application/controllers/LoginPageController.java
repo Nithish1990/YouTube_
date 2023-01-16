@@ -2,11 +2,8 @@ package application.controllers;
 
 import application.Application;
 import application.pages.LoginPage;
-import application.users.channel.ContentCreator;
-import application.users.user.SignedViewer;
 import application.users.user.UnSignedViewer;
 import application.users.user.Viewer;
-import application.utilities.authentication.Authenticator;
 import application.utilities.constant.user.types.UserType;
 
 public class LoginPageController implements Controller{

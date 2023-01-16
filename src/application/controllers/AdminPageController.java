@@ -32,6 +32,10 @@ public class AdminPageController implements Controller{
 
     private void monetizationApproval(){
         List<Channel> monetizationRequest =  Application.getApplication().getDatabaseManager().getMonetizationRequestList();
+        if(monetizationRequest.isEmpty()){
+            adminPage.displayNoPending();
+            return;
+        }
         int userInput = adminPage.displayMonetizationRequest(monetizationRequest)-1;
         if(userInput>=0){
             ChannelPageController controller = new ChannelPageController();
