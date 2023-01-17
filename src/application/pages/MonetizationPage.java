@@ -46,7 +46,7 @@ public class MonetizationPage extends  Page{
         for(Channel channel:channels){
             System.out.println("Channel name: "+channel.getChannelName() + ", Subscribe Count: "+channel.getSubscribersCount()+", Total Views: "+ channel.getTotalViews()+" TotalMoney Earned: "+channel.getAmountEarned());
             System.out.println("Video Uploaded");
-            for(Thumbnail thumbnail : channel.getUploadedVideo()){
+            for(Thumbnail thumbnail : channel.getdisplayUploadedVideo()){
                 System.out.println("Video Title: "+thumbnail.getVideoTitle()+" Views: "+thumbnail.getViews());
             }
         }

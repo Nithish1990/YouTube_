@@ -2,6 +2,7 @@ package application.users.channel;
 
 import application.users.user.SignedViewer;
 import application.utilities.constant.category.Category;
+import application.utilities.constant.user.types.MemberType;
 import application.video.Thumbnail;
 
 import java.util.*;
@@ -21,8 +22,10 @@ public class Channel {
     private boolean isAppliedForMonetization;
 
     private final String ownBy;
-    private List<Thumbnail> uploadedVideo;
+    private List<Thumbnail> displayUploadedVideo;
     private Map<String,Member> channelMembers; // String is url of the user
+
+    private Map<MemberType,List<SignedViewer>> memberList;// List<String represent list of users
     private List<SignedViewer>subscribers;
     private Stack<WithdrawHistory>withdrawHistories;
     public Channel(String channelName, String channelUrl,String ownBy) {
@@ -34,7 +37,8 @@ public class Channel {
         this.amountEarned = 0;
         this.subscribersCount = 0;
         this.channelMembers = new HashMap<>();
-        this.uploadedVideo = new ArrayList<>();
+        this.memberList = new HashMap<>();
+        this.displayUploadedVideo = new ArrayList<>();
         this.subscribers = new ArrayList<>();
         this.totalViews = 0;
         this.isAppliedForMonetization = false;
@@ -50,7 +54,7 @@ public class Channel {
         this.amountEarned = 0;
         this.subscribersCount = 0;
         this.channelMembers = new HashMap<>();
-        this.uploadedVideo = new ArrayList<>();
+        this.displayUploadedVideo = new ArrayList<>();
         this.subscribers = new ArrayList<>();
         this.totalViews = 0;
         this.isAppliedForMonetization = false;
@@ -112,8 +116,8 @@ public class Channel {
     public int getSubscribersCount() {
         return subscribersCount;
     }
-    public List<Thumbnail> getUploadedVideo() {
-        return uploadedVideo;
+    public List<Thumbnail> getdisplayUploadedVideo() {
+        return displayUploadedVideo;
     }
 
 
@@ -152,14 +156,14 @@ public class Channel {
     public void setAppliedForMonetization(boolean appliedForMonetization) {
         isAppliedForMonetization = appliedForMonetization;
     }
-
     public String getOwnBy() {
         return ownBy;
     }
-
-
-
     public Stack<WithdrawHistory> getWithdrawHistories() {
         return withdrawHistories;
+    }
+
+    public Map<MemberType, List<SignedViewer>> getMemberList() {
+        return memberList;
     }
 }

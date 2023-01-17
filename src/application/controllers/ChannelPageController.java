@@ -1,7 +1,6 @@
 package application.controllers;
 
 import application.Application;
-import application.admin.SystemAdmin;
 import application.pages.ChannelPage;
 import application.users.channel.Channel;
 import application.users.channel.ContentCreator;
@@ -27,13 +26,13 @@ public class ChannelPageController{
 
     public void renderPage(Channel channel) {
         channelPage.displayChannelInfo(channel);
-        channelPage.uploadedVideo(channel);
+        channelPage.displayUploadedVideo(channel);
         if(Application.getCurrentUser().getUserType() != UserType.ADMIN)
-            display(channel);
+            userOption(channel);
         else
-            display((SystemAdmin)Application.getCurrentUser(),channel);
+            adminOption(channel);
     }
-    public void display(Channel channel){
+    public void userOption(Channel channel){
         if(Application.getCurrentUser().getUserType() == UserType.CONTENT_CREATOR){
             if(((ContentCreator)Application.getCurrentUser()).getChannels().contains(channel.getChannelUrl())){
                 /*
@@ -42,14 +41,14 @@ public class ChannelPageController{
                 int userInput = channelPage.pageOwnerOption((ContentCreator) Application.getCurrentUser());
                 if(userInput == 1)
                     seeVideo(channel);
+                else if(userInput == 8){
+                    if(channelPage.getDeleteConfirmation()==1){
+                        Application.getApplication().getDatabaseManager().deleteChannel(channel);
+                    }
+                }
                 else {
                     editorOption(channel, userInput);
                     managerOption(channel, userInput);
-                    if(userInput == 8){
-                        if(channelPage.getDeleteConfirmation()==1){
-                            Application.getApplication().getDatabaseManager().deleteChannel(channel);
-                        }
-                    }
                 }
             }
         }
@@ -59,6 +58,7 @@ public class ChannelPageController{
                 switch (member.getMemberType()) {
                     case MODERATOR:
                         commonOption(channel);
+                        break;
                     case EDITOR:
                         editorOption(channel);
                         break;
@@ -98,6 +98,9 @@ public class ChannelPageController{
         List<Member>moderator = new ArrayList<>();
         List<Member>editor = new ArrayList<>();
         List<Member>channelManager = new ArrayList<>();
+        List<SignedViewer>moderators = channel.getMemberList().get(MemberType.MODERATOR);
+        List<SignedViewer>editors = channel.getMemberList().get(MemberType.EDITOR);
+        List<SignedViewer>channelManagers = channel.getMemberList().get(MemberType.CHANNEL_MANAGER);
         for(Map.Entry<String,Member>map: channel.getChannelMembers().entrySet()){
             switch (map.getValue().getMemberType()){
                 case MODERATOR:
@@ -126,7 +129,11 @@ public class ChannelPageController{
             channelPage.displayUserNotFound();
         }
     }
-
+    public void listingMembers(Channel channel){
+        List<SignedViewer>mods = channel.getMemberList().get(MemberType.MODERATOR);
+        List<SignedViewer>editors = channel.getMemberList().get(MemberType.EDITOR);
+        List<SignedViewer>manager = channel.getMemberList().get(MemberType.CHANNEL_MANAGER);
+    }
 
     private void commonOption(Channel channel){
         channelPage.commonOption();
@@ -153,21 +160,22 @@ public class ChannelPageController{
         return null;
     }
 
-    private void display(SystemAdmin admin,Channel channel){
+    private void adminOption(Channel channel){
 
         //admin Menu
         channelPage.displayAdminOption();
        switch (channelPage.getInput()){
            case 1:
-               int userInput = channelPage.getInput("Select video Position") - 1;
-               if(channel.getUploadedVideo().size()>userInput) {
-                   Thumbnail thumbnail = channel.getUploadedVideo().get(userInput);
-                   admin.getHistory().push(thumbnail);
-                   watchPageController.renderPage();
-               }else{
-                   channelPage.displayIndexOfOutBound();
-                   renderPage(channel);
-               }
+//               int userInput = channelPage.getInput("Select video Position") - 1;
+//               if(channel.getdisplayUploadedVideo().size()>userInput) {
+//                   Thumbnail thumbnail = channel.getdisplayUploadedVideo().get(userInput);
+//                   admin.getHistory().push(thumbnail);
+//                   watchPageController.renderPage();
+//               }else{
+//                   channelPage.displayIndexOfOutBound();
+//                   renderPage(channel);
+//               }
+               seeVideo(channel);
            break;
            case 2:
                Application.getApplication().getDatabaseManager().deleteChannel(channel);
@@ -182,7 +190,6 @@ public class ChannelPageController{
                    channel.setAppliedForMonetization(false);
                    channel.setMonetized(false);
                break;
-
         }
 
 //        if(channel.isAppliedForMonetization()) {
@@ -235,9 +242,9 @@ public class ChannelPageController{
         }
     }
     public void seeVideo(Channel channel){
-        if(channel.getUploadedVideo().isEmpty() == false){
+        if(channel.getdisplayUploadedVideo().isEmpty() == false){
             try {
-                Thumbnail thumbnail = channel.getUploadedVideo().get(channelPage.getInput("Select video Position") - 1);
+                Thumbnail thumbnail = channel.getdisplayUploadedVideo().get(channelPage.getInput("Select video Position") - 1);
                 Application.getCurrentUser().getHistory().push(thumbnail);
                 watchPageController.renderPage();
             }catch (IndexOutOfBoundsException e){

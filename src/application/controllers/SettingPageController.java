@@ -5,8 +5,11 @@ import application.admin.AdminPageController;
 import application.pages.SettingPage;
 import application.users.channel.Channel;
 import application.users.channel.ContentCreator;
+import application.users.channel.Member;
+import application.users.channel.members.ChannelManager;
 import application.users.user.SignedViewer;
 import application.users.user.Viewer;
+import application.utilities.constant.user.types.MemberType;
 import application.utilities.generator.Generator;
 
 import java.util.ArrayList;
@@ -38,7 +41,7 @@ public class SettingPageController implements Controller {
         this.settingPage = new SettingPage();
         this.editPageController = new EditPageController();
     }
-    private void settings(int userInput){
+    public void settings(int userInput){
         switch (userInput){
             case 1:
                 Controller controller = new LoginPageController();
@@ -50,7 +53,7 @@ public class SettingPageController implements Controller {
         }
 
     }
-    private void settingsContentViewer(int userInput) {
+    public void settingsContentViewer(int userInput) {
         ContentCreator contentCreator = (ContentCreator)Application.getCurrentUser();
             switch (userInput) {
                 case 3:
@@ -80,7 +83,7 @@ public class SettingPageController implements Controller {
     }
 
 
-    private void switchChannel(ContentCreator contentCreator){
+    public void switchChannel(ContentCreator contentCreator){
         List<Channel>channels = getChannels(contentCreator);
         if(channels.isEmpty()==false) {
             int userInput = settingPage.switchChannel(channels);
@@ -95,10 +98,14 @@ public class SettingPageController implements Controller {
             settingPage.showWarning();
         }
     }
-    private void createChannel(String name,String about,ContentCreator contentCreator){
+    public void createChannel(String name,String about,ContentCreator contentCreator){
         Channel channel = new Channel(name, Generator.urlGenerate(name), about);
         contentCreator.setCurrentChannel(channel);
         contentCreator.addChannel(channel.getChannelUrl());
+        Member member = new ChannelManager(contentCreator.getUserEmailID(), MemberType.CHANNEL_MANAGER,channel.getChannelUrl());
+        contentCreator.addMember(member);
         Application.getApplication().getDatabaseManager().addChannel(channel);
+        Application.getApplication().getDatabaseManager().addUser(contentCreator);
     }
+
 }

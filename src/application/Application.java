@@ -4,7 +4,7 @@ import application.controllers.Controller;
 import application.database.DatabaseManager;
 import application.controllers.HomePageController;
 import application.users.channel.Channel;
-import application.users.user.UnSignedViewer;
+import application.users.user.unsignedviewer.UnSignedViewer;
 import application.users.user.Viewer;
 
 public class Application {

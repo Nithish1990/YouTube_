@@ -124,13 +124,27 @@ public class DatabaseManager {
     }
 
     public void deleteChannel(Channel channel) {
-//        ContentCreator contentCreator = (ContentCreator) database.getUserDB().get(channel.getOwnBy());
-//        contentCreator.removeChannel(channel);
-//        for(Thumbnail thumbnail: channel.getUploadedVideo()){
-//            database.getVideoBucket().remove(thumbnail.getUrl());
-//        }
+        ContentCreator contentCreator = (ContentCreator) database.getUserDB().get(channel.getOwnBy());
+        contentCreator.removeChannel(channel);
+        for(Thumbnail thumbnail: channel.getdisplayUploadedVideo()){
+            database.getVideoBucket().remove(thumbnail.getUrl());
+        }
+
+
+        // every member should deleted
+//        for(channel.getChannelMe
+//        mbers();
 //        database.getChannel().remove(channel.getChannelUrl());
-        System.out.println("UnderDevelopment");
+
+
+
+
+       contentCreator.getChannels().remove(channel.getChannelUrl());
+       if(contentCreator.getChannels().isEmpty()){
+           SignedViewer signedViewer = new SignedViewer(contentCreator);
+           Application.getApplication().setCurrentUser(signedViewer);
+           addUser(signedViewer);
+       }
     }
 
     public int getMinWithdrawAmount() {
@@ -149,5 +163,10 @@ public class DatabaseManager {
 
     public void deleteRequest(String channelURL) {
         database.getMonetizationRequest().remove(channelURL);
+    }
+
+    public void deleteVideo(String videoUrl,String channelURL,Thumbnail thumbnail) {
+        database.getVideoBucket().remove(videoUrl);
+        database.getChannel().get(channelURL).getdisplayUploadedVideo().remove(thumbnail);
     }
 }

@@ -115,7 +115,10 @@ public class EditPageController implements Controller{
         editPage.displayMember(moderator,editor,channelManager);
     }
     private String getChannelName(String channelURL){
-        return Application.getApplication().getDatabaseManager().getChannel().get(channelURL).getChannelName();
+        try {
+            return Application.getApplication().getDatabaseManager().getChannel().get(channelURL).getChannelName();
+        }catch (NullPointerException e){}
+        return "";
     }
     private void togglePrime(boolean prime,SignedViewer viewer){
         if (editPage.askConfirmation() == 1) {

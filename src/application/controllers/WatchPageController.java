@@ -28,19 +28,22 @@ public class WatchPageController implements Controller {
             videoPlayer.playVideo(video, isUserLikedTheVideo(video.getVideoUrl()),
                     isUserDislikedTheVideo(video.getVideoUrl()), isUserSubscribed(channel)
                     , channel.getChannelName(), channel.getSubscribersCount());
-                    editOption(channel);
+                    option(channel);
         }
         loop = true;
         addViews(video, channel);
     }
 
-    public void editOption(Channel channel) {
-        watchPage.display(video, isUserSubscribed(channel));
-        if (Application.getCurrentUser().getUserType() != UserType.UN_SIGNED) {
-            SignedViewer viewer = (SignedViewer) Application.getCurrentUser();
+    public void option(Channel channel) {
+        Viewer viewer1 = Application.getCurrentUser();
+        watchPage.display(video, isUserSubscribed(channel),isOwner(channel.getChannelUrl()));
+        if (viewer1.getUserType() != UserType.UN_SIGNED) {
+            SignedViewer viewer = (SignedViewer) viewer1;
             Member member = viewer.getMemberInChannels().getOrDefault(channel.getChannelUrl(), null);
-            if ((member != null && member.getMemberType() != MemberType.MODERATOR)) {
-                int userInput = watchPage.displayEditOption();
+            if (member != null){
+            if(member.getMemberType() == MemberType.EDITOR) {
+                watchPage.displayEditOption();
+                int userInput = watchPage.getInput();
                 switch (userInput) {
                     case 8:
                         video.setVideoTitle(watchPage.getDetail("Enter New Name"));
@@ -50,9 +53,29 @@ public class WatchPageController implements Controller {
                         break;
                     default:
                         commonOption(channel, userInput);
-                }
+                    }
                 Application.getApplication().getDatabaseManager().addVideo(video);
-            } else {
+                }
+            else if(member.getMemberType() == MemberType.CHANNEL_MANAGER){
+                watchPage.displayEditOption();
+                watchPage.displayDeleteOption();
+                int userInput = watchPage.getInput();
+                switch (userInput) {
+                    case 8:
+                        video.setVideoTitle(watchPage.getDetail("Enter New Name"));
+                        break;
+                    case 9:
+                        video.setDescription(watchPage.getDetail("Enter Description"));
+                        break;
+                    case 10:
+                        Application.getApplication().getDatabaseManager().deleteVideo(video.getVideoUrl(),channel.getChannelUrl(),video.getThumbnail());
+                        Application.getApplication().run();
+                        break;
+                    default:
+                        commonOption(channel, userInput);
+                }
+            }
+            }else {
                 //signed but not a member
                 commonOption(channel, watchPage.getInput());
             }
@@ -100,15 +123,15 @@ public class WatchPageController implements Controller {
         switch (viewer.getUserType()) {
             case UN_SIGNED:
                 login();
+                subscribe(channel);
                 break;
             case SIGNED:
-//                SignedViewer signedViewer = ((SignedViewer) Application.getCurrentUser());
                 subscribe((SignedViewer)viewer ,channel);
-                break;
             case CONTENT_CREATOR:
-                if(((ContentCreator)viewer).getChannels().contains(channel.getChannelUrl()) == false){
-                    subscribe((SignedViewer) viewer,channel);
+                if(((ContentCreator)viewer).getChannels().contains(channel.getChannelUrl()) == false) {
+                    subscribe((SignedViewer) viewer, channel);
                 }
+                break;
             case ADMIN:
                 subscribe((SignedViewer) viewer,channel);
                 break;
@@ -265,5 +288,12 @@ public void playAds(){//code is redundant else
     private void setDislikeForUser(boolean bool,String videoUrl){
         ((SignedViewer) Application.getCurrentUser()).getDislikedVideo().put(videoUrl, bool);
     }
-
+    private boolean isOwner(String channelURL){
+        boolean isOwner = false;
+        if(Application.getCurrentUser().getUserType() == UserType.CONTENT_CREATOR){
+            ContentCreator contentCreator = (ContentCreator) Application.getCurrentUser();
+            isOwner = contentCreator.getChannels().contains(channelURL);
+        }
+        return isOwner;
+    }
 }

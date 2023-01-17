@@ -46,14 +46,14 @@ public class ChannelPage extends Page{
         System.out.println("Oops you didn't login ");
         return CustomScanner.scanInt("Enter 1 to Login");
     }
-    public void uploadedVideo(Channel channel){
+    public void displayUploadedVideo(Channel channel){
         int i = 1;
-        for(Thumbnail thumbnail:channel.getUploadedVideo()){
+        for(Thumbnail thumbnail:channel.getdisplayUploadedVideo()){
             System.out.println(i+++" "+thumbnail.getVideoTitle());
         }
         line();
     }
-    public void uploadedVideo(){
+    public void displayUploadedVideo(){
         System.out.println("No video uploaded");
         line();
     }

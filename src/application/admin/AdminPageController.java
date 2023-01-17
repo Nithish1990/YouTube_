@@ -5,7 +5,7 @@ import application.controllers.ChannelPageController;
 import application.controllers.Controller;
 import application.pages.AdminPage;
 import application.users.channel.Channel;
-import application.users.user.UnSignedViewer;
+import application.users.user.unsignedviewer.UnSignedViewer;
 import application.video.Advertisement;
 
 import java.util.List;

@@ -3,7 +3,7 @@ package application.controllers;
 import application.Application;
 import application.database.Authenticator;
 import application.pages.LoginPage;
-import application.users.user.UnSignedViewer;
+import application.users.user.unsignedviewer.UnSignedViewer;
 import application.users.user.Viewer;
 import application.utilities.constant.user.types.UserType;
 

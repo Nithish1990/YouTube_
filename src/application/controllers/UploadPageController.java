@@ -54,7 +54,7 @@ public class UploadPageController implements Controller{
             String details[] = uploadPage.getTitle();
             Video video = new Video(details[0],contentCreator.getCurrentChannel().getChannelUrl(),contentCreator.getCurrentChannel().getChannelName(),details[1]);
             Channel channel = contentCreator.getCurrentChannel();
-            channel.getUploadedVideo().add(video.getThumbnail());
+            channel.getdisplayUploadedVideo().add(video.getThumbnail());
             sendNotification(channel,video.getThumbnail());
             Application.getApplication().getDatabaseManager().addVideo(video);
     }

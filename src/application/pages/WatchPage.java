@@ -11,10 +11,15 @@ import java.util.Scanner;
 public class WatchPage extends  Page{
 
 
-    public void display(Video video,boolean isSubscribed){
+    public void display(Video video,boolean isSubscribed,boolean isOwner){
         line();
-        System.out.println(("Enter\n1 Pause/Play\n2 Like:"+video.getLikesCount()+"\n3 DisLike: "+
-                video.getDislikesCount()+"\n4 Share "+(isSubscribed?"\n5 UnSubscribe":"\n5 Subscribe") +"\n6 Comments: "+video.getComments().size()+"\n7 Visit Channel"));
+        System.out.println("Enter\n1 Pause/Play\n2 Like:"+video.getLikesCount()+"\n3 DisLike: "+
+                video.getDislikesCount()+"\n4 Share ");
+        if(isOwner == false) {
+            System.out.println((isSubscribed ? "\n5 UnSubscribe" : "\n5 Subscribe"));
+        }
+        System.out.println("\n6 Comments: "+video.getComments().size()+"\n7 Visit Channel");
+
     }
 
     public int  showWarning() {
@@ -61,10 +66,9 @@ public class WatchPage extends  Page{
     public int displayCommentDeletion() {
         return CustomScanner.scanInt("Enter Position To Delete Chat Or 0 To Go Back");
     }
-    public int displayEditOption(){
+    public void displayEditOption() {
         System.out.println("8 To Edit Title");
         System.out.println("9 To Edit Description");
-        return CustomScanner.scanIntLine();
     }
 
     public String getDetail(String enter_description) {
@@ -73,5 +77,9 @@ public class WatchPage extends  Page{
 
     public int getInput() {
         return CustomScanner.scanIntLine();
+    }
+
+    public void displayDeleteOption() {
+        System.out.println("10 Delete Video");
     }
 }
