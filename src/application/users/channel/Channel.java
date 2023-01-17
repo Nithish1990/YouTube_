@@ -3,10 +3,8 @@ package application.users.channel;
 import application.users.user.SignedViewer;
 import application.utilities.constant.category.Category;
 import application.video.Thumbnail;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
 
 import application.users.channel.Member;
 
@@ -26,7 +24,7 @@ public class Channel {
     private List<Thumbnail> uploadedVideo;
     private Map<String,Member> channelMembers; // String is url of the user
     private List<SignedViewer>subscribers;
-
+    private Stack<WithdrawHistory>withdrawHistories;
     public Channel(String channelName, String channelUrl,String ownBy) {
         this.channelName = channelName;
         this.channelUrl = channelUrl;
@@ -41,6 +39,7 @@ public class Channel {
         this.totalViews = 0;
         this.isAppliedForMonetization = false;
         this.ownBy = ownBy;
+        this.withdrawHistories = new Stack<>();
     }
     public Channel(String channelName, String channelUrl,String about,String ownBy) {
         this.channelName = channelName;
@@ -156,5 +155,11 @@ public class Channel {
 
     public String getOwnBy() {
         return ownBy;
+    }
+
+
+
+    public Stack<WithdrawHistory> getWithdrawHistories() {
+        return withdrawHistories;
     }
 }

@@ -2,7 +2,7 @@ package application.pages;
 
 import application.users.user.SignedViewer;
 import application.users.user.Viewer;
-import application.controllers.Authenticator;
+import application.database.Authenticator;
 import application.utilities.authentication.Validation;
 import application.utilities.helper.CustomScanner;
 
@@ -33,11 +33,11 @@ public class LoginPage{
     }
     public int displayOption(Viewer viewer){
         System.out.println("User name :"+((SignedViewer)viewer).getUserName());
-        return CustomScanner.scanInt("Enter 1 to logout");
+        return CustomScanner.scanInt("1 To Logout\n2 Switch Account");
     }
 
     public void showWarningSignIn() {
-        System.out.println("User already Exist");
+        System.out.println("User Already Exist");
     }
 
     public void showWarningLogin() {

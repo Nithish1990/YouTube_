@@ -3,7 +3,6 @@ package application.controllers;
 import application.Application;
 import application.admin.SystemAdmin;
 import application.pages.ChannelPage;
-import application.pages.HomePage;
 import application.users.channel.Channel;
 import application.users.channel.ContentCreator;
 import application.users.channel.Member;
@@ -37,6 +36,9 @@ public class ChannelPageController{
     public void display(Channel channel){
         if(Application.getCurrentUser().getUserType() == UserType.CONTENT_CREATOR){
             if(((ContentCreator)Application.getCurrentUser()).getChannels().contains(channel.getChannelUrl())){
+                /*
+                 Owner Setting
+                 */
                 int userInput = channelPage.pageOwnerOption((ContentCreator) Application.getCurrentUser());
                 if(userInput == 1)
                     seeVideo(channel);
@@ -82,7 +84,8 @@ public class ChannelPageController{
                         }
                         break;
                 }
-            }else {
+            }
+            else {
                 commonOption(channel);
             }
         }
@@ -91,7 +94,7 @@ public class ChannelPageController{
         }
     }
 
-    private void memberMenu(Channel channel) {
+    public void memberMenu(Channel channel) {
         List<Member>moderator = new ArrayList<>();
         List<Member>editor = new ArrayList<>();
         List<Member>channelManager = new ArrayList<>();
@@ -124,10 +127,7 @@ public class ChannelPageController{
         }
     }
 
-    public ChannelPageController(){
-        channelPage = new ChannelPage();
-        watchPageController  = new WatchPageController();
-    }
+
     private void commonOption(Channel channel){
         channelPage.commonOption();
         switch (channelPage.getInput()){
@@ -155,7 +155,6 @@ public class ChannelPageController{
 
     private void display(SystemAdmin admin,Channel channel){
 
-
         //admin Menu
         channelPage.displayAdminOption();
        switch (channelPage.getInput()){
@@ -173,19 +172,30 @@ public class ChannelPageController{
            case 2:
                Application.getApplication().getDatabaseManager().deleteChannel(channel);
                break;
+           case 3:
+                   channel.setAppliedForMonetization(false);
+                   channel.setMonetized(true);
+                   Application.getApplication().getDatabaseManager().deleteRequest(channel.getChannelUrl());
+               break;
+           case 4:
+                    Application.getApplication().getDatabaseManager().deleteRequest(channel.getChannelUrl());
+                   channel.setAppliedForMonetization(false);
+                   channel.setMonetized(false);
+               break;
+
         }
 
-        if(channel.isAppliedForMonetization()) {
-            if(channelPage.getConfirmationForApproval() == 1){
-                channel.setAppliedForMonetization(false);
-                channel.setMonetized(true);
-            }else {
-                channel.setAppliedForMonetization(false);
-            }
-        }
+//        if(channel.isAppliedForMonetization()) {
+//            if(channelPage.getConfirmationForApproval() == 1){
+//                channel.setAppliedForMonetization(false);
+//                channel.setMonetized(true);
+//            }else {
+//                channel.setAppliedForMonetization(false);
+//            }
+//        }
     }
 
-    private void editPage(Channel channel){
+    public void editPage(Channel channel){
         switch (channelPage.displayEditOption()) {
             case 1:
                 // name
@@ -267,5 +277,12 @@ public class ChannelPageController{
                 editPage(channel);
                 break;
         }
+    }
+
+
+
+    public ChannelPageController(){
+        channelPage = new ChannelPage();
+        watchPageController  = new WatchPageController();
     }
 }

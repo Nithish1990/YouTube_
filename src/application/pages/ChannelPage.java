@@ -79,6 +79,8 @@ public class ChannelPage extends Page{
     public void displayAdminOption() {
         System.out.println("1 View Video");
         System.out.println("2 Delete Channel");
+        System.out.println("3 Enable Monetization");
+        System.out.println("4 Disable Monetization");
     }
 
     public int getDeleteConfirmation() {
@@ -86,7 +88,8 @@ public class ChannelPage extends Page{
     }
 
     public int getConfirmationForApproval() {
-        return  CustomScanner.scanInt("Enter To Accept Monetization");
+        System.out.println("Enter 3 To Accept Monetization");
+        return  CustomScanner.scanInt("Enter 4 To Reject Monetization");
     }
     public void displayUserNotFound(){
         System.out.println("User EmailID Is Wrong Else");

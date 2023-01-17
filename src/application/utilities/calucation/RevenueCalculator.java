@@ -1,11 +1,11 @@
 package application.utilities.calucation;
 
 public class RevenueCalculator{
-    public static int calculate(){
+    public static int calculate(int viewCount,int subscribeCount){
 
 
 
-        int revenue = 0;
+        int revenue = viewCount * (subscribeCount*2);
         return revenue;
     }
 }

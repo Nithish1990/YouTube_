@@ -15,6 +15,7 @@ public class SettingPage extends Page {
         System.out.println("\t"+"Setting Page");
         displayName(viewer.getUserName());
         option();
+
         int userInput = CustomScanner.scanInt();
         line();
         return userInput;
@@ -48,7 +49,7 @@ public class SettingPage extends Page {
         int i = 1;
         System.out.println("List Of Channels"+channels);
         for(Channel channel:channels){
-            System.out.println("Channel Name "+channel.getChannelName() + " "+channel.getSubscribersCount());
+            System.out.println(i+++" Channel Name "+channel.getChannelName() + " "+channel.getSubscribersCount());
         }
        int userInput =  CustomScanner.scanInt("Enter Position Of The Channel To Set Current Channel");
         line();
@@ -65,5 +66,18 @@ public class SettingPage extends Page {
 
     public void showWarning() {
         System.out.println("No Channel Found");
+    }
+
+
+    public void displayMember(List<String> moderator, List<String> editor, List<String> channelManager) {
+        line();
+        System.out.println("\t Member");
+        System.out.println("Moderator");
+        for(String channelName:moderator) System.out.print(channelName+" ");
+        System.out.println("\nEditor");
+        for(String channelName:editor) System.out.print(channelName+" ");
+        System.out.println("\nChannelManager");
+        for(String channelName:channelManager) System.out.print(channelName+" ");
+        line();
     }
 }

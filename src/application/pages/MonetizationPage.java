@@ -12,10 +12,9 @@ import java.util.List;
 
 public class MonetizationPage extends  Page{
 
-    public int displayWithdrawOption(int amount,String channelName) {
-        System.out.println("\t"+ channelName);
-        System.out.println("The amount you earn: $"+amount );
-        return CustomScanner.scanInt("To Withdraw press 1");
+    public int displayWithdrawOption(int amount,boolean isMinWithdrawal) {
+        System.out.println("The amount you earn: $"+ Colors.addColor((isMinWithdrawal?Colors.GREEN:Colors.RED),amount+""));
+        return CustomScanner.scanInt(isMinWithdrawal?"To Withdraw press 1":"To Go Back Press 1");
     }
 
     public void displayPaymentSuccess() {
@@ -43,15 +42,15 @@ public class MonetizationPage extends  Page{
 
     public void displayRevenue(String ownerName,String channelName, List<Channel> channels) {
         System.out.println("\t Owner Name: "+ownerName);
+        System.out.println("\tCurrent Channel "+channelName);
         for(Channel channel:channels){
-            System.out.println("Channel name: "+channel.getChannelName() + ", Subscribe Count: "+channel.getSubscribersCount()+", Total Views: "+ channel.getTotalViews());
+            System.out.println("Channel name: "+channel.getChannelName() + ", Subscribe Count: "+channel.getSubscribersCount()+", Total Views: "+ channel.getTotalViews()+" TotalMoney Earned: "+channel.getAmountEarned());
             System.out.println("Video Uploaded");
             for(Thumbnail thumbnail : channel.getUploadedVideo()){
                 System.out.println("Video Title: "+thumbnail.getVideoTitle()+" Views: "+thumbnail.getViews());
             }
         }
         line();
-        System.out.println("\tCurrent Channel "+channelName);
     }
 
 }

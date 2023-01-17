@@ -38,12 +38,12 @@ public class SearchPageController implements Controller{
                 Application.getCurrentUser().getHistory().push(thumbnails.get(i));
                 Controller watchPageController = new WatchPageController();
                 watchPageController.renderPage();
-            }else if(i< resultChannel.size() - thumbnails.size()){
-                Channel selectedChannel = resultChannel.get(thumbnails.size()-i);
+            }else if(i - thumbnails.size()< resultChannel.size() ){
+                Channel selectedChannel = resultChannel.get(i-thumbnails.size());
                 ChannelPageController controller = new ChannelPageController();
                 controller.renderPage(selectedChannel);
             }else{
-                searchPage.showWarning();
+                searchPage.displayIndexOfOutBound();
                 renderPage();
             }
         }

@@ -20,18 +20,10 @@ public class HomePageController implements Controller{
             int userInput = display(Application.getCurrentUser());
             switch (userInput) {
                 case 1://select video
-                    userInput = (homePage.getVideoPosition());
-                    Thumbnail selectedThumbnail = getVideo(getThumbnails(),userInput);
-                    if(selectedThumbnail == null)break;
-                    if(watchPageController == null)
-                        watchPageController = new WatchPageController();
-                    Application.getCurrentUser().getHistory().push(selectedThumbnail);
-                    watchPageController.renderPage();
+                    selectVideo();
                     break;
                 case 2://search
-                    if(searchBarController == null)
-                        searchBarController = new SearchPageController();
-                    searchBarController.renderPage();
+                    search();
                     break;
                 case 3:// uploading
                     if(uploadPageController == null)
@@ -44,10 +36,9 @@ public class HomePageController implements Controller{
                     settingPageController.renderPage();
                      break;
                 default:
-                    userInput = CustomScanner.scanInt("Really want to exit press 1");
-                    if(userInput == 1)
+                    if(CustomScanner.scanInt("Really Want To Quit Enter 1")==1){
                         return;
-
+                    }
             }
         }
     }
@@ -84,5 +75,20 @@ public class HomePageController implements Controller{
                 break;
         }
         return userInput;
+    }
+
+    public void selectVideo(){
+        int userInput = (homePage.getVideoPosition());
+        Thumbnail selectedThumbnail = getVideo(getThumbnails(),userInput);
+        if(selectedThumbnail == null)return;
+        if(watchPageController == null)
+            watchPageController = new WatchPageController();
+        Application.getCurrentUser().getHistory().push(selectedThumbnail);
+        watchPageController.renderPage();
+    }
+    private void search(){
+        if(searchBarController == null)
+            searchBarController = new SearchPageController();
+        searchBarController.renderPage();
     }
 }

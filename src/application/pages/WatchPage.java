@@ -14,7 +14,7 @@ public class WatchPage extends  Page{
     public void display(Video video,boolean isSubscribed){
         line();
         System.out.println(("Enter\n1 Pause/Play\n2 Like:"+video.getLikesCount()+"\n3 DisLike: "+
-                video.getDislikesCount()+"\n4 Share "+(isSubscribed?"\n5 UnSubscribe":"\n5 Subscribe") +"\n6 Comments: "+video.getComments().size()+"\n7 Vist Channel"));
+                video.getDislikesCount()+"\n4 Share "+(isSubscribed?"\n5 UnSubscribe":"\n5 Subscribe") +"\n6 Comments: "+video.getComments().size()+"\n7 Visit Channel"));
     }
 
     public int  showWarning() {

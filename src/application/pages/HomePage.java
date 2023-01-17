@@ -13,11 +13,10 @@ public class HomePage extends Page{
         System.out.println("2 Search");
         System.out.println("3 Upload page");
         System.out.println("9 Settings");
-        System.out.println("Any other to exit(int)");
     }
     private void display(List<Thumbnail> thumbnails){
         int i = 1;
-        System.out.println("Home page");
+
         for(Thumbnail thumbnail1:thumbnails){
             if(thumbnail1 !=null)
             System.out.println(i+" "+thumbnail1.getVideoTitle()+" Views: "+thumbnail1.getViews());
@@ -30,8 +29,8 @@ public class HomePage extends Page{
     public int display(String name,List<Thumbnail> thumbnails){
         line();
         displayName(name);
-
-        System.out.println("Videos:");
+        System.out.println("Home page");
+        System.out.println(thumbnails.isEmpty()?"Nom Video Uploaded":"Videos:");
         display(thumbnails);
         line();
         option();

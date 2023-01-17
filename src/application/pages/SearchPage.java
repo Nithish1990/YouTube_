@@ -32,7 +32,7 @@ public class SearchPage extends Page{
         int i = 1;
         System.out.println(thumbnails.isEmpty()?"No Video Found":"Video related to query ");
         for(Thumbnail thumbnail:thumbnails){
-            System.out.println("    "+i+++" Video Title"+thumbnail.getVideoTitle() + " Views:"+thumbnail.getViews());
+            System.out.println("    "+i+++" Video Title: "+thumbnail.getVideoTitle() + " Views:"+thumbnail.getViews());
         }
         iterateChannels(channels,i);
     }

@@ -1,18 +1,16 @@
 package application.controllers;
 
 import application.Application;
+import application.admin.AdminPageController;
 import application.pages.SettingPage;
 import application.users.channel.Channel;
 import application.users.channel.ContentCreator;
 import application.users.user.SignedViewer;
 import application.users.user.Viewer;
-import application.utilities.Colors;
-import application.utilities.calucation.RevenueCalculator;
 import application.utilities.generator.Generator;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 public class SettingPageController implements Controller {
     private SettingPage settingPage;
@@ -31,7 +29,7 @@ public class SettingPageController implements Controller {
                 Controller adminPageController = new AdminPageController();
                 adminPageController.renderPage();
                 break;
-            default:
+            case CONTENT_CREATOR:
                 settingsContentViewer(settingPage.display(((ContentCreator) viewer)));
                 break;
         }
@@ -49,9 +47,8 @@ public class SettingPageController implements Controller {
             case 2://edit page
                 editPageController.renderPage();
                 break;
-            default:
-                return;
         }
+
     }
     private void settingsContentViewer(int userInput) {
         ContentCreator contentCreator = (ContentCreator)Application.getCurrentUser();

@@ -1,4 +1,4 @@
-package application.controllers;
+package application.database;
 import application.Application;
 import application.users.channel.Channel;
 import application.users.channel.ContentCreator;

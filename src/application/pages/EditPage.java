@@ -91,4 +91,16 @@ public class EditPage extends Page {
     public int askConfirmation() {
         return CustomScanner.scanInt("Do You Want Change The Plan Press 1 To Yes");
     }
+
+    public void displayMember(List<String> moderator, List<String> editor, List<String> channelManager) {
+        line();
+        System.out.println("\t Member");
+        System.out.println("Moderator");
+        for(String channelName:moderator) System.out.print(channelName+" ");
+        System.out.println("\nEditor");
+        for(String channelName:editor) System.out.print(channelName+" ");
+        System.out.println("\nChannelManager");
+        for(String channelName:channelManager) System.out.print(channelName+" ");
+        line();
+    }
 }

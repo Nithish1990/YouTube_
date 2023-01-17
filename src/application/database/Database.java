@@ -22,6 +22,7 @@ class Database {
 
     private int minSubscribeForMonetization;
     private int minViewCountForMonetization;
+    private int minWithdrawAmount;
     //Singleton
     private static Database database;
     private Database(){
@@ -45,21 +46,7 @@ class Database {
 
 
     // why all r no modifiers because only db-Manager should have access
-    int getNumberOfTrendingVideos() {
-        return numberOfTrendingVideos;
-    }
 
-    void setNumberOfTrendingVideos(int numberOfTrendingVideos) {
-        this.numberOfTrendingVideos = numberOfTrendingVideos;
-    }
-
-    Thumbnail[] getTrendingVideo() {
-        return trendingVideo;
-    }
-
-    void setTrendingVideo(Thumbnail[] trendingVideo) {
-        this.trendingVideo = trendingVideo;
-    }
 
     Map<String,SignedViewer> getUserDB() {
         return userDB;
@@ -101,7 +88,37 @@ class Database {
         return minViewCountForMonetization;
     }
 
-    public void setMinViewCountForMonetization(int minViewCountForMonetization) {
+    void setMinViewCountForMonetization(int minViewCountForMonetization) {
         this.minViewCountForMonetization = minViewCountForMonetization;
     }
+
+
+    int getMinWithdrawAmount() {
+        return minWithdrawAmount;
+    }
+    void setMinWithdrawAmount(int minWithdrawAmount) {
+        this.minWithdrawAmount = minWithdrawAmount;
+    }
+
+
+
+
+    /*
+
+        int getNumberOfTrendingVideos() {
+        return numberOfTrendingVideos;
+    }
+
+    void setNumberOfTrendingVideos(int numberOfTrendingVideos) {
+        this.numberOfTrendingVideos = numberOfTrendingVideos;
+    }
+
+    Thumbnail[] getTrendingVideo() {
+        return trendingVideo;
+    }
+
+    void setTrendingVideo(Thumbnail[] trendingVideo) {
+        this.trendingVideo = trendingVideo;
+    }
+     */
 }

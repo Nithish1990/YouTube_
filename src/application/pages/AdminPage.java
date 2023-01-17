@@ -1,7 +1,9 @@
 package application.pages;
 
 import application.users.channel.Channel;
+import application.utilities.generator.Generator;
 import application.utilities.helper.CustomScanner;
+import application.video.Advertisement;
 
 import java.util.List;
 
@@ -29,5 +31,22 @@ public class AdminPage extends Page{
 
     public void displayNoPending() {
         System.out.println("No Request is there...!");
+    }
+
+    public Advertisement createAdvertisement() {
+        String name = CustomScanner.scanString("Enter Name Of The Advertisement");
+        int time = CustomScanner.scanInt("Enter Duration Of The Advertisement");
+        return new Advertisement(name, Generator.urlGenerate(name),time);
+    }
+
+    public int displayMonetizationProperty(int minSubscribeCount,int minViewCount,int minWithdraw) {
+        System.out.println("1 Minimum Subscribe Count :"+minSubscribeCount);
+        System.out.println("2 Minimum Views Count :"+minViewCount);
+        System.out.println("3 Minimum Withdraw Count :$"+minWithdraw);
+        return CustomScanner.scanInt("To Change Any Enter Position");
+    }
+
+    public int getNewMinCount(String property) {
+        return CustomScanner.scanInt("Enter new Minimum Count "+property);
     }
 }

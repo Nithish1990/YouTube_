@@ -53,8 +53,9 @@ public class CustomScanner extends Page {
 
     public static int scanIntLine(String s) {
         System.out.println(s);
+        int k =  scanInt();
         line();
-        return scanInt();
+        return k;
     }
     public static int scanIntLine(){
         line();

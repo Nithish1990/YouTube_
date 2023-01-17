@@ -1,9 +1,11 @@
 package application.controllers;
 
 import application.Application;
+import application.database.Authenticator;
 import application.pages.EditPage;
 import application.users.channel.Channel;
 import application.users.channel.ContentCreator;
+import application.users.channel.Member;
 import application.users.user.SignedViewer;
 import application.utilities.constant.user.types.UserType;
 
@@ -17,30 +19,30 @@ public class EditPageController implements Controller{
     @Override
     public void renderPage() {
         SignedViewer viewer = (SignedViewer) Application.getCurrentUser();
-        if(viewer.getUserType() != UserType.UN_SIGNED){
-            if(viewer.isPrimeUser() == false) {
-                editPage.display(viewer,getViewerSubscribedChannel(viewer));
-                int userInput = editPage.toEnablePrime();//naming is not gud
-                if(userInput != 5)
-                    edit(viewer,userInput);
-                else{
-                    if(editPage.askConfirmation() == 1){
-                        viewer.setPrimeUser(true);
-                    }
+        switch (viewer.getUserType()) {
+            case SIGNED:
+                editPage.display(viewer, getViewerSubscribedChannel(viewer));
+                memberMenu(viewer);
+                if (viewer.isPrimeUser() == false) {
+                    int userInput = editPage.toEnablePrime();//naming is not gud
+                    if (userInput != 5)
+                        edit(viewer, userInput);
+                    else
+                        togglePrime(true,viewer);
+
+                } else {
+//                    editPage.display(viewer, getViewerSubscribedChannel(viewer));
+                    int userInput = editPage.toDisablePrime();//naming is not gud
+                    if (userInput != 5)
+                        edit(viewer, userInput);
+                    else
+                        togglePrime(false,viewer);
                 }
-            }else{
-                editPage.display(viewer,getViewerSubscribedChannel(viewer));
-                int userInput = editPage.toDisablePrime();//naming is not gud
-                if(userInput!=5)
-                    edit(viewer,userInput);
-                else{
-                    if(editPage.askConfirmation() == 1){
-                        viewer.setPrimeUser(false);
-                    }
-                }
-            }
-        }else{
-            editPage.display((ContentCreator)viewer);
+                break;
+            case CONTENT_CREATOR:
+                editPage.display((ContentCreator) viewer);
+                memberMenu(viewer);
+                break;
         }
     }
 
@@ -92,5 +94,33 @@ public class EditPageController implements Controller{
             }
         }
         return channels;
+    }
+    public void memberMenu(SignedViewer signedViewer) {
+        List<String> moderator = new ArrayList<>();
+        List<String> editor = new ArrayList<>();
+        List<String> channelManager = new ArrayList<>();
+        for (Map.Entry<String, Member> map : signedViewer.getMemberInChannels().entrySet()) {
+            switch (map.getValue().getMemberType()) {
+                case MODERATOR:
+                    moderator.add(getChannelName(map.getValue().getChannelURL()));
+                    break;
+                case EDITOR:
+                    editor.add(getChannelName(map.getValue().getChannelURL()));
+                    break;
+                case CHANNEL_MANAGER:
+                    channelManager.add(getChannelName(map.getValue().getChannelURL()));
+                    break;
+            }
+        }
+        editPage.displayMember(moderator,editor,channelManager);
+    }
+    private String getChannelName(String channelURL){
+        return Application.getApplication().getDatabaseManager().getChannel().get(channelURL).getChannelName();
+    }
+    private void togglePrime(boolean prime,SignedViewer viewer){
+        if (editPage.askConfirmation() == 1) {
+            viewer.setPrimeUser(prime);
+        }
+
     }
 }

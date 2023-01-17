@@ -2,6 +2,7 @@ package application.controllers;
 
 import application.Application;
 import application.admin.SystemAdmin;
+import application.database.Authenticator;
 import application.pages.UploadPage;
 import application.users.channel.Channel;
 import application.users.channel.ContentCreator;

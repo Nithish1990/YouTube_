@@ -18,12 +18,14 @@ import java.util.List;
 import java.util.Map;
 
 public class DatabaseManager {
+
     private Database database;
     public DatabaseManager(){
         database = Database.setUpDatabase();
         testing();
         addAdmin();
         addAds();
+        database.setMinWithdrawAmount(1);
     }
 
     public Map<String, SignedViewer> accessViewerDatabase(){
@@ -129,5 +131,23 @@ public class DatabaseManager {
 //        }
 //        database.getChannel().remove(channel.getChannelUrl());
         System.out.println("UnderDevelopment");
+    }
+
+    public int getMinWithdrawAmount() {
+       return database.getMinWithdrawAmount();
+    }
+
+    public void setMinSubscribeForMonetization(int count){
+        database.setMinSubscribeForMonetization(count);
+    }
+    public void setMinViewCountForMonetization(int count){
+        database.setMinViewCountForMonetization(count);
+    }
+    public void setMinWithdrawAmount(int count){
+        database.setMinWithdrawAmount(count);
+    }
+
+    public void deleteRequest(String channelURL) {
+        database.getMonetizationRequest().remove(channelURL);
     }
 }
