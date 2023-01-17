@@ -125,4 +125,19 @@ public class ChannelPage extends Page{
     public void showWarning(String str) {
         System.out.println(str);
     }
+
+    public void displayUploadButton() {
+
+        //
+    }
+
+    public void displayMonetizationOption() {
+
+        //
+    }
+
+    public void displayDeleteOption() {
+
+        //
+    }
 }

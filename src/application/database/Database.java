@@ -8,7 +8,7 @@ import application.video.Video;
 
 import java.util.*;
 
-class Database {
+final class Database {
 
     private int numberOfTrendingVideos;
     private Thumbnail[] trendingVideo;
@@ -68,7 +68,7 @@ class Database {
         return channel;
     }
 
-    public List<String> getMonetizationRequest() {
+     List<String> getMonetizationRequest() {
         return monetizationRequest;
     }
 

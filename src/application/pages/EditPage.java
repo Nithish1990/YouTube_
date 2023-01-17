@@ -38,7 +38,7 @@ public class EditPage extends Page {
         line();
         return userInput;
     }
-    public int toEnablePrime(){
+    public int enablePrime(){
         System.out.println("Non Prime");
         line();
         options();
@@ -47,7 +47,7 @@ public class EditPage extends Page {
         line();
         return userInput;
     }
-    public int toDisablePrime(){
+    public int disablePrime(){
         System.out.println("Prime user");
         line();
         options();

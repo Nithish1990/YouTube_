@@ -1,6 +1,7 @@
-package application.controllers;
+package application.controllers.channelpagecontroller;
 
 import application.Application;
+import application.controllers.WatchPageController;
 import application.pages.ChannelPage;
 import application.users.channel.Channel;
 import application.users.channel.ContentCreator;
@@ -24,7 +25,9 @@ public class ChannelPageController{
     private ChannelPage channelPage;
     private WatchPageController watchPageController;
 
+    private Channel currentChannel;
     public void renderPage(Channel channel) {
+        currentChannel = channel;
         channelPage.displayChannelInfo(channel);
         channelPage.displayUploadedVideo(channel);
         if(Application.getCurrentUser().getUserType() != UserType.ADMIN)
@@ -291,5 +294,17 @@ public class ChannelPageController{
     public ChannelPageController(){
         channelPage = new ChannelPage();
         watchPageController  = new WatchPageController();
+    }
+
+    public void updateView() {
+
+
+//        aakn;
+    }
+    protected ChannelPage getChannelPage(){
+        return channelPage;
+    }
+    protected Channel getCurrentChannel(){
+        return currentChannel;
     }
 }

@@ -23,21 +23,14 @@ public class EditPageController implements Controller{
             case SIGNED:
                 editPage.display(viewer, getViewerSubscribedChannel(viewer));
                 memberMenu(viewer);
+                int userInput;
                 if (viewer.isPrimeUser() == false) {
-                    int userInput = editPage.toEnablePrime();//naming is not gud
-                    if (userInput != 5)
-                        edit(viewer, userInput);
-                    else
-                        togglePrime(true,viewer);
+                    userInput = editPage.enablePrime();
 
                 } else {
-//                    editPage.display(viewer, getViewerSubscribedChannel(viewer));
-                    int userInput = editPage.toDisablePrime();//naming is not gud
-                    if (userInput != 5)
-                        edit(viewer, userInput);
-                    else
-                        togglePrime(false,viewer);
+                    userInput = editPage.disablePrime();
                 }
+                edit(viewer,userInput);
                 break;
             case CONTENT_CREATOR:
                 editPage.display((ContentCreator) viewer);
@@ -54,6 +47,7 @@ public class EditPageController implements Controller{
 
     public void edit(SignedViewer viewer,int userInput){// total  method is wrong
         String name = viewer.getUserName(),password = viewer.getPassword(),dateOfBirth = viewer.getDataOfBirth(),phoneNumber = viewer.getUserPhoneNumber();
+        boolean isPrime = viewer.isPrimeUser();
         switch (userInput){
             case 1:
                 name = (editPage.getName());
@@ -67,6 +61,10 @@ public class EditPageController implements Controller{
             case 4:
                 phoneNumber = (editPage.getPhoneNumber());
                 break;
+            case 5:
+                if (editPage.askConfirmation() == 1)
+                    isPrime = !isPrime;
+                break;
         }
 
 //        Application.getApplication().getDatabaseManager().addUser();
@@ -76,6 +74,7 @@ public class EditPageController implements Controller{
         viewer.setPassword(password);
         viewer.setUserName(name);
         viewer.setDataOfBirth(dateOfBirth);
+        viewer.setPrimeUser(isPrime);
         Application.getApplication().getDatabaseManager().addUser(viewer);
     }
     private String editPassWord(SignedViewer viewer){
@@ -96,6 +95,8 @@ public class EditPageController implements Controller{
         return channels;
     }
     public void memberMenu(SignedViewer signedViewer) {
+
+        // to change implementation
         List<String> moderator = new ArrayList<>();
         List<String> editor = new ArrayList<>();
         List<String> channelManager = new ArrayList<>();
@@ -118,12 +119,6 @@ public class EditPageController implements Controller{
         try {
             return Application.getApplication().getDatabaseManager().getChannel().get(channelURL).getChannelName();
         }catch (NullPointerException e){}
-        return "";
-    }
-    private void togglePrime(boolean prime,SignedViewer viewer){
-        if (editPage.askConfirmation() == 1) {
-            viewer.setPrimeUser(prime);
-        }
-
+        return null;
     }
 }

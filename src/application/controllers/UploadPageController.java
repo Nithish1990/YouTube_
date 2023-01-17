@@ -36,7 +36,7 @@ public class UploadPageController implements Controller{
                 upload((ContentCreator) viewer);
         }
     }
-    private void upload(SignedViewer viewer){
+    public void upload(SignedViewer viewer){
         ContentCreator contentCreator = new ContentCreator(viewer);
         Channel channel  =  new Channel(viewer.getUserName(), Generator.urlGenerate(viewer.getUserName()),contentCreator.getUserEmailID());
         contentCreator.addChannel(channel.getChannelUrl());
@@ -50,7 +50,7 @@ public class UploadPageController implements Controller{
         uploadPage.displayWelcomeMessage();
         upload(contentCreator);
     }
-    private void upload(ContentCreator contentCreator){
+    public void upload(ContentCreator contentCreator){
             String details[] = uploadPage.getTitle();
             Video video = new Video(details[0],contentCreator.getCurrentChannel().getChannelUrl(),contentCreator.getCurrentChannel().getChannelName(),details[1]);
             Channel channel = contentCreator.getCurrentChannel();

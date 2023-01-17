@@ -1,6 +1,7 @@
 package application.controllers;
 
 import application.Application;
+import application.controllers.channelpagecontroller.ChannelPageController;
 import application.pages.WatchPage;
 import application.users.channel.Channel;
 import application.users.channel.ContentCreator;

@@ -1,7 +1,7 @@
 package application.admin;
 
 import application.Application;
-import application.controllers.ChannelPageController;
+import application.controllers.channelpagecontroller.ChannelPageController;
 import application.controllers.Controller;
 import application.pages.AdminPage;
 import application.users.channel.Channel;

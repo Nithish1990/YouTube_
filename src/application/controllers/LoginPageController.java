@@ -16,7 +16,8 @@ public class LoginPageController implements Controller{
 
     public void renderPage(){
         Viewer viewer = null;
-        if(Application.getCurrentUser().getUserType() == UserType.UN_SIGNED) {
+        switch (Application.getCurrentUser().getUserType()){
+            case UN_SIGNED:
             int userInput = loginPage.displayOption();
             switch (userInput) {
                 case 1:
@@ -32,7 +33,8 @@ public class LoginPageController implements Controller{
                 default:
                     break;
             }
-        }else{
+            break;
+            default:
             switch (loginPage.displayOption(Application.getCurrentUser())){
                 case 1:
                     Application.getApplication().setCurrentUser(new UnSignedViewer());
@@ -40,7 +42,6 @@ public class LoginPageController implements Controller{
                 case 2:
                     login();
                     break;
-
             }
         }
     }

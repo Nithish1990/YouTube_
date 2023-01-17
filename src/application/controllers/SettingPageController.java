@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SettingPageController implements Controller {
-    private SettingPage settingPage;
+    private final SettingPage settingPage;
     private Controller editPageController;
     public void renderPage() {
         Viewer viewer= Application.getCurrentUser();
