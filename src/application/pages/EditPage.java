@@ -3,7 +3,7 @@ package application.pages;
 import application.users.channel.Channel;
 import application.users.channel.ContentCreator;
 import application.users.user.SignedViewer;
-import application.utilities.authentication.Validation;
+import application.utilities.validation.Validation;
 import application.utilities.helper.CustomScanner;
 import application.video.Thumbnail;
 

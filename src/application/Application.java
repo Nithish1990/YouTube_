@@ -9,7 +9,7 @@ import application.users.user.Viewer;
 
 public class Application {
 
-    private DatabaseManager databaseManager;
+    private final DatabaseManager databaseManager;
     private Viewer currentUser;
 
 

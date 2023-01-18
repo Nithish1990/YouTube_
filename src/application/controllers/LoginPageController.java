@@ -1,11 +1,10 @@
 package application.controllers;
 
 import application.Application;
-import application.database.Authenticator;
+import application.database.authentication.Authenticator;
 import application.pages.LoginPage;
 import application.users.user.unsignedviewer.UnSignedViewer;
 import application.users.user.Viewer;
-import application.utilities.constant.user.types.UserType;
 
 public class LoginPageController implements Controller{
 
@@ -15,7 +14,7 @@ public class LoginPageController implements Controller{
 
 
     public void renderPage(){
-        Viewer viewer = null;
+        Viewer viewer;
         switch (Application.getCurrentUser().getUserType()){
             case UN_SIGNED:
             int userInput = loginPage.displayOption();

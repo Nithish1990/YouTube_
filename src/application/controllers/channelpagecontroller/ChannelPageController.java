@@ -1,6 +1,9 @@
 package application.controllers.channelpagecontroller;
 
 import application.Application;
+import application.controllers.Controller;
+import application.controllers.buttons.Button;
+import application.controllers.buttons.SubscribeButton;
 import application.controllers.WatchPageController;
 import application.pages.ChannelPage;
 import application.users.channel.Channel;
@@ -23,11 +26,9 @@ public class ChannelPageController{
 
 
     private ChannelPage channelPage;
-    private WatchPageController watchPageController;
+    private Controller watchPageController;
 
-    private Channel currentChannel;
     public void renderPage(Channel channel) {
-        currentChannel = channel;
         channelPage.displayChannelInfo(channel);
         channelPage.displayUploadedVideo(channel);
         if(Application.getCurrentUser().getUserType() != UserType.ADMIN)
@@ -41,18 +42,7 @@ public class ChannelPageController{
                 /*
                  Owner Setting
                  */
-                int userInput = channelPage.pageOwnerOption((ContentCreator) Application.getCurrentUser());
-                if(userInput == 1)
-                    seeVideo(channel);
-                else if(userInput == 8){
-                    if(channelPage.getDeleteConfirmation()==1){
-                        Application.getApplication().getDatabaseManager().deleteChannel(channel);
-                    }
-                }
-                else {
-                    editorOption(channel, userInput);
-                    managerOption(channel, userInput);
-                }
+                ownerOptions(channel);
             }
         }
         else if(Application.getCurrentUser().getUserType() != UserType.UN_SIGNED) {
@@ -75,7 +65,8 @@ public class ChannelPageController{
                                 seeVideo(channel);
                                 break;
                             case 2:
-                                watchPageController.subscribe(channel);
+                                Button button = new SubscribeButton();
+                                button.onClick(channel);
                                 break;
                             case 3:
                                 editPage(channel);
@@ -101,9 +92,6 @@ public class ChannelPageController{
         List<Member>moderator = new ArrayList<>();
         List<Member>editor = new ArrayList<>();
         List<Member>channelManager = new ArrayList<>();
-        List<SignedViewer>moderators = channel.getMemberList().get(MemberType.MODERATOR);
-        List<SignedViewer>editors = channel.getMemberList().get(MemberType.EDITOR);
-        List<SignedViewer>channelManagers = channel.getMemberList().get(MemberType.CHANNEL_MANAGER);
         for(Map.Entry<String,Member>map: channel.getChannelMembers().entrySet()){
             switch (map.getValue().getMemberType()){
                 case MODERATOR:
@@ -132,12 +120,6 @@ public class ChannelPageController{
             channelPage.displayUserNotFound();
         }
     }
-    public void listingMembers(Channel channel){
-        List<SignedViewer>mods = channel.getMemberList().get(MemberType.MODERATOR);
-        List<SignedViewer>editors = channel.getMemberList().get(MemberType.EDITOR);
-        List<SignedViewer>manager = channel.getMemberList().get(MemberType.CHANNEL_MANAGER);
-    }
-
     private void commonOption(Channel channel){
         channelPage.commonOption();
         switch (channelPage.getInput()){
@@ -145,7 +127,8 @@ public class ChannelPageController{
                 seeVideo(channel);
                 break;
             case 2:
-                watchPageController.subscribe(channel);
+                Button button = new SubscribeButton();
+                button.onClick(channel);
         }
     }
 
@@ -163,7 +146,7 @@ public class ChannelPageController{
         return null;
     }
 
-    private void adminOption(Channel channel){
+    public void adminOption(Channel channel){
 
         //admin Menu
         channelPage.displayAdminOption();
@@ -189,12 +172,11 @@ public class ChannelPageController{
                    Application.getApplication().getDatabaseManager().deleteRequest(channel.getChannelUrl());
                break;
            case 4:
-                    Application.getApplication().getDatabaseManager().deleteRequest(channel.getChannelUrl());
+                   Application.getApplication().getDatabaseManager().deleteRequest(channel.getChannelUrl());
                    channel.setAppliedForMonetization(false);
                    channel.setMonetized(false);
                break;
         }
-
 //        if(channel.isAppliedForMonetization()) {
 //            if(channelPage.getConfirmationForApproval() == 1){
 //                channel.setAppliedForMonetization(false);
@@ -210,16 +192,15 @@ public class ChannelPageController{
             case 1:
                 // name
                 channel.setChannelName(channelPage.getName());
-                Application.getApplication().getDatabaseManager().getChannel().put(channel.getChannelUrl(), channel);
                 break;
             case 2:
-                channel.setAbout(channelPage.getAbout());
-                Application.getApplication().getDatabaseManager().getChannel().put(channel.getChannelUrl(), channel);
                 //about
+                channel.setAbout(channelPage.getAbout());
                 break;
         }
+        Application.getApplication().getDatabaseManager().getChannel().put(channel.getChannelUrl(), channel);
     }
-    private void setMember(Channel channel){
+    public void setMember(Channel channel){
         String emailID = channelPage.getEmailId();
         if(emailID.equals(((SignedViewer)Application.getCurrentUser()).getUserEmailID()) == false) {
             if (emailID.equals(channel.getOwnBy()) == false) {
@@ -265,15 +246,7 @@ public class ChannelPageController{
                 memberMenu(channel);
         }
     }
-    public void editorOption(Channel channel,int userInput){
-        switch (userInput) {
-            case 3:
-                editPage(channel);
-                break;
-        }
-    }
-
-    private void editorOption(Channel channel){
+    public void editorOption(Channel channel){
         channelPage.commonOption();
         channelPage.showEditorOption();
         switch (channelPage.getInput()){
@@ -281,7 +254,8 @@ public class ChannelPageController{
                 seeVideo(channel);
                 break;
             case 2:
-                watchPageController.subscribe(channel);
+                Button button = new SubscribeButton();
+                button.onClick(channel);
                 break;
             case 3:
                 editPage(channel);
@@ -296,15 +270,20 @@ public class ChannelPageController{
         watchPageController  = new WatchPageController();
     }
 
-    public void updateView() {
-
-
-//        aakn;
-    }
-    protected ChannelPage getChannelPage(){
-        return channelPage;
-    }
-    protected Channel getCurrentChannel(){
-        return currentChannel;
+    public void ownerOptions(Channel channel){
+        int userInput = channelPage.pageOwnerOption();
+        switch (userInput){
+            case 1:
+                seeVideo(channel);
+                break;
+            case 3:
+                editPage(channel);
+                break;
+            case 4:
+                setMember(channel);
+                break;
+            case 5:
+                memberMenu(channel);
+        }
     }
 }

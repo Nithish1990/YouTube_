@@ -1,13 +1,12 @@
 package application.controllers;
 
 import application.Application;
-import application.database.Authenticator;
+import application.database.authentication.Authenticator;
 import application.pages.EditPage;
 import application.users.channel.Channel;
 import application.users.channel.ContentCreator;
 import application.users.channel.Member;
 import application.users.user.SignedViewer;
-import application.utilities.constant.user.types.UserType;
 
 import java.util.ArrayList;
 import java.util.List;

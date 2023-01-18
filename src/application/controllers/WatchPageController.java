@@ -1,6 +1,10 @@
 package application.controllers;
 
 import application.Application;
+import application.controllers.buttons.Button;
+import application.controllers.buttons.SubscribeButton;
+import application.controllers.buttons.thumbsbuttons.ThumbsDownButton;
+import application.controllers.buttons.thumbsbuttons.ThumbsUpButton;
 import application.controllers.channelpagecontroller.ChannelPageController;
 import application.pages.WatchPage;
 import application.users.channel.Channel;
@@ -8,7 +12,6 @@ import application.users.channel.ContentCreator;
 import application.users.channel.Member;
 import application.users.user.SignedViewer;
 import application.users.user.Viewer;
-import application.utilities.Colors;
 import application.utilities.constant.user.types.MemberType;
 import application.utilities.constant.user.types.UserType;
 import application.video.Comments;
@@ -16,11 +19,19 @@ import application.video.Video;
 import application.videoPlayer.VideoPlayer;
 
 public class WatchPageController implements Controller {
+    public  WatchPageController(){
+        this.watchPage = new WatchPage();
+        this.videoPlayer = new VideoPlayer();
+        this.loop = true;
+        this.thumbsDownButton = new ThumbsDownButton();
+        this.thumbsUpButton = new ThumbsUpButton();
+        this.subscribeButton = new SubscribeButton();
+    }
     private WatchPage watchPage;
     private VideoPlayer videoPlayer;
     private Video video;
     private boolean loop;
-
+    private Button subscribeButton,thumbsUpButton,thumbsDownButton;
     public void renderPage() {
         video = Application.getApplication().getDatabaseManager().getVideo(Application.getCurrentUser().getHistory().peek().getUrl());
         Channel channel = Application.getApplication().getChannel(video.getChannelURL());
@@ -98,57 +109,11 @@ public class WatchPageController implements Controller {
         }
     }
 
-    private void setLikesOrDislikes(boolean like) {
-        if (Application.getCurrentUser().getUserType() != UserType.UN_SIGNED) {
-            if (like)
-                like();
-            else
-                dislike();
-        } else
-            login();
-    }
-
-    private boolean isUserSubscribed(Channel channel) {
-        boolean isSubscribed = false;
-        if (Application.getCurrentUser().getUserType() != UserType.UN_SIGNED) {
-            if (((SignedViewer) Application.getCurrentUser()).getSubscribedChannels().getOrDefault(channel.getChannelUrl(), false)) {
-                isSubscribed = true;
-            }
-        }
-        return isSubscribed;
-    }
 
 
-    public void subscribe(Channel channel) {
-        Viewer viewer = Application.getCurrentUser();
-        switch (viewer.getUserType()) {
-            case UN_SIGNED:
-                login();
-                subscribe(channel);
-                break;
-            case SIGNED:
-                subscribe((SignedViewer)viewer ,channel);
-            case CONTENT_CREATOR:
-                if(((ContentCreator)viewer).getChannels().contains(channel.getChannelUrl()) == false) {
-                    subscribe((SignedViewer) viewer, channel);
-                }
-                break;
-            case ADMIN:
-                subscribe((SignedViewer) viewer,channel);
-                break;
-        }
-}
-    private void subscribe(SignedViewer signedViewer, Channel channel){
-        if (signedViewer.getSubscribedChannels().getOrDefault(channel.getChannelUrl(), false) == false) {//not !
-            signedViewer.getSubscribedChannels().put(channel.getChannelUrl(), true);
-            channel.setSubscribersCount(channel.getSubscribersCount() + 1);
-            channel.addSubscriber((SignedViewer) Application.getCurrentUser());
-        } else {
-            ((SignedViewer) Application.getApplication().getCurrentUser()).getSubscribedChannels().put(channel.getChannelUrl(), false);
-            channel.setSubscribersCount(channel.getSubscribersCount() - 1);
-            channel.deleteSubscriber((SignedViewer) Application.getCurrentUser());
-        }
-    }
+
+
+
     public void comments(Viewer viewer){
         watchPage.displayComments(video);
             if (viewer.getUserType() != UserType.UN_SIGNED) {
@@ -159,7 +124,8 @@ public class WatchPageController implements Controller {
                     if(member != null){
                             remove(signedViewer);
                     }else {
-                        if(watchPage.getInput()==0)addComment(signedViewer);
+                        if(watchPage.getInput()==0)
+                            addComment(signedViewer);
                     }
 
                 }
@@ -182,29 +148,36 @@ public class WatchPageController implements Controller {
     public void addComment(SignedViewer viewer){
         video.getComments().push(new Comments(viewer, watchPage.getComment()));
     }
-
-
-    public  WatchPageController(){
-        this.watchPage = new WatchPage();
-        this.videoPlayer = new VideoPlayer();
-        this.loop = true;
-    }
 public void playAds(){//code is redundant else
     Viewer viewer = Application.getCurrentUser();
-        if(viewer.getUserType() != UserType.UN_SIGNED){
-            if(((SignedViewer)viewer).isPrimeUser() == false ){
-                try {
-                    watchPage.displayAds(Application.getApplication().getDatabaseManager().getAdvertisement());
-                }catch (IndexOutOfBoundsException e){
-                    System.out.println(Colors.addColor(Colors.RED,"IOB E ADS"));
-                }
-            }
+    if (viewer.getUserType() == UserType.UN_SIGNED) {
+        displayAd();
+    } else {
+        if (((SignedViewer) viewer).isPrimeUser() == false) {
+            displayAd();
         }
-        else {
-            try {
-                watchPage.displayAds(Application.getApplication().getDatabaseManager().getAdvertisement());
-            }catch (Exception e){}
-        }
+    }
+//        if(viewer.getUserType() != UserType.UN_SIGNED){
+//            if(((SignedViewer)viewer).isPrimeUser() == false ){
+//                try {
+//                    watchPage.displayAds(Application.getApplication().getDatabaseManager().getAdvertisement());
+//                }catch (IndexOutOfBoundsException e){
+//
+//                }
+//            }
+//        }
+//        else {
+//            try {
+//                watchPage.displayAds(Application.getApplication().getDatabaseManager().getAdvertisement());
+//            }catch (Exception e){}
+//        }
+}
+private void displayAd(){
+    try {
+        watchPage.displayAds(Application.getApplication().getDatabaseManager().getAdvertisement());
+    }catch (IndexOutOfBoundsException e){
+
+    }
 }
     public void login(){
         if(watchPage.showWarning()==1) {
@@ -212,6 +185,71 @@ public void playAds(){//code is redundant else
             controller.renderPage();
         }
     }
+    public void commonOption(Channel channel,int userInput){
+
+        switch (userInput) {
+            case 1:
+//                        Application.getApplication().run();// here suggested video will come
+                videoPlayer.pauseOrPlay();
+                break;
+            case 2:
+                thumbsUpButton.onClick(channel);
+                break;
+            case 3:
+                thumbsDownButton.onClick(channel);
+                break;
+            case 4://->share
+                watchPage.displayUrl(video);
+                break;
+            case 5:
+                subscribeButton.onClick(channel);
+                break;
+            case 6://comments
+                comments(Application.getCurrentUser());
+                break;
+            case 7:
+                ChannelPageController controller = new ChannelPageController();
+                controller.renderPage(channel);
+                break;
+            default://
+                addViews(video,channel);
+                loop = false;
+        }
+    }
+
+
+
+
+
+    // helper func so there are private
+    private boolean isOwner(String channelURL){
+        boolean isOwner = false;
+        if(Application.getCurrentUser().getUserType() == UserType.CONTENT_CREATOR){
+            ContentCreator contentCreator = (ContentCreator) Application.getCurrentUser();
+            isOwner = contentCreator.getChannels().contains(channelURL);
+        }
+        return isOwner;
+    }
+    private boolean isUserSubscribed(Channel channel) {
+        boolean isSubscribed = false;
+        if (Application.getCurrentUser().getUserType() != UserType.UN_SIGNED) {
+            if (((SignedViewer) Application.getCurrentUser()).getSubscribedChannels().getOrDefault(channel.getChannelUrl(), false)) {
+                isSubscribed = true;
+            }
+        }
+        return isSubscribed;
+    }
+    private boolean isUserLikedTheVideo(String videoUrl){
+        if(Application.getCurrentUser().getUserType() != UserType.UN_SIGNED)
+            return  ((SignedViewer) Application.getCurrentUser()).getLikedVideo().getOrDefault(videoUrl,false);
+        return false;
+    }
+    private boolean isUserDislikedTheVideo(String videoUrl){
+        if(Application.getCurrentUser().getUserType() != UserType.UN_SIGNED)
+            return  ((SignedViewer) Application.getCurrentUser()).getDislikedVideo().getOrDefault(videoUrl,false);
+        return false;
+    }
+ /*
     public void like(){
         if (!isUserLikedTheVideo(video.getVideoUrl())) {
             // ie the User want to like not like the video
@@ -227,51 +265,45 @@ public void playAds(){//code is redundant else
             video.setLikesCount(video.getLikesCount() - 1);
         }
     }
-    public void dislike(){
-        if (!isUserDislikedTheVideo(video.getVideoUrl())) {
-            //which means user want to dislike
-            setDislikeForUser(true, video.getVideoUrl());
-            video.setDislikesCount(video.getDislikesCount() + 1);
-            if (isUserLikedTheVideo(video.getVideoUrl())) { // should be change
-                video.setLikesCount(video.getLikesCount() - 1);
-                setLikeForUser(false,video.getVideoUrl());
-            }
-        }else{
-            // which means user dlike the video but wants to remove dlike
-            video.setDislikesCount(video.getDislikesCount()-1);
-            setDislikeForUser(false, video.getVideoUrl());
-        }
-    }
-    public void commonOption(Channel channel,int userInput){
 
-        switch (userInput) {
-            case 1:
-//                        Application.getApplication().run();// here suggested video will come
-                videoPlayer.pauseOrPlay();
-                break;
-            case 2:
-                setLikesOrDislikes(true);
-                break;
-            case 3:
-                setLikesOrDislikes(false);
-                break;
-            case 4://->share
-                watchPage.displayUrl(video);
-                break;
-            case 5:
+    public void subscribe(Channel channel) {
+        Viewer viewer = Application.getCurrentUser();
+        switch (viewer.getUserType()) {
+            case UN_SIGNED:
+                login();
                 subscribe(channel);
                 break;
-            case 6://comments
-                comments(Application.getCurrentUser());
+            case SIGNED:
+                subscribe((SignedViewer)viewer ,channel);
+            case CONTENT_CREATOR:
+                if(((ContentCreator)viewer).getChannels().contains(channel.getChannelUrl()) == false) {
+                    subscribe((SignedViewer) viewer, channel);
+                }
                 break;
-            case 7:
-                ChannelPageController controller = new ChannelPageController();
-                controller.renderPage(channel);
+            case ADMIN:
+                subscribe((SignedViewer) viewer,channel);
                 break;
-            default://
-                addViews(video,channel);
-                loop = false;
         }
+    }
+    private void subscribe(SignedViewer signedViewer, Channel channel){
+        if (signedViewer.getSubscribedChannels().getOrDefault(channel.getChannelUrl(), false) == false) {//not !
+            signedViewer.getSubscribedChannels().put(channel.getChannelUrl(), true);
+            channel.setSubscribersCount(channel.getSubscribersCount() + 1);
+            channel.addSubscriber((SignedViewer) Application.getCurrentUser());
+        } else {
+            ((SignedViewer) Application.getApplication().getCurrentUser()).getSubscribedChannels().put(channel.getChannelUrl(), false);
+            channel.setSubscribersCount(channel.getSubscribersCount() - 1);
+            channel.deleteSubscriber((SignedViewer) Application.getCurrentUser());
+        }
+    }
+    public void setLikesOrDislikes(boolean like) {
+        if (Application.getCurrentUser().getUserType() != UserType.UN_SIGNED) {
+            if (like)
+                like();
+            else
+                dislike();
+        } else
+            login();
     }
     private boolean isUserLikedTheVideo(String videoUrl){
         if(Application.getCurrentUser().getUserType() != UserType.UN_SIGNED)
@@ -289,12 +321,30 @@ public void playAds(){//code is redundant else
     private void setDislikeForUser(boolean bool,String videoUrl){
         ((SignedViewer) Application.getCurrentUser()).getDislikedVideo().put(videoUrl, bool);
     }
-    private boolean isOwner(String channelURL){
-        boolean isOwner = false;
-        if(Application.getCurrentUser().getUserType() == UserType.CONTENT_CREATOR){
-            ContentCreator contentCreator = (ContentCreator) Application.getCurrentUser();
-            isOwner = contentCreator.getChannels().contains(channelURL);
+    private boolean isUserSubscribed(Channel channel) {
+        boolean isSubscribed = false;
+        if (Application.getCurrentUser().getUserType() != UserType.UN_SIGNED) {
+            if (((SignedViewer) Application.getCurrentUser()).getSubscribedChannels().getOrDefault(channel.getChannelUrl(), false)) {
+                isSubscribed = true;
+            }
         }
-        return isOwner;
+        return isSubscribed;
     }
+
+    public void dislike(){
+        if (!isUserDislikedTheVideo(video.getVideoUrl())) {
+            //which means user want to dislike
+            setDislikeForUser(true, video.getVideoUrl());
+            video.setDislikesCount(video.getDislikesCount() + 1);
+            if (isUserLikedTheVideo(video.getVideoUrl())) { // should be change
+                video.setLikesCount(video.getLikesCount() - 1);
+                setLikeForUser(false,video.getVideoUrl());
+            }
+        }else{
+            // which means user dlike the video but wants to remove dlike
+            video.setDislikesCount(video.getDislikesCount()-1);
+            setDislikeForUser(false, video.getVideoUrl());
+        }
+    }
+    */
 }

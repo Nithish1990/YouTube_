@@ -14,7 +14,6 @@ public class ChannelPage extends Page{
         System.out.println("\t"+channel.getChannelName()+" "+channel.getSubscribersCount() +" Subscribe");
         System.out.println("\t"+channel.getChannelUrl());
         System.out.println(channel.getAbout()+" Category "+channel.getCategory());
-        System.out.println("Uploaded videos");
     }
 
     public int getVideoPosition() {
@@ -26,7 +25,7 @@ public class ChannelPage extends Page{
         System.out.println("1 View Video");
         System.out.println("2 Subscribe");
     }
-    public int pageOwnerOption(ContentCreator contentCreator){
+    public int pageOwnerOption(){
         System.out.println("1 View Video");
         showEditorOption();
         showMemberManagementOption();
@@ -47,17 +46,13 @@ public class ChannelPage extends Page{
         return CustomScanner.scanInt("Enter 1 to Login");
     }
     public void displayUploadedVideo(Channel channel){
+        System.out.println("Uploaded videos");
         int i = 1;
         for(Thumbnail thumbnail:channel.getdisplayUploadedVideo()){
             System.out.println(i+++" "+thumbnail.getVideoTitle());
         }
         line();
     }
-    public void displayUploadedVideo(){
-        System.out.println("No video uploaded");
-        line();
-    }
-
     public int displayEditOption() {
         return CustomScanner.scanInt("1 edit Name\n2 Edit about \n3 to Change Category");
     }

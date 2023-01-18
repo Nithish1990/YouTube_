@@ -2,8 +2,8 @@ package application.pages;
 
 import application.users.user.SignedViewer;
 import application.users.user.Viewer;
-import application.database.Authenticator;
-import application.utilities.authentication.Validation;
+import application.database.authentication.Authenticator;
+import application.utilities.validation.Validation;
 import application.utilities.helper.CustomScanner;
 
 public class LoginPage{
