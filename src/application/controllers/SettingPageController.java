@@ -22,11 +22,11 @@ public class SettingPageController implements Controller {
         Viewer viewer= Application.getCurrentUser();
         switch (viewer.getUserType()){
             case UN_SIGNED:
-                    Controller controller = new LoginPageController();
-                    controller.renderPage();
+                Controller controller = new LoginPageController();
+                controller.renderPage();
                 break;
             case SIGNED:
-                    settings(settingPage.display(((SignedViewer) viewer)));
+                settings(settingPage.display(((SignedViewer) viewer)));
                 break;
             case ADMIN:
                 Controller adminPageController = new AdminPageController();

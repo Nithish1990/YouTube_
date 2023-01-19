@@ -23,6 +23,6 @@ public class UnSignedViewer extends Viewer { // stored in local storage
 
 
     public Stack<Thumbnail> getHistory() {
-        return getHistory();
+        return localStorage.getHistory();
     }
 }

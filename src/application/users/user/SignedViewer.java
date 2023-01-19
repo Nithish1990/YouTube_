@@ -2,6 +2,7 @@ package application.users.user;
 
 import application.users.channel.ContentCreator;
 import application.users.channel.Member;
+import application.users.user.unsignedviewer.UnSignedViewer;
 import application.utilities.constant.country.Country;
 import application.utilities.constant.user.types.MemberType;
 import application.utilities.constant.user.types.UserType;
@@ -34,6 +35,13 @@ public class SignedViewer extends Viewer{
         super(UserType.SIGNED);
         this.userEmailID = userEmailID;
         constructor(userName,password,userPhoneNumber,dataOfBirth);
+    }
+    public SignedViewer(String userName, String userEmailID, String password, String userPhoneNumber, String dataOfBirth,Viewer unSignedViewer) {
+        super(UserType.SIGNED);
+        this.userEmailID = userEmailID;
+        constructor(userName,password,userPhoneNumber,dataOfBirth);
+        this.history =unSignedViewer.getHistory();
+        this.watchLaterVideo = unSignedViewer.getWatchLaterVideo();
     }
     public void constructor(String userName, String password, String userPhoneNumber, String dataOfBirth){
         this.userName = userName;

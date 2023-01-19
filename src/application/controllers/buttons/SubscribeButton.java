@@ -16,7 +16,6 @@ public class SubscribeButton implements Button{
             case UN_SIGNED:
                 Controller controller = new LoginPageController();
                 controller.renderPage();
-                onClick(channel);
                 break;
             case SIGNED:
             case ADMIN:

@@ -2,6 +2,7 @@ package application.controllers;
 
 import application.Application;
 import application.controllers.channelpagecontroller.ChannelPageController;
+import application.controllers.watch.controller.WatchPageController;
 import application.pages.SearchPage;
 import application.users.channel.Channel;
 import application.video.Thumbnail;

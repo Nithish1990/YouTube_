@@ -1,6 +1,7 @@
 package application.controllers;
 
 import application.Application;
+import application.controllers.watch.controller.WatchPageController;
 import application.pages.HomePage;
 import application.users.user.SignedViewer;
 import application.users.user.Viewer;

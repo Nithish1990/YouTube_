@@ -4,7 +4,7 @@ import application.Application;
 import application.controllers.Controller;
 import application.controllers.buttons.Button;
 import application.controllers.buttons.SubscribeButton;
-import application.controllers.WatchPageController;
+import application.controllers.watch.controller.WatchPageController;
 import application.pages.ChannelPage;
 import application.users.channel.Channel;
 import application.users.channel.ContentCreator;
@@ -29,12 +29,12 @@ public class ChannelPageController{
     private Controller watchPageController;
 
     public void renderPage(Channel channel) {
-        channelPage.displayChannelInfo(channel);
-        channelPage.displayUploadedVideo(channel);
-        if(Application.getCurrentUser().getUserType() != UserType.ADMIN)
-            userOption(channel);
-        else
-            adminOption(channel);
+            channelPage.displayChannelInfo(channel);
+            channelPage.displayUploadedVideo(channel);
+            if (Application.getCurrentUser().getUserType() != UserType.ADMIN)
+                userOption(channel);
+            else
+                adminOption(channel);
     }
     public void userOption(Channel channel){
         if(Application.getCurrentUser().getUserType() == UserType.CONTENT_CREATOR){

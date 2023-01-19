@@ -18,9 +18,9 @@ public class VideoPlayer {
     private ScreenOrientation screenOrientation;
     private int size;
     private boolean isVideoPlaying;
-    public void playVideo(Video video, boolean isLiked, boolean isDisliked, boolean isSubscribe,String channelName,int subscribeCount) {
+    public void playVideo(Video video) {
         line();
-        play(video,isSubscribe,isDisliked,isLiked,channelName,subscribeCount);
+        play(video);
     }
     public void muteAndUnMute(){}
     public void volumeChange(int volume){}
@@ -51,8 +51,7 @@ private void printEdges(){
         System.out.println();
     }
 }
-private void play(Video video,boolean isSubscribe,boolean isDisliked,boolean isLiked,String channelName,int subscribeCount){
-
+private void play(Video video){
     System.out.println("Video Title :"+video.getVideoTitle());
     line();
     printEdges();
@@ -60,15 +59,5 @@ private void play(Video video,boolean isSubscribe,boolean isDisliked,boolean isL
             ""+ (isVideoPlaying?Colors.addColor(Colors.GREEN,"Playing"):Colors.addColor(Colors.BLACK_BACKGROUND_BRIGHT,"Paused "))+"                          |" );
     printEdges();
     line();
-    System.out.println(video.getVideoTitle()+" Views: "+video.getViewsCount());
-    System.out.print(Colors.addColor(Colors.CYAN_BOLD, channelName+" "+subscribeCount)+"  ");
-    System.out.print((isSubscribe?Colors.addColor(Colors.BLACK_BRIGHT,"UnSubscribe"):
-            Colors.addColor(Colors.RED_BACKGROUND_BRIGHT,"Subscribe"))+"             ");
-
-    System.out.print(Colors.addColor(isLiked?Colors.PURPLE_BACKGROUND:Colors.BLACK_BACKGROUND,"Like "+video.getLikesCount()));
-    System.out.print("  ");
-    System.out.print(Colors.addColor(!isDisliked?Colors.PURPLE_BACKGROUND:Colors.BLACK_BACKGROUND,"Disliked"+video.getDislikesCount())+"  ");
-
-    System.out.println(Colors.addColor(Colors.BLUE," Share"));
 }
 }

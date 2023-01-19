@@ -1,11 +1,16 @@
 package application.controllers.buttons.thumbsbuttons;
 
+import application.Application;
+import application.controllers.Controller;
+import application.controllers.LoginPageController;
 import application.users.channel.Channel;
+import application.utilities.constant.user.types.UserType;
 import application.video.Video;
 
 public class ThumbsUpButton extends ThumbsButton{
     @Override
     public void onClick(Channel channel) {
+        if(Application.getCurrentUser().getUserType() != UserType.UN_SIGNED){
         Video video = getVideo();
         if (!isUserLikedTheVideo(video.getVideoUrl())) {
             // ie the User want to like not like the video
@@ -20,5 +25,10 @@ public class ThumbsUpButton extends ThumbsButton{
             setLikeForUser(false, video.getVideoUrl());
             video.setLikesCount(video.getLikesCount() - 1);
         }
+    }else {
+            Controller controller = new LoginPageController();
+            controller.renderPage();
+        }
     }
+
 }

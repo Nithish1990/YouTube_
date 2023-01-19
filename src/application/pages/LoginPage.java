@@ -1,13 +1,14 @@
 package application.pages;
 
+import application.Application;
 import application.users.user.SignedViewer;
 import application.users.user.Viewer;
 import application.database.authentication.Authenticator;
+import application.users.user.unsignedviewer.UnSignedViewer;
 import application.utilities.validation.Validation;
 import application.utilities.helper.CustomScanner;
 
 public class LoginPage{
-    private Authenticator authenticator = new Authenticator();
     public String[] login(){
         String emailId = CustomScanner.scanString("Enter Email Id"),password = CustomScanner.scanString("Enter Password");
         System.out.println("========================================================");
@@ -24,7 +25,7 @@ public class LoginPage{
         String dob = CustomScanner.scanString("Enter your Date Of Birth dd/mm/yyyy");
         dob = Validation.validateDOB(dob);
         System.out.println("========================================================");
-        return (new SignedViewer(name,emailId,password,number,dob));
+        return (new SignedViewer(name,emailId,password,number,dob, Application.getCurrentUser()));
     }
     public int displayOption(){
 
