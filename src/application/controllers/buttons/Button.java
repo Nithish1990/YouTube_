@@ -1,6 +1,6 @@
 package application.controllers.buttons;
 
-import application.users.channel.Channel;
+import application.modal.users.channel.Channel;
 
 public interface Button {
     void onClick(Channel channel);

@@ -1,7 +1,7 @@
-package application.users.channel;
+package application.modal.users.channel;
 
 
-import application.users.user.SignedViewer;
+import application.modal.users.user.SignedViewer;
 import java.util.ArrayList;
 
 public class ContentCreator extends SignedViewer {

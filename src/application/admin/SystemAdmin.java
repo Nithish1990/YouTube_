@@ -1,7 +1,7 @@
 package application.admin;
 
 
-import application.users.user.SignedViewer;
+import application.modal.users.user.SignedViewer;
 import application.utilities.constant.user.types.UserType;
 
 public class SystemAdmin extends SignedViewer {

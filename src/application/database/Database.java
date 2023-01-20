@@ -1,10 +1,10 @@
 package application.database;
 
-import application.users.channel.Channel;
-import application.users.user.SignedViewer;
-import application.video.Advertisement;
-import application.video.Thumbnail;
-import application.video.Video;
+import application.modal.users.channel.Channel;
+import application.modal.users.user.SignedViewer;
+import application.modal.video.Advertisement;
+import application.modal.video.Thumbnail;
+import application.modal.video.Video;
 
 import java.util.*;
 

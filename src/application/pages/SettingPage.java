@@ -1,12 +1,11 @@
 package application.pages;
 
 
-import application.users.channel.Channel;
-import application.users.channel.ContentCreator;
-import application.users.user.SignedViewer;
+import application.modal.users.channel.Channel;
+import application.modal.users.channel.ContentCreator;
+import application.modal.users.user.SignedViewer;
 import application.utilities.helper.CustomScanner;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SettingPage extends Page {

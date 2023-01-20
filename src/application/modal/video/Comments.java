@@ -1,6 +1,6 @@
-package application.video;
+package application.modal.video;
 
-import application.users.user.SignedViewer;
+import application.modal.users.user.SignedViewer;
 
 public class Comments {
     private final SignedViewer commentedBy;
@@ -19,4 +19,9 @@ public class Comments {
         return comment;
     }
 
+    public void setComment(String comment) {
+
+        // when need to edit the comment
+        this.comment = comment;
+    }
 }

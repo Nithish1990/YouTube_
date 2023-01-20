@@ -2,17 +2,15 @@ package application.database;
 
 import application.Application;
 import application.admin.SystemAdmin;
-import application.pages.Page;
-import application.users.channel.Channel;
-import application.users.channel.ContentCreator;
-import application.users.channel.Member;
-import application.users.user.SignedViewer;
+import application.modal.users.channel.Channel;
+import application.modal.users.channel.ContentCreator;
+import application.modal.users.channel.members.Member;
+import application.modal.users.user.SignedViewer;
+import application.modal.video.Advertisement;
+import application.modal.video.Thumbnail;
+import application.modal.video.Video;
 import application.utilities.calucation.RandomNumber;
 import application.utilities.generator.Generator;
-import application.video.Advertisement;
-import application.video.Thumbnail;
-import application.video.Video;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -35,8 +33,11 @@ public class DatabaseManager {
         database.getUserDB().put(viewer.getUserEmailID(), viewer);
     }
     public void testing(){
-//        (String channelName, String channelUrl,String about,String ownBy)
         SignedViewer signedViewer = new SignedViewer("Name","e","e","N","D");
+        signedViewer.setPrimeUser(true);
+        SignedViewer signedViewer1 = new SignedViewer("Name","r","r","N","D");
+        signedViewer1.setPrimeUser(true);
+        addUser(signedViewer1);
         addUser(signedViewer);
     }
 
@@ -165,7 +166,7 @@ public class DatabaseManager {
         database.getMonetizationRequest().remove(channelURL);
     }
 
-    public void deleteVideo(String videoUrl,String channelURL,Thumbnail thumbnail) {
+    public void deleteVideo(String videoUrl, String channelURL, Thumbnail thumbnail) {
         database.getVideoBucket().remove(videoUrl);
         database.getChannel().get(channelURL).getdisplayUploadedVideo().remove(thumbnail);
     }

@@ -1,29 +1,27 @@
 package application.controllers.watch.controller;
 
 import application.Application;
+import application.modal.video.Video;
 import application.pages.WatchPage;
-import application.users.channel.Channel;
-import application.video.Video;
-import application.videoPlayer.VideoPlayer;
+import application.modal.users.channel.Channel;
 
 public class CommonUserWatchPageController extends WatchPageController {
 
     private Channel channel;
     private Video video;
     private WatchPage watchPage;
-    private VideoPlayer videoPlayer;
-    public CommonUserWatchPageController(Channel channel, Video video, WatchPage watchPage,VideoPlayer videoPlayer){
+    public CommonUserWatchPageController(Channel channel, Video video){
         this.channel = channel;
         this.video = video;
-        this.watchPage = watchPage;
-        this.videoPlayer = videoPlayer;
+        this.watchPage = new WatchPage();
     }
     public void renderPage() {
         while (true) {
-            videoPlayer.playVideo(video);
+            playVideo(video,channel);
             watchPage.displayCommonOption(video,isUserSubscribed(channel),isUserLikedTheVideo(video.getVideoUrl()),isUserDislikedTheVideo(video.getVideoUrl())
                     , channel.getChannelName(), channel.getSubscribersCount());
-            if (option(watchPage.getInput()) == false) {
+            int userInput = (watchPage.getInput());
+            if (option(userInput) == false) {
                 return;
             }
         }
@@ -31,7 +29,7 @@ public class CommonUserWatchPageController extends WatchPageController {
     public boolean option(int userInput){
         switch (userInput) {
             case 1:// pause/play
-                videoPlayer.pauseOrPlay();
+                pauseOrPlay();
                 break;
             case 2://like
                 like(channel);
@@ -50,6 +48,9 @@ public class CommonUserWatchPageController extends WatchPageController {
             case 6:
                 //visit channel
                 navigateToChannel(channel,video);
+                break;
+            case 7:
+                watchPage.displayUrl(video);
                 break;
             default:
                 return false;

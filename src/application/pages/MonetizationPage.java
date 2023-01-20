@@ -1,13 +1,10 @@
 package application.pages;
 
-import application.users.channel.Channel;
-import application.users.channel.ContentCreator;
-import application.users.user.SignedViewer;
+import application.modal.users.channel.Channel;
+import application.modal.video.Thumbnail;
 import application.utilities.Colors;
 import application.utilities.helper.CustomScanner;
-import application.video.Thumbnail;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MonetizationPage extends  Page{

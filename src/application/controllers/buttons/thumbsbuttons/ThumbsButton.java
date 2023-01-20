@@ -2,10 +2,10 @@ package application.controllers.buttons.thumbsbuttons;
 
 import application.Application;
 import application.controllers.buttons.Button;
-import application.users.channel.Channel;
-import application.users.user.SignedViewer;
+import application.modal.users.channel.Channel;
+import application.modal.users.user.SignedViewer;
+import application.modal.video.Video;
 import application.utilities.constant.user.types.UserType;
-import application.video.Video;
 
 public abstract class ThumbsButton implements Button {
 

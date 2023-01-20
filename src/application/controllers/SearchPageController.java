@@ -2,11 +2,11 @@ package application.controllers;
 
 import application.Application;
 import application.controllers.channelpagecontroller.ChannelPageController;
-import application.controllers.watch.controller.WatchPageController;
+import application.controllers.watch.controller.*;
 import application.pages.SearchPage;
-import application.users.channel.Channel;
-import application.video.Thumbnail;
-import application.video.Video;
+import application.modal.users.channel.Channel;
+import application.modal.video.Thumbnail;
+import application.modal.video.Video;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +38,8 @@ public class SearchPageController implements Controller{
         if(i >= 0){
             if(thumbnails.size()>i){
                 Application.getCurrentUser().getHistory().push(thumbnails.get(i));
-                Controller watchPageController = new WatchPageController();
+                Factory factory = new WatchPageControllerFactory();
+                Controller watchPageController = factory.createFactory(Application.getCurrentUser());
                 watchPageController.renderPage();
             }else if(i - thumbnails.size()< resultChannel.size() ){
                 Channel selectedChannel = resultChannel.get(i-thumbnails.size());
@@ -81,4 +82,5 @@ public class SearchPageController implements Controller{
         }
         return thumbnails;
     }
+
 }

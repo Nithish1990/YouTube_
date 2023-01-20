@@ -1,9 +1,7 @@
-package application.video;
-
-import application.utilities.helper.CustomScanner;
+package application.modal.video;
 
 public class Advertisement{
-    private final String adsName;
+    private String adsName;
     private final String adsUrl;
     private final int seconds;
 
@@ -23,5 +21,9 @@ public class Advertisement{
 
     public int getSeconds() {
         return seconds;
+    }
+
+    public void setAdsName(String adsName) {
+        this.adsName = adsName;
     }
 }

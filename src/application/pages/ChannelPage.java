@@ -1,10 +1,9 @@
 package application.pages;
 
-import application.users.channel.Channel;
-import application.users.channel.ContentCreator;
-import application.users.channel.Member;
+import application.modal.users.channel.Channel;
+import application.modal.users.channel.members.Member;
+import application.modal.video.Thumbnail;
 import application.utilities.helper.CustomScanner;
-import application.video.Thumbnail;
 
 import java.util.List;
 

@@ -1,13 +1,10 @@
 package application.videoPlayer;
 
-import application.users.channel.Channel;
+import application.modal.video.Video;
 import application.utilities.Colors;
 import application.utilities.constant.quality.Quality;
 import application.utilities.constant.screenorientation.ScreenOrientation;
 import application.utilities.constant.speed.Speed;
-import application.utilities.helper.CustomScanner;
-import application.video.Video;
-
 import java.sql.Time;
 
 public class VideoPlayer {

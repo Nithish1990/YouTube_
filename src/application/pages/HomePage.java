@@ -1,7 +1,7 @@
 package application.pages;
 
+import application.modal.video.Thumbnail;
 import application.utilities.helper.CustomScanner;
-import application.video.Thumbnail;
 import java.util.List;
 
 public class HomePage extends Page{

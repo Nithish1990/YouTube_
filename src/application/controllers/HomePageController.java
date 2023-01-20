@@ -1,13 +1,14 @@
 package application.controllers;
 
 import application.Application;
-import application.controllers.watch.controller.WatchPageController;
+import application.controllers.watch.controller.*;
+import application.modal.video.Thumbnail;
+import application.modal.video.Video;
 import application.pages.HomePage;
-import application.users.user.SignedViewer;
-import application.users.user.Viewer;
+import application.modal.users.user.SignedViewer;
+import application.modal.users.user.Viewer;
 import application.utilities.helper.CustomScanner;
-import application.video.Thumbnail;
-import application.video.Video;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -82,9 +83,9 @@ public class HomePageController implements Controller{
         int userInput = (homePage.getVideoPosition());
         Thumbnail selectedThumbnail = getVideo(getThumbnails(),userInput);
         if(selectedThumbnail == null)return;
-        if(watchPageController == null)
-            watchPageController = new WatchPageController();
         Application.getCurrentUser().getHistory().push(selectedThumbnail);
+        Factory factory = new WatchPageControllerFactory();
+        watchPageController = factory.createFactory(Application.getCurrentUser());
         watchPageController.renderPage();
     }
     private void search(){

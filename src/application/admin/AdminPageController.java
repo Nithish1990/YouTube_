@@ -4,10 +4,9 @@ import application.Application;
 import application.controllers.channelpagecontroller.ChannelPageController;
 import application.controllers.Controller;
 import application.pages.AdminPage;
-import application.users.channel.Channel;
-import application.users.user.unsignedviewer.UnSignedViewer;
-import application.video.Advertisement;
-
+import application.modal.users.channel.Channel;
+import application.modal.users.user.unsignedviewer.UnSignedViewer;
+import application.modal.video.Advertisement;
 import java.util.List;
 
 public class AdminPageController implements Controller {

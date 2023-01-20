@@ -1,11 +1,10 @@
 package application.pages;
 
-import application.users.channel.Channel;
-import application.users.channel.ContentCreator;
-import application.users.user.SignedViewer;
+import application.modal.users.channel.Channel;
+import application.modal.users.user.SignedViewer;
 import application.utilities.validation.Validation;
 import application.utilities.helper.CustomScanner;
-import application.video.Thumbnail;
+import application.modal.video.Thumbnail;
 
 import java.util.List;
 
@@ -27,34 +26,21 @@ public class EditPage extends Page {
         }
 
     }
-    public int  display(ContentCreator viewer){
-        line();
-        //rep
-        System.out.println("Current user "+viewer.getUserName()+" Type: "+viewer.getUserType());
-        System.out.println("Date Of Birth "+viewer.getDataOfBirth());
-        System.out.println("Phone Number "+viewer.getUserPhoneNumber());
-        System.out.println("Channel Settings");
-        int userInput = CustomScanner.scanInt();
-        line();
-        return userInput;
-    }
-    public int enablePrime(){
+    public void  enablePrime(){
         System.out.println("Non Prime");
         line();
         options();
         System.out.println("5 Want To Upgrade To Prime $1 Per Month ?");
-        int userInput =  CustomScanner.scanInt();
+        System.out.println("6 Member Menu");
         line();
-        return userInput;
     }
-    public int disablePrime(){
+    public void disablePrime(){
         System.out.println("Prime user");
         line();
         options();
         System.out.println("5 Want To Cancel Prime?");
-        int userInput =  CustomScanner.scanInt();
+        System.out.println("6 Member Menu");
         line();
-        return userInput;
     }
     public void options(){
         System.out.println("1 Change Name");
@@ -101,6 +87,10 @@ public class EditPage extends Page {
         for(String channelName:editor) System.out.print(channelName+" ");
         System.out.println("\nChannelManager");
         for(String channelName:channelManager) System.out.print(channelName+" ");
-        line();
+        System.out.println();
+    }
+
+    public int getInput() {
+        return CustomScanner.scanInt();
     }
 }

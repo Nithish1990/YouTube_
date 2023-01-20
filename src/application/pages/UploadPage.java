@@ -1,9 +1,7 @@
 package application.pages;
 
 import application.admin.SystemAdmin;
-import application.users.channel.Channel;
-import application.users.channel.ContentCreator;
-import application.users.user.SignedViewer;
+import application.modal.users.channel.Channel;
 import application.utilities.helper.CustomScanner;
 
 import java.util.List;

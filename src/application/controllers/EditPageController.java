@@ -3,51 +3,42 @@ package application.controllers;
 import application.Application;
 import application.database.authentication.Authenticator;
 import application.pages.EditPage;
-import application.users.channel.Channel;
-import application.users.channel.ContentCreator;
-import application.users.channel.Member;
-import application.users.user.SignedViewer;
+import application.modal.users.channel.Channel;
+import application.modal.users.channel.members.Member;
+import application.modal.users.user.SignedViewer;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class EditPageController implements Controller{
+public class EditPageController implements Controller,Editable{
+    public EditPageController(){
+        this.editPage = new EditPage();
+        this.authenticator = new Authenticator();
+    }
     private EditPage editPage;
     private Authenticator authenticator;
     @Override
     public void renderPage() {
         SignedViewer viewer = (SignedViewer) Application.getCurrentUser();
-        switch (viewer.getUserType()) {
-            case SIGNED:
-                editPage.display(viewer, getViewerSubscribedChannel(viewer));
-                memberMenu(viewer);
-                int userInput;
-                if (viewer.isPrimeUser() == false) {
-                    userInput = editPage.enablePrime();
+        editPage.display(viewer, getViewerSubscribedChannel(viewer));
 
-                } else {
-                    userInput = editPage.disablePrime();
-                }
-                edit(viewer,userInput);
-                break;
-            case CONTENT_CREATOR:
-                editPage.display((ContentCreator) viewer);
-                memberMenu(viewer);
-                break;
+        if (viewer.isPrimeUser() == false) {
+            editPage.enablePrime();
+
+        } else {
+            editPage.disablePrime();
         }
+        edit();
     }
 
 
-    public EditPageController(){
-        this.editPage = new EditPage();
-        this.authenticator = new Authenticator();
-    }
-
-    public void edit(SignedViewer viewer,int userInput){// total  method is wrong
+    @Override
+    public void edit(){
+        SignedViewer viewer = (SignedViewer) Application.getCurrentUser();
         String name = viewer.getUserName(),password = viewer.getPassword(),dateOfBirth = viewer.getDataOfBirth(),phoneNumber = viewer.getUserPhoneNumber();
         boolean isPrime = viewer.isPrimeUser();
-        switch (userInput){
+        switch (editPage.getInput()){
             case 1:
                 name = (editPage.getName());
                 break;
@@ -64,11 +55,10 @@ public class EditPageController implements Controller{
                 if (editPage.askConfirmation() == 1)
                     isPrime = !isPrime;
                 break;
+            case 6:
+                memberMenu(viewer);
+                break;
         }
-
-//        Application.getApplication().getDatabaseManager().addUser();
-        //
-
         viewer.setUserPhoneNumber(phoneNumber);
         viewer.setPassword(password);
         viewer.setUserName(name);

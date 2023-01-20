@@ -3,9 +3,9 @@ package application.controllers.buttons.thumbsbuttons;
 import application.Application;
 import application.controllers.Controller;
 import application.controllers.LoginPageController;
-import application.users.channel.Channel;
+import application.modal.users.channel.Channel;
+import application.modal.video.Video;
 import application.utilities.constant.user.types.UserType;
-import application.video.Video;
 
 public class ThumbsUpButton extends ThumbsButton{
     @Override

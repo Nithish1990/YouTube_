@@ -1,6 +1,4 @@
-package application.video;
-
-import application.users.channel.Channel;
+package application.modal.video;
 
 import java.time.LocalDateTime;
 

@@ -3,12 +3,12 @@ package application.controllers;
 import application.Application;
 import application.admin.AdminPageController;
 import application.pages.SettingPage;
-import application.users.channel.Channel;
-import application.users.channel.ContentCreator;
-import application.users.channel.Member;
-import application.users.channel.members.ChannelManager;
-import application.users.user.SignedViewer;
-import application.users.user.Viewer;
+import application.modal.users.channel.Channel;
+import application.modal.users.channel.ContentCreator;
+import application.modal.users.channel.members.Member;
+import application.modal.users.channel.members.ChannelManager;
+import application.modal.users.user.SignedViewer;
+import application.modal.users.user.Viewer;
 import application.utilities.constant.user.types.MemberType;
 import application.utilities.generator.Generator;
 

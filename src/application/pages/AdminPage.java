@@ -1,9 +1,9 @@
 package application.pages;
 
-import application.users.channel.Channel;
+import application.modal.users.channel.Channel;
 import application.utilities.generator.Generator;
 import application.utilities.helper.CustomScanner;
-import application.video.Advertisement;
+import application.modal.video.*;
 
 import java.util.List;
 

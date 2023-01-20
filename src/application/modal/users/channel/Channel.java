@@ -1,13 +1,13 @@
-package application.users.channel;
+package application.modal.users.channel;
 
-import application.users.user.SignedViewer;
+import application.modal.users.channel.members.Member;
+import application.modal.users.user.SignedViewer;
+import application.modal.video.Thumbnail;
 import application.utilities.constant.category.Category;
 import application.utilities.constant.user.types.MemberType;
-import application.video.Thumbnail;
 
 import java.util.*;
 
-import application.users.channel.Member;
 
 public class Channel {
     private String channelName;
@@ -23,11 +23,11 @@ public class Channel {
 
     private final String ownBy;
     private List<Thumbnail> displayUploadedVideo;
-    private Map<String,Member> channelMembers; // String is url of the user
+    private Map<String, Member> channelMembers; // String is url of the user
 
     private Map<MemberType,List<SignedViewer>> memberList;// List<String represent list of users
     private List<SignedViewer>subscribers;
-    private Stack<WithdrawHistory>withdrawHistories;
+    private Stack<WithdrawHistory> withdrawHistories;
     public Channel(String channelName, String channelUrl,String ownBy) {
         this.channelName = channelName;
         this.channelUrl = channelUrl;

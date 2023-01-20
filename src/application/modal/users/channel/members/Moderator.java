@@ -1,6 +1,5 @@
-package application.users.channel.members;
+package application.modal.users.channel.members;
 
-import application.users.channel.Member;
 import application.utilities.constant.user.types.MemberType;
 
 public class Moderator extends Member {

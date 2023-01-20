@@ -1,10 +1,9 @@
-package application.video;
+package application.modal.video;
 
-import application.users.user.SignedViewer;
+import application.modal.users.user.SignedViewer;
 import application.utilities.constant.category.AgeCategory;
 import application.utilities.constant.category.Category;
 import application.utilities.generator.Generator;
-import application.users.channel.Channel;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -13,15 +12,14 @@ import java.util.List;
 import java.util.Stack;
 
 public class Video {
-    private static int videoId;
     private String videoTitle;
     public final String channelURL;
     private final String videoUrl;
     private String description;
     private boolean visibility;
     private AgeCategory ageCategory;
-    public final int duration;// to be change to time; to be change in further
-    public LocalDateTime uploadedDateAndTime;
+    public final int duration;
+    public final LocalDateTime uploadedDateAndTime;
     private int likesCount;
     private int dislikesCount;
     private Stack<Comments>comments;
@@ -51,14 +49,6 @@ public class Video {
         this.reportList = new ArrayList<>();
         this.thumbnail = new Thumbnail(videoTitle,channelName,duration,uploadedDateAndTime,videoUrl,viewsCount);
         this.viewedUser = new HashMap<>();
-        videoId++;
-    }
-    public static int getV_id() {
-        return videoId;
-    }
-
-    public static void setVid(int vid) {
-        videoId = vid;
     }
 
     public String getVideoTitle() {
@@ -110,10 +100,6 @@ public class Video {
         return uploadedDateAndTime;
     }
 
-    public void setUploadedDateAndTime(LocalDateTime uploadedDateAndTime) {
-        this.uploadedDateAndTime = uploadedDateAndTime;
-    }
-
     public int getLikesCount() {
         return likesCount;
     }
@@ -163,14 +149,11 @@ public class Video {
     public List<String> getReportList() {
         return reportList;
     }
-
     public Thumbnail getThumbnail() {
         return thumbnail;
     }
 
-
     public HashMap<SignedViewer, Boolean> getViewedUser() {
         return viewedUser;
     }
-
 }

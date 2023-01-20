@@ -3,8 +3,8 @@ package application.controllers;
 import application.Application;
 import application.database.authentication.Authenticator;
 import application.pages.LoginPage;
-import application.users.user.unsignedviewer.UnSignedViewer;
-import application.users.user.Viewer;
+import application.modal.users.user.unsignedviewer.UnSignedViewer;
+import application.modal.users.user.Viewer;
 
 public class LoginPageController implements Controller{
 

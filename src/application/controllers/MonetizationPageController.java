@@ -2,9 +2,9 @@ package application.controllers;
 
 import application.Application;
 import application.pages.MonetizationPage;
-import application.users.channel.Channel;
-import application.users.channel.ContentCreator;
-import application.users.channel.WithdrawHistory;
+import application.modal.users.channel.Channel;
+import application.modal.users.channel.ContentCreator;
+import application.modal.users.channel.WithdrawHistory;
 import application.utilities.calucation.RevenueCalculator;
 
 import java.util.ArrayList;

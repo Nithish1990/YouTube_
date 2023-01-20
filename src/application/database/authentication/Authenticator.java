@@ -1,9 +1,9 @@
 package application.database.authentication;
 import application.Application;
-import application.users.channel.Channel;
-import application.users.channel.ContentCreator;
-import application.users.user.SignedViewer;
-import application.users.user.Viewer;
+import application.modal.users.channel.Channel;
+import application.modal.users.channel.ContentCreator;
+import application.modal.users.user.SignedViewer;
+import application.modal.users.user.Viewer;
 import java.util.Map;
 
 

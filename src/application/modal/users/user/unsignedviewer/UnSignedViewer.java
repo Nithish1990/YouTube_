@@ -1,9 +1,8 @@
-package application.users.user.unsignedviewer;
+package application.modal.users.user.unsignedviewer;
 
-import application.users.user.SignedViewer;
-import application.users.user.Viewer;
+import application.modal.users.user.Viewer;
+import application.modal.video.Thumbnail;
 import application.utilities.constant.user.types.UserType;
-import application.video.Thumbnail;
 
 import java.util.ArrayList;
 import java.util.Stack;

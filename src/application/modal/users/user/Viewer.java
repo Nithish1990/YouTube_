@@ -1,9 +1,7 @@
-package application.users.user;
+package application.modal.users.user;
 
-import application.users.channel.ContentCreator;
+import application.modal.video.Thumbnail;
 import application.utilities.constant.user.types.UserType;
-import application.video.Thumbnail;
-import application.video.Video;
 
 import java.util.ArrayList;
 import java.util.Stack;

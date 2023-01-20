@@ -1,12 +1,12 @@
-package application.users.user;
+package application.modal.users.user;
 
-import application.users.channel.ContentCreator;
-import application.users.channel.Member;
-import application.users.user.unsignedviewer.UnSignedViewer;
+import application.modal.users.channel.ContentCreator;
+import application.modal.users.channel.members.Member;
+import application.modal.video.Thumbnail;
 import application.utilities.constant.country.Country;
 import application.utilities.constant.user.types.MemberType;
 import application.utilities.constant.user.types.UserType;
-import application.video.Thumbnail;
+
 
 import java.util.*;
 
@@ -26,7 +26,7 @@ public class SignedViewer extends Viewer{
 
     private Stack<Thumbnail> notification;
 
-    private Map<String,Member> memberInChannels;
+    private Map<String, Member> memberInChannels;
     private Map<MemberType,List<String>> memberList;// string is url of channel
 
     private ArrayList<Thumbnail> watchLaterVideo;
@@ -34,16 +34,6 @@ public class SignedViewer extends Viewer{
     public SignedViewer(String userName, String userEmailID, String password, String userPhoneNumber, String dataOfBirth) {
         super(UserType.SIGNED);
         this.userEmailID = userEmailID;
-        constructor(userName,password,userPhoneNumber,dataOfBirth);
-    }
-    public SignedViewer(String userName, String userEmailID, String password, String userPhoneNumber, String dataOfBirth,Viewer unSignedViewer) {
-        super(UserType.SIGNED);
-        this.userEmailID = userEmailID;
-        constructor(userName,password,userPhoneNumber,dataOfBirth);
-        this.history =unSignedViewer.getHistory();
-        this.watchLaterVideo = unSignedViewer.getWatchLaterVideo();
-    }
-    public void constructor(String userName, String password, String userPhoneNumber, String dataOfBirth){
         this.userName = userName;
         this.password = password;
         this.userPhoneNumber = userPhoneNumber;
@@ -61,10 +51,45 @@ public class SignedViewer extends Viewer{
         this.history = new Stack<>();
         generateMemberList();
     }
+    public SignedViewer(String userName, String userEmailID, String password, String userPhoneNumber, String dataOfBirth,Viewer unSignedViewer) {
+        super(UserType.SIGNED);
+        this.userEmailID = userEmailID;
+        this.userName = userName;
+        this.password = password;
+        this.userPhoneNumber = userPhoneNumber;
+        this.dataOfBirth = dataOfBirth;
+        this.country = Country.INDIA;
+        this.primeUser = false;
+        this.isBannedUser = false;
+        this.subscribedChannels = new HashMap<>();
+        this.likedVideo = new HashMap<>();
+        this.dislikedVideo = new HashMap<>();
+        this.notification = new Stack<>();
+        this.memberInChannels = new HashMap<>();
+        this.memberList = new HashMap<>();
+        generateMemberList();
+        this.history = unSignedViewer.getHistory();
+        this.watchLaterVideo = unSignedViewer.getWatchLaterVideo();
+    }
     public SignedViewer(SignedViewer viewer){
         super(UserType.CONTENT_CREATOR,viewer);
         this.userEmailID = viewer.getUserEmailID();
-        constructor(viewer.getUserName(), viewer.getPassword(), viewer.getUserPhoneNumber(), viewer.dataOfBirth);
+        this.userName = viewer.getUserName();
+        this.password =  viewer.getPassword();
+        this.userPhoneNumber =  viewer.getUserPhoneNumber();
+        this.dataOfBirth =viewer.dataOfBirth;
+        this.country = Country.INDIA;
+        this.isBannedUser = false;
+        this.subscribedChannels = new HashMap<>();
+        this.likedVideo = new HashMap<>();
+        this.dislikedVideo = new HashMap<>();
+        this.notification = new Stack<>();
+        this.memberInChannels = new HashMap<>();
+        this.memberList = new HashMap<>();
+        this.watchLaterVideo = new ArrayList<>();
+        this.history = new Stack<>();
+        this.primeUser = viewer.primeUser;
+        generateMemberList();
     }
     public SignedViewer(ContentCreator contentCreator){
 
@@ -89,7 +114,22 @@ public class SignedViewer extends Viewer{
     public SignedViewer(String userName, String userEmailID, String password, String userPhoneNumber, String dataOfBirth,UserType userType) {
         super(userType);
        this.userEmailID = userEmailID;
-       constructor(userName,password,userPhoneNumber,dataOfBirth);
+        this.userName = userName;
+        this.password = password;
+        this.userPhoneNumber = userPhoneNumber;
+        this.dataOfBirth = dataOfBirth;
+        this.country = Country.INDIA;
+        this.primeUser = false;
+        this.isBannedUser = false;
+        this.subscribedChannels = new HashMap<>();
+        this.likedVideo = new HashMap<>();
+        this.dislikedVideo = new HashMap<>();
+        this.notification = new Stack<>();
+        this.memberInChannels = new HashMap<>();
+        this.memberList = new HashMap<>();
+        this.watchLaterVideo = new ArrayList<>();
+        this.history = new Stack<>();
+        generateMemberList();
     }
     public String getUserName() {
         return userName;

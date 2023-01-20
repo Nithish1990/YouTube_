@@ -1,27 +1,11 @@
 package application.pages;
+import application.modal.video.Advertisement;
+import application.modal.video.Comments;
+import application.modal.video.Video;
 import application.utilities.Colors;
 import application.utilities.helper.CustomScanner;
-import application.video.Advertisement;
-import application.video.Comments;
-import application.video.Video;
-
-import java.util.List;
-import java.util.Scanner;
 
 public class WatchPage extends  Page{
-
-
-    public void display(Video video,boolean isSubscribed,boolean isOwner){
-        line();
-        System.out.println("Enter\n1 Pause/Play\n2 Like:"+video.getLikesCount()+"\n3 DisLike: "+
-                video.getDislikesCount()+"\n4 Share ");
-        if(isOwner == false) {
-            System.out.println((isSubscribed ? "\n5 UnSubscribe" : "\n5 Subscribe"));
-        }
-        System.out.println("\n6 Comments: "+video.getComments().size()+"\n7 Visit Channel");
-
-    }
-
     public int  showWarning() {
         System.out.println("Not sign in.......!");
         return CustomScanner.scanInt("Want to login press 1");
@@ -88,34 +72,38 @@ public class WatchPage extends  Page{
         System.out.println("3 DisLike: "+video.getDislikesCount());
         System.out.println("4 Comments"+video.getComments().size());
         System.out.println("5 Visit Channel");
-        System.out.println("6 Change Title Of The Video");
-        System.out.println("7 Change Description Of The Video");
-        System.out.println("8 Delete Video");
+        System.out.println("6 Share");
+        System.out.println("7 Change Title Of The Video");
+        System.out.println("8 Change Description Of The Video");
+        System.out.println("9 Delete Video");
         return CustomScanner.scanIntLine();
     }
 
     public void displayManagerOption(Video video) {
         displayEditorsOption(video);
-        System.out.println("9 Delete Video");
+        System.out.println("10 Delete Video");
     }
     public void displayEditorsOption(Video video){
-
-        System.out.println("7 Change Title Of The Video");
-        System.out.println("8 Change Description Of The Video");
+        System.out.println("8 Change Title Of The Video");
+        System.out.println("9 Change Description Of The Video");
     }
 
-    public int displayAdminOption(Video video) {
-        System.out.println("7 Delete Video");
+    public int displayAdminOption(Video video,boolean isSubscribe,boolean isLiked,boolean isDisliked,String channelName,int subscribeCount) {
+        displayCommonOption(video,isSubscribe,isLiked,isDisliked,channelName,subscribeCount);
+        System.out.println("10 Delete");
         return CustomScanner.scanIntLine();
     }
     public void displayCommonOption(Video video,boolean isSubscribe,boolean isLiked,boolean isDisliked,String channelName,int subscribeCount){
-        displayVideoDetails(video,isDisliked,isLiked,isDisliked,channelName,subscribeCount);
+
+        displayVideoDetails(video,isSubscribe,isLiked,isDisliked,channelName,subscribeCount);
+        line();
         System.out.println("1 Pause/Play");
         System.out.println("2 Like:"+video.getLikesCount());
         System.out.println("3 DisLike: "+video.getDislikesCount());
         System.out.println("4 Comments"+video.getComments().size());
         System.out.println("5 Subscribe");
         System.out.println("6 Visit Channel");
+        System.out.println("7 Share");
     }
 
     public void displayVideoDetails(Video video,boolean isSubscribe,boolean isLiked,boolean isDisliked,String channelName,int subscribeCount){
@@ -132,11 +120,15 @@ public class WatchPage extends  Page{
     }
     public void displayVideoDetails(Video video,boolean isLiked,boolean isDisliked,String channelName,int subscribeCount){
         System.out.println(video.getVideoTitle()+" Views: "+video.getViewsCount());
-        System.out.print(Colors.addColor(Colors.CYAN_BOLD, channelName+" "+subscribeCount)+"      ");
+        System.out.print(Colors.addColor(Colors.CYAN_BOLD, channelName+"      "+subscribeCount)+"      ");
         System.out.print(Colors.addColor(isLiked?Colors.PURPLE_BACKGROUND:Colors.BLACK_BACKGROUND,"Like "+video.getLikesCount()));
         System.out.print("  ");
         System.out.print(Colors.addColor(!isDisliked?Colors.PURPLE_BACKGROUND:Colors.BLACK_BACKGROUND,"Disliked"+video.getDislikesCount())+"  ");
 
         System.out.println(Colors.addColor(Colors.BLUE," Share"));
+    }
+
+    public boolean getConfirmationForDelete() {
+        return CustomScanner.scanInt("Really Want To Delete Enter 1") == 1;
     }
 }

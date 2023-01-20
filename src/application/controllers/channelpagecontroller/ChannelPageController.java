@@ -4,19 +4,20 @@ import application.Application;
 import application.controllers.Controller;
 import application.controllers.buttons.Button;
 import application.controllers.buttons.SubscribeButton;
-import application.controllers.watch.controller.WatchPageController;
+import application.controllers.watch.controller.*;
+import application.modal.video.Thumbnail;
 import application.pages.ChannelPage;
-import application.users.channel.Channel;
-import application.users.channel.ContentCreator;
-import application.users.channel.Member;
-import application.users.channel.members.ChannelManager;
-import application.users.channel.members.Editor;
-import application.users.channel.members.Moderator;
-import application.users.user.SignedViewer;
+import application.modal.users.channel.Channel;
+import application.modal.users.channel.ContentCreator;
+import application.modal.users.channel.members.Member;
+import application.modal.users.channel.members.ChannelManager;
+import application.modal.users.channel.members.Editor;
+import application.modal.users.channel.members.Moderator;
+import application.modal.users.user.SignedViewer;
 import application.utilities.Colors;
 import application.utilities.constant.user.types.MemberType;
 import application.utilities.constant.user.types.UserType;
-import application.video.Thumbnail;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +25,9 @@ import java.util.Map;
 
 public class ChannelPageController{
 
+    public ChannelPageController(){
+        channelPage = new ChannelPage();
+    }
 
     private ChannelPage channelPage;
     private Controller watchPageController;
@@ -230,6 +234,8 @@ public class ChannelPageController{
             try {
                 Thumbnail thumbnail = channel.getdisplayUploadedVideo().get(channelPage.getInput("Select video Position") - 1);
                 Application.getCurrentUser().getHistory().push(thumbnail);
+                Factory factory = new WatchPageControllerFactory();
+                Controller watchPageController = factory.createFactory(Application.getCurrentUser());
                 watchPageController.renderPage();
             }catch (IndexOutOfBoundsException e){
                 channelPage.displayIndexOfOutBound();
@@ -261,13 +267,6 @@ public class ChannelPageController{
                 editPage(channel);
                 break;
         }
-    }
-
-
-
-    public ChannelPageController(){
-        channelPage = new ChannelPage();
-        watchPageController  = new WatchPageController();
     }
 
     public void ownerOptions(Channel channel){

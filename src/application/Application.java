@@ -3,9 +3,9 @@ package application;
 import application.controllers.Controller;
 import application.database.DatabaseManager;
 import application.controllers.HomePageController;
-import application.users.channel.Channel;
-import application.users.user.unsignedviewer.UnSignedViewer;
-import application.users.user.Viewer;
+import application.modal.users.channel.Channel;
+import application.modal.users.user.unsignedviewer.UnSignedViewer;
+import application.modal.users.user.Viewer;
 
 public class Application {
 
@@ -54,8 +54,5 @@ public class Application {
     public Channel getChannel(String url) {
         return getApplication().getDatabaseManager().getChannel().get(url);
     }
-
-
-
 
 }

@@ -2,11 +2,9 @@ package application.controllers.watch.controller;
 
 import application.Application;
 import application.controllers.Deletable;
+import application.modal.video.Video;
 import application.pages.WatchPage;
-import application.users.channel.Channel;
-import application.video.Video;
-import application.videoPlayer.VideoPlayer;
-
+import application.modal.users.channel.Channel;
 public class AdminWatchPageController extends CommonUserWatchPageController implements Deletable {
     private Video video;
     private WatchPage watchPage;
@@ -15,10 +13,11 @@ public class AdminWatchPageController extends CommonUserWatchPageController impl
     @Override
     public void renderPage() {
         while (true) {
-            videoPlayer.playVideo(video);
-            int userInput = watchPage.displayAdminOption(video);
+            playVideo(video,channel);
+            int userInput = watchPage.displayAdminOption(video,isUserSubscribed(channel),isUserLikedTheVideo(video.getVideoUrl()),isUserDislikedTheVideo(video.getVideoUrl())
+                    , channel.getChannelName(), channel.getSubscribersCount());
             switch (userInput) {
-                case 7:
+                case 8:
                     delete();
                 default:
                     if(super.option(userInput) == false)
@@ -34,11 +33,11 @@ public class AdminWatchPageController extends CommonUserWatchPageController impl
     }
 
 
-    public AdminWatchPageController(Channel channel, Video video, WatchPage watchPage, VideoPlayer videoPlayer){
-        super(channel,video,watchPage,videoPlayer);
+    public AdminWatchPageController(Channel channel, Video video){
+        super(channel,video);
         this.video = video;
-        this.watchPage = watchPage;
+        this.watchPage = new WatchPage();
         this.channel = channel;
-        this.videoPlayer = videoPlayer;
+        this.videoPlayer = new VideoPlayer();
     }
 }
