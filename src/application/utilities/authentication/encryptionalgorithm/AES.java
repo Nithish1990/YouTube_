@@ -1,6 +1,6 @@
-package application.utilities.authentication;
+package application.utilities.authentication.encryptionalgorithm;
 
-public class AES implements Crypto{
+public class AES implements Crypto {
 
     private static final String key = "aesEncryptionKey";
     private static final String initVector = "encryptionIntVec";

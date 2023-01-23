@@ -1,6 +1,6 @@
 package application.pages;
 
-import application.modal.users.channel.Channel;
+import application.modal.channel.Channel;
 import application.modal.video.Thumbnail;
 import application.utilities.Colors;
 import application.utilities.helper.CustomScanner;

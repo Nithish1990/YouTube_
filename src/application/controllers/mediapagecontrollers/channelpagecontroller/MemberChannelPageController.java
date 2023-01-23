@@ -5,13 +5,13 @@ import application.controllers.buttons.Button;
 import application.controllers.buttons.SubscribeButton;
 import application.controllers.options.Deletable;
 import application.controllers.options.Editable;
-import application.modal.users.channel.Channel;
-import application.modal.users.channel.ContentCreator;
-import application.modal.users.channel.members.ChannelManager;
-import application.modal.users.channel.members.Editor;
-import application.modal.users.channel.members.Member;
-import application.modal.users.channel.members.Moderator;
-import application.modal.users.user.SignedViewer;
+import application.modal.channel.Channel;
+import application.modal.channel.ContentCreator;
+import application.modal.channel.members.ChannelManager;
+import application.modal.channel.members.Editor;
+import application.modal.channel.members.Member;
+import application.modal.channel.members.Moderator;
+import application.modal.users.SignedViewer;
 import application.utilities.Colors;
 import application.utilities.constant.user.types.MemberType;
 import application.utilities.constant.user.types.UserType;
@@ -32,7 +32,7 @@ public class MemberChannelPageController extends CommonUserChannelPageController
             memberOption();
         }
     }
-    public boolean isOwner(String channelURL){
+    private boolean isOwner(String channelURL){
         boolean isOwner = false;
         if(Application.getCurrentUser().getUserType() == UserType.CONTENT_CREATOR){
             ContentCreator contentCreator = (ContentCreator) Application.getCurrentUser();
@@ -40,7 +40,7 @@ public class MemberChannelPageController extends CommonUserChannelPageController
         }
         return isOwner;
     }
-    public void ownerOption(){
+    private void ownerOption(){
         while (true) {
             channelPage.displayChannel(channel);
             int userInput = channelPage.pageOwnerOption();
@@ -65,7 +65,8 @@ public class MemberChannelPageController extends CommonUserChannelPageController
             }
         }
     }
-    public void memberOption() {
+    private void memberOption() {
+
         Member member = ((SignedViewer) Application.getCurrentUser()).getMemberInChannels().getOrDefault(channel.getChannelUrl(), null);
         if (member != null) {
             switch (member.getMemberType()) {
@@ -82,33 +83,37 @@ public class MemberChannelPageController extends CommonUserChannelPageController
         }
     }
 
-    public void managerOption() {
-        channelPage.displayChannel(channel);
-        channelPage.commonOption();
-        channelPage.showEditorOption();
-        channelPage.showMemberManagementOption();
-        int userInput = channelPage.getInput();
-        switch (userInput) {
-            case 1:
-                seeVideo(channel);
-                break;
-            case 2:
-                Button button = new SubscribeButton();
-                button.onClick(channel.getChannelUrl());
-                break;
-            case 3:
-                edit();
-                break;
-            case 4:
-                setMember();
-                break;
-            case 5:
-                memberMenu();
-                break;
+    private void managerOption() {
+        while (true) {
+            channelPage.displayChannel(channel);
+            channelPage.commonOption();
+            channelPage.showEditorOption();
+            channelPage.showMemberManagementOption();
+            int userInput = channelPage.getInput();
+            switch (userInput) {
+                case 1:
+                    seeVideo(channel);
+                    break;
+                case 2:
+                    Button button = new SubscribeButton();
+                    button.onClick(channel.getChannelUrl());
+                    break;
+                case 3:
+                    edit();
+                    break;
+                case 4:
+                    setMember();
+                    break;
+                case 5:
+                    memberMenu();
+                    break;
+                default:
+                    return;
+            }
         }
     }
 
-    public void editorOption() {
+    private void editorOption() {
         while (true){
         channelPage.commonOption();
         channelPage.showEditorOption();
@@ -123,7 +128,7 @@ public class MemberChannelPageController extends CommonUserChannelPageController
             }
         }
     }
-    public void setMember(){
+    private void setMember(){
         String emailID = channelPage.getEmailId();
         if(emailID.equals(((SignedViewer)Application.getCurrentUser()).getUserEmailID()) == false) {
             if (emailID.equals(channel.getOwnBy()) == false) {
@@ -142,7 +147,6 @@ public class MemberChannelPageController extends CommonUserChannelPageController
                     channelPage.displayIndexOfOutBound();
                 }
             } else {
-
                 channelPage.showWarning(Colors.RED+"You Don't have Access To It"+Colors.RESET);
             }
         }else{
@@ -160,7 +164,7 @@ public class MemberChannelPageController extends CommonUserChannelPageController
         }
         return null;
     }
-    public void memberMenu() {
+    private void memberMenu() {
         List<Member> moderator = new ArrayList<>();
         List<Member> editor = new ArrayList<>();
         List<Member> channelManager = new ArrayList<>();

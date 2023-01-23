@@ -4,31 +4,33 @@ import application.controllers.mediapagecontrollers.watchpagecontroller.AdminWat
 import application.controllers.mediapagecontrollers.watchpagecontroller.CommonUserWatchPageController;
 import application.controllers.mediapagecontrollers.watchpagecontroller.MemberWatchPageController;
 import application.controllers.mediapagecontrollers.watchpagecontroller.WatchPageController;
-import application.modal.users.channel.Channel;
-import application.modal.users.user.Viewer;
+import application.modal.channel.Channel;
+import application.modal.users.Viewer;
 
 public class WatchPageControllerFactory extends MediaPageControllerFactory {
 
+
+    WatchPageController adminController,memberController,commonUserController;
 
         @Override
         public WatchPageController createFactory(Viewer viewer,Channel channel) {
         WatchPageController watchPageController;
         switch (viewer.getUserType()) {
             case ADMIN:
-                watchPageController = new AdminWatchPageController();
+                watchPageController = adminController == null ? adminController = new AdminWatchPageController():adminController;
                 break;
             case SIGNED:
             case CONTENT_CREATOR:
 
                 if (isMember(channel) || isOwner(channel.getChannelUrl())) {
-                    watchPageController = new MemberWatchPageController();
+                    watchPageController = memberController== null? memberController = new MemberWatchPageController():memberController;
                 } else {
 
-                    watchPageController = new CommonUserWatchPageController();
+                    watchPageController = commonUserController == null?commonUserController = new CommonUserWatchPageController():commonUserController;
                 }
                 break;
             default:
-                watchPageController = new CommonUserWatchPageController();
+                watchPageController = commonUserController == null?commonUserController = new CommonUserWatchPageController():commonUserController;
         }
         return  watchPageController;
     }

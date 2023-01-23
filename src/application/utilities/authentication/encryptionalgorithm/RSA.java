@@ -1,4 +1,4 @@
-package application.utilities.authentication;
+package application.utilities.authentication.encryptionalgorithm;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
@@ -7,7 +7,7 @@ import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.PBEParameterSpec;
 import java.security.*;
 
-public class RSA implements Crypto{
+public class RSA implements Crypto {
     private String password = "qwertyuiop";
     private static KeyPairGenerator kpg;
     private static KeyPair kp;
@@ -48,12 +48,4 @@ public class RSA implements Crypto{
             return encrypted;
         }
     }
-
-
-
-
-    // Encrypt the data
-
-    // Decrypt the data
-
 }

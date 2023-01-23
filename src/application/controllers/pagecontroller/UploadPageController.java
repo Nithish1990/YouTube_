@@ -1,18 +1,18 @@
 package application.controllers.pagecontroller;
 
 import application.Application;
-import application.admin.SystemAdmin;
+import application.modal.admin.SystemAdmin;
 import application.controllers.Controller;
 import application.utilities.authentication.Authenticator;
 import application.modal.video.Thumbnail;
 import application.modal.video.Video;
 import application.pages.UploadPage;
-import application.modal.users.channel.Channel;
-import application.modal.users.channel.ContentCreator;
-import application.modal.users.channel.members.Member;
-import application.modal.users.channel.members.ChannelManager;
-import application.modal.users.user.SignedViewer;
-import application.modal.users.user.Viewer;
+import application.modal.channel.Channel;
+import application.modal.channel.ContentCreator;
+import application.modal.channel.members.Member;
+import application.modal.channel.members.ChannelManager;
+import application.modal.users.SignedViewer;
+import application.modal.users.Viewer;
 import application.utilities.constant.user.types.MemberType;
 import application.utilities.generator.Generator;
 
@@ -37,7 +37,7 @@ public class UploadPageController implements Controller {
                 upload((ContentCreator) viewer);
         }
     }
-    public void upload(SignedViewer viewer){
+    private void upload(SignedViewer viewer){
         ContentCreator contentCreator = new ContentCreator(viewer);
         Channel channel  =  new Channel(viewer.getUserName(), Generator.urlGenerate(viewer.getUserName()),contentCreator.getUserEmailID());
         contentCreator.addChannel(channel.getChannelUrl());
@@ -51,10 +51,11 @@ public class UploadPageController implements Controller {
         uploadPage.displayWelcomeMessage();
         upload(contentCreator);
     }
-    public void upload(ContentCreator contentCreator){
-            String details[] = uploadPage.getTitle();
+    private void upload(ContentCreator contentCreator){
+        Channel channel = contentCreator.getCurrentChannel();
+            String details[] = uploadPage.getTitle(channel.getChannelName());
             Video video = new Video(details[0],contentCreator.getCurrentChannel().getChannelUrl(),contentCreator.getCurrentChannel().getChannelName(),details[1]);
-            Channel channel = contentCreator.getCurrentChannel();
+
             Thumbnail thumbnail = new Thumbnail(video.getVideoTitle(),channel.getChannelUrl(),video.duration,video.uploadedDateAndTime, video.getVideoUrl(), video.getViewsCount());
             channel.getUploadedVideo().add(thumbnail);
             sendNotification(channel,thumbnail);

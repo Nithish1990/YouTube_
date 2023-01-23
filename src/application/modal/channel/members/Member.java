@@ -1,4 +1,4 @@
-package application.modal.users.channel.members;
+package application.modal.channel.members;
 
 import application.utilities.constant.user.types.MemberType;
 

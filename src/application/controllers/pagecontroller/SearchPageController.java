@@ -7,7 +7,7 @@ import application.controllers.mediapagecontrollers.factories.ChannelPageControl
 import application.controllers.mediapagecontrollers.factories.ControllersFactory;
 import application.controllers.mediapagecontrollers.factories.WatchPageControllerFactory;
 import application.pages.SearchPage;
-import application.modal.users.channel.Channel;
+import application.modal.channel.Channel;
 import application.modal.video.Thumbnail;
 import application.modal.video.Video;
 
@@ -18,18 +18,18 @@ import java.util.Map;
 public class SearchPageController implements Controller {
 
     private final SearchPage searchPage;
+    public SearchPageController(){
+        searchPage = new SearchPage();
+    }
     @Override
     public void renderPage() {
         String query = searchPage.search();
         search(query);
     }
-    private boolean isMatches(String query, String userName){
+    private boolean isMatches(String query, String userName) {
         query = query.toLowerCase();
         userName = userName.toLowerCase();
         return userName.startsWith(query);
-    }
-    public SearchPageController(){
-        searchPage = new SearchPage();
     }
     private void search(String query){
         List<Thumbnail>thumbnails = searchVideo(query);

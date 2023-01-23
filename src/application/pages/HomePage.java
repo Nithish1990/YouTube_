@@ -29,7 +29,7 @@ public class HomePage extends Page{
     public int display(String name,List<Thumbnail> thumbnails){
         line();
         displayName(name);
-        System.out.println("Home page");
+        System.out.println("\tHome page");
         System.out.println(thumbnails.isEmpty()?"No Video Uploaded":"Videos:");
         display(thumbnails);
         line();

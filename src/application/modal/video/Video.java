@@ -1,7 +1,7 @@
 package application.modal.video;
 
 import application.Application;
-import application.modal.users.user.SignedViewer;
+import application.modal.users.SignedViewer;
 import application.utilities.constant.category.AgeCategory;
 import application.utilities.constant.category.Category;
 import application.utilities.generator.Generator;

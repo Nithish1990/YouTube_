@@ -2,7 +2,7 @@ package application.controllers.mediapagecontrollers.channelpagecontroller;
 
 import application.Application;
 import application.controllers.options.Deletable;
-import application.modal.users.channel.Channel;
+import application.modal.channel.Channel;
 
 public class AdminChannelPageController extends CommonUserChannelPageController implements Deletable {
     private Channel channel;

@@ -6,19 +6,19 @@ import application.controllers.mediapagecontrollers.factories.ControllersFactory
 import application.controllers.mediapagecontrollers.factories.WatchPageControllerFactory;
 import application.modal.video.Thumbnail;
 import application.pages.ChannelPage;
-import application.modal.users.channel.Channel;
+import application.modal.channel.Channel;
 
 
 
 public abstract class  ChannelPageController implements MediaPageController {
 
-    protected ChannelPage channelPage;
+    final ChannelPage channelPage;
     public ChannelPageController(){
         channelPage = new ChannelPage();
     }
     @Override
     public abstract void renderPage(String URL);
-    protected void seeVideo(Channel channel){
+    void seeVideo(Channel channel){
         if(channel.getUploadedVideo().isEmpty() == false){
             try {
                 Thumbnail thumbnail = channel.getUploadedVideo().get(channelPage.getVideoPosition() - 1);

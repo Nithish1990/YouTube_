@@ -1,4 +1,4 @@
-package application.modal.users.user;
+package application.modal.users;
 
 import application.modal.video.Thumbnail;
 import application.utilities.constant.user.types.UserType;

@@ -6,9 +6,11 @@ import application.controllers.Controller;
 import application.controllers.mediapagecontrollers.factories.ChannelPageControllerFactory;
 import application.controllers.mediapagecontrollers.factories.ControllersFactory;
 import application.pages.AdminPage;
-import application.modal.users.channel.Channel;
-import application.modal.users.user.unsignedviewer.UnSignedViewer;
+import application.modal.channel.Channel;
+import application.modal.users.unsignedviewer.UnSignedViewer;
 import application.modal.video.Advertisement;
+import application.utilities.generator.Generator;
+
 import java.util.List;
 
 public class AdminPageController implements Controller {
@@ -36,13 +38,15 @@ public class AdminPageController implements Controller {
                     changeMonetizationProperty();
                     // change subscribe count, view count , min withdrawal for payment
                     break;
-                default:
-                    return;
+                case 9:
+                    if(adminPage.askConfirmation()) {
+                        System.exit(0);
+                    }
             }
         }
     }
 
-    public void changeMonetizationProperty() {
+    private void changeMonetizationProperty() {
         int minSubscribeCount, minViewCount, minWithdraw;
         minWithdraw = Application.getApplication().getDatabaseManager().getMinWithdrawAmount();
         minSubscribeCount = Application.getApplication().getMinSubscribeForMonetization();
@@ -69,11 +73,11 @@ public class AdminPageController implements Controller {
 
     }
 
-    public void report() {
+    private void report() {
         adminPage.report();
     }
 
-    public void monetizationApproval(){
+    private void monetizationApproval(){
         List<Channel> monetizationRequest =  Application.getApplication().getDatabaseManager().getMonetizationRequestList();
         if(monetizationRequest.isEmpty()){
             adminPage.displayNoPending();
@@ -92,9 +96,15 @@ public class AdminPageController implements Controller {
         }
     }
 
-    public void addAdvertisement(){
-        Advertisement advertisement = adminPage.createAdvertisement();
-        Application.getApplication().getDatabaseManager().addAdvertisement(advertisement);
+    private void addAdvertisement(){
+        String name = adminPage.getNameOfAdvertisement();
+        int duration = adminPage.getDurationOfAdvertisement();
+        if(duration <= Application.getApplication().getDatabaseManager().getMinAdvertisementTime()) {
+            Advertisement advertisement = new Advertisement(name, Generator.urlGenerate(name), duration);
+            Application.getApplication().getDatabaseManager().addAdvertisement(advertisement);
+        }else{
+            adminPage.displayAdWarning();
+        }
     }
 
     public AdminPageController(){

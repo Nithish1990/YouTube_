@@ -1,8 +1,8 @@
 package application.pages;
 
 import application.Application;
-import application.modal.users.user.SignedViewer;
-import application.modal.users.user.Viewer;
+import application.modal.users.SignedViewer;
+import application.modal.users.Viewer;
 import application.utilities.helper.CustomScanner;
 import application.utilities.validation.Validation;
 
@@ -28,7 +28,7 @@ public class LoginPage{
     public int displayOption(){
 
         System.out.println("========================================================");
-        return CustomScanner.scanInt("Enter The Choice\n1 Login(Already having an account)\n2 SignUp(create an account)");
+        return CustomScanner.scanInt("Enter The Choice\n1 Login(Already having an account)\n2 SignUp(create an account)\n3 To Exit");
     }
     public int displayOption(Viewer viewer){
         System.out.println("User name :"+((SignedViewer)viewer).getUserName());

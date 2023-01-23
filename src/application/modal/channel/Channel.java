@@ -1,7 +1,7 @@
-package application.modal.users.channel;
+package application.modal.channel;
 
-import application.modal.users.channel.members.Member;
-import application.modal.users.user.SignedViewer;
+import application.modal.channel.members.Member;
+import application.modal.users.SignedViewer;
 import application.modal.video.Thumbnail;
 import application.utilities.constant.category.Category;
 import application.utilities.constant.user.types.MemberType;
@@ -25,7 +25,7 @@ public class Channel {
     private List<Thumbnail> displayUploadedVideo;
     private Map<String, Member> channelMembers; // String is url of the user
 
-    private Map<MemberType,List<SignedViewer>> memberList;// List<String represent list of users
+    private Map<MemberType,Map<String,SignedViewer>> memberList;// List<String represent list of users
     private List<SignedViewer>subscribers;
     private Stack<WithdrawHistory> withdrawHistories;
     public Channel(String channelName, String channelUrl,String ownBy) {
@@ -163,7 +163,7 @@ public class Channel {
         return withdrawHistories;
     }
 
-    public Map<MemberType, List<SignedViewer>> getMemberList() {
+    public Map<MemberType, Map<String,SignedViewer>> getMemberList() {
         return memberList;
     }
 }

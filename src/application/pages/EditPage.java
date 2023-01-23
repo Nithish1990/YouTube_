@@ -1,7 +1,7 @@
 package application.pages;
 
-import application.modal.users.channel.Channel;
-import application.modal.users.user.SignedViewer;
+import application.modal.channel.Channel;
+import application.modal.users.SignedViewer;
 import application.utilities.validation.Validation;
 import application.utilities.helper.CustomScanner;
 import application.modal.video.Thumbnail;

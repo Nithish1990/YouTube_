@@ -3,10 +3,10 @@ package application.controllers.buttons;
 import application.Application;
 import application.controllers.Controller;
 import application.controllers.pagecontroller.LoginPageController;
-import application.modal.users.channel.Channel;
-import application.modal.users.channel.ContentCreator;
-import application.modal.users.user.SignedViewer;
-import application.modal.users.user.Viewer;
+import application.modal.channel.Channel;
+import application.modal.channel.ContentCreator;
+import application.modal.users.SignedViewer;
+import application.modal.users.Viewer;
 
 public class SubscribeButton implements Button{
     @Override
@@ -39,5 +39,6 @@ public class SubscribeButton implements Button{
             channel.setSubscribersCount(channel.getSubscribersCount() - 1);
             channel.deleteSubscriber((SignedViewer) Application.getCurrentUser());
         }
+        Application.getApplication().getDatabaseManager().addChannel(channel);
     }
 }

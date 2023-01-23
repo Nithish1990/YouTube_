@@ -4,13 +4,13 @@ import application.Application;
 import application.controllers.options.Deletable;
 import application.controllers.options.Editable;
 
-import application.modal.users.channel.Channel;
-import application.modal.users.channel.ContentCreator;
-import application.modal.users.channel.members.Member;
-import application.modal.users.user.SignedViewer;
-import application.modal.users.user.Viewer;
-import application.modal.video.Thumbnail;
+import application.modal.channel.Channel;
+import application.modal.channel.ContentCreator;
+import application.modal.channel.members.Member;
+import application.modal.users.SignedViewer;
+import application.modal.users.Viewer;
 import application.modal.video.Video;
+import application.utilities.Colors;
 import application.utilities.constant.user.types.UserType;;
 
 public class MemberWatchPageController extends CommonUserWatchPageController implements Deletable, Editable {
@@ -18,12 +18,14 @@ public class MemberWatchPageController extends CommonUserWatchPageController imp
     private Video video;
     private Channel channel;
     public void renderPage(String videoUrl) {
-
         video = Application.getApplication().getDatabaseManager().getVideo(videoUrl);
         channel = Application.getApplication().getChannel(video.getChannelURL());
+        if(checkVideoIsAvailable(video,channel) == false){
+            watchPage.displayVideoNotAvailable();
+            return;
+        }
         Viewer viewer = Application.getCurrentUser();
         playAds();
-
         if (viewer.getUserType() == UserType.CONTENT_CREATOR && channel.getOwnBy().equals(((ContentCreator) viewer).getUserEmailID())) {
              ownerOption(viewer);
         }else {
@@ -43,8 +45,9 @@ public class MemberWatchPageController extends CommonUserWatchPageController imp
     @Override
     public void delete() {
         if(watchPage.getConfirmationForDelete()){
-            Application.getApplication().getDatabaseManager().deleteVideo(video.getVideoUrl(), video.getChannelURL(), Application.getApplication().getDatabaseManager().getThumbnail(video.getVideoUrl()));
-
+            Application.getApplication().getDatabaseManager().deleteVideo(video.getVideoUrl(),
+                    video.getChannelURL(), Application.getApplication().
+                            getDatabaseManager().getThumbnail(video.getVideoUrl()));
             Application.getApplication().run();
         }
     }
@@ -53,7 +56,7 @@ public class MemberWatchPageController extends CommonUserWatchPageController imp
         if(userInput == 8)editTitle();
         else if(userInput == 9)editDesc();
     }
-    public void memberOption(Viewer viewer){
+    private void memberOption(Viewer viewer){
         SignedViewer viewer1 = (SignedViewer)viewer;
         Member member = viewer1.getMemberInChannels().getOrDefault(channel.getChannelUrl(), null);
 
@@ -70,7 +73,7 @@ public class MemberWatchPageController extends CommonUserWatchPageController imp
                 }
         }
     }
-    public void managerOption(){
+    private void managerOption(){
         while (true) {
             playVideo(video,channel);
             watchPage.displayCommonOption(video,isUserSubscribed(channel),isUserLikedTheVideo(video.getVideoUrl()),isUserDislikedTheVideo(video.getVideoUrl())
@@ -95,7 +98,7 @@ public class MemberWatchPageController extends CommonUserWatchPageController imp
         }
     }
 
-    public void editorOption(){
+    private void editorOption(){
         while (true) {
             playVideo(video,channel);
             watchPage.displayCommonOption(video,isUserSubscribed(channel),isUserLikedTheVideo(video.getVideoUrl()),isUserDislikedTheVideo(video.getVideoUrl())
@@ -114,7 +117,8 @@ public class MemberWatchPageController extends CommonUserWatchPageController imp
             }
         }
     }
-    public void ownerOption(Viewer viewer) {
+    private void ownerOption(Viewer viewer) {
+
         while (true) {
             playVideo(video,channel);
             watchPage.displayVideoDetails(video,isUserLikedTheVideo(video.getVideoUrl()),

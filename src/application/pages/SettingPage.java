@@ -1,9 +1,9 @@
 package application.pages;
 
 
-import application.modal.users.channel.Channel;
-import application.modal.users.channel.ContentCreator;
-import application.modal.users.user.SignedViewer;
+import application.modal.channel.Channel;
+import application.modal.channel.ContentCreator;
+import application.modal.users.SignedViewer;
 import application.utilities.helper.CustomScanner;
 
 import java.util.List;
@@ -14,7 +14,7 @@ public class SettingPage extends Page {
         System.out.println("\t"+"Setting Page");
         displayName(viewer.getUserName());
         option();
-
+        System.out.println("9 To Exit");
         int userInput = CustomScanner.scanInt();
         line();
         return userInput;
@@ -29,6 +29,7 @@ public class SettingPage extends Page {
         System.out.println("3 Switch channel");
         System.out.println("4 Create new Channel");
         System.out.println("5 Revenue menu");
+        System.out.println("9 To Exit");
         //channel set
         int userInput = CustomScanner.scanInt();
         line();
@@ -65,4 +66,7 @@ public class SettingPage extends Page {
         System.out.println("No Channel Found");
     }
 
+    public boolean askConfirmation() {
+        return CustomScanner.scanInt("Really Want To Exit Enter 1")==1;
+    }
 }

@@ -5,9 +5,9 @@ import application.controllers.Controller;
 import application.controllers.options.Editable;
 import application.utilities.authentication.Authenticator;
 import application.pages.EditPage;
-import application.modal.users.channel.Channel;
-import application.modal.users.channel.members.Member;
-import application.modal.users.user.SignedViewer;
+import application.modal.channel.Channel;
+import application.modal.channel.members.Member;
+import application.modal.users.SignedViewer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,7 +83,7 @@ public class EditPageController implements Controller, Editable {
         }
         return channels;
     }
-    public void memberMenu(SignedViewer signedViewer) {
+    private void memberMenu(SignedViewer signedViewer) {
 
         // to change implementation
         List<String> moderator = new ArrayList<>();

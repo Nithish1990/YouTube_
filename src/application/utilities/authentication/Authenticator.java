@@ -1,9 +1,10 @@
 package application.utilities.authentication;
 import application.Application;
-import application.modal.users.channel.Channel;
-import application.modal.users.channel.ContentCreator;
-import application.modal.users.user.SignedViewer;
-import application.modal.users.user.Viewer;
+import application.modal.users.SignedViewer;
+import application.modal.users.Viewer;
+import application.utilities.authentication.encryptionalgorithm.AES;
+import application.utilities.authentication.encryptionalgorithm.Crypto;
+
 import java.util.Map;
 
 

@@ -1,4 +1,4 @@
-package application.utilities.authentication;
+package application.utilities.authentication.encryptionalgorithm;
 
 public interface Crypto {
 

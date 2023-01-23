@@ -6,10 +6,10 @@ import application.controllers.mediapagecontrollers.MediaPageController;
 import application.controllers.mediapagecontrollers.factories.ChannelPageControllerFactory;
 import application.controllers.mediapagecontrollers.factories.ControllersFactory;
 import application.controllers.pagecontroller.LoginPageController;
-import application.modal.users.channel.Channel;
-import application.modal.users.channel.members.Member;
-import application.modal.users.user.SignedViewer;
-import application.modal.users.user.Viewer;
+import application.modal.channel.Channel;
+import application.modal.channel.members.Member;
+import application.modal.users.SignedViewer;
+import application.modal.users.Viewer;
 import application.modal.video.Comments;
 import application.modal.video.Thumbnail;
 import application.modal.video.Video;
@@ -19,6 +19,26 @@ import application.utilities.constant.user.types.UserType;
 public class CommonUserWatchPageController extends WatchPageController {
     private Channel channel;
     private Video video;
+
+    @Override
+    public void renderPage(String videoUrl) {
+        playAds();
+        video = Application.getApplication().getDatabaseManager().getVideo(videoUrl);
+        channel = Application.getApplication().getChannel(video.getChannelURL());
+        if(checkVideoIsAvailable(video,channel) == false){
+            watchPage.displayVideoNotAvailable();
+            return;
+        }
+        while (true) {
+            playVideo(video,channel);
+            watchPage.displayCommonOption(video,isUserSubscribed(channel),isUserLikedTheVideo(video.getVideoUrl()),isUserDislikedTheVideo(video.getVideoUrl())
+                    , channel.getChannelName(), channel.getSubscribersCount());
+            int userInput = (watchPage.getInput());
+            if (option(userInput,channel,video) == false) {
+                return;
+            }
+        }
+    }
     public boolean option(int userInput,Channel channel,Video video){
         switch (userInput) {
             case 1:// pause/play
@@ -51,24 +71,7 @@ public class CommonUserWatchPageController extends WatchPageController {
         return true;
     }
 
-
-    @Override
-    public void renderPage(String videoUrl) {
-        playAds();
-        video = Application.getApplication().getDatabaseManager().getVideo(videoUrl);
-        channel = Application.getApplication().getChannel(video.getChannelURL());
-        while (true) {
-            playVideo(video,channel);
-            watchPage.displayCommonOption(video,isUserSubscribed(channel),isUserLikedTheVideo(video.getVideoUrl()),isUserDislikedTheVideo(video.getVideoUrl())
-                    , channel.getChannelName(), channel.getSubscribersCount());
-            int userInput = (watchPage.getInput());
-            if (option(userInput,channel,video) == false) {
-                return;
-            }
-        }
-    }
-
-    protected void moderatorOption(SignedViewer signedViewer, Video video) {
+    private void moderatorOption(SignedViewer signedViewer, Video video) {
         int userInput = watchPage.displayCommentDeletion();
         if (userInput == 0) {
             addComment(signedViewer,video);
@@ -80,24 +83,24 @@ public class CommonUserWatchPageController extends WatchPageController {
             }
         }
     }
-    protected void addComment(SignedViewer viewer, Video video){
+    private void addComment(SignedViewer viewer, Video video){
         video.getComments().push(new Comments(viewer, watchPage.getComment()));
     }
-    protected void playAds(){
+    void playAds(){
         Viewer viewer = Application.getCurrentUser();
         if (viewer.getUserType() == UserType.UN_SIGNED || ((SignedViewer) viewer).isPrimeUser() == false) {
             displayAd();
         }
     }
 
-    protected void navigateToChannel(Channel channel,Video video){
+    void navigateToChannel(Channel channel,Video video){
         updateDB(video,channel);
         ControllersFactory factory = new ChannelPageControllerFactory();
         MediaPageController controller = factory.createFactory(Application.getCurrentUser(),channel);
         controller.renderPage(video.getChannelURL());
     }
 
-    protected boolean isUserSubscribed(Channel channel) {
+    boolean isUserSubscribed(Channel channel) {
         boolean isSubscribed = false;
         if (Application.getCurrentUser().getUserType() != UserType.UN_SIGNED) {
             if (((SignedViewer) Application.getCurrentUser()).getSubscribedChannels().getOrDefault(channel.getChannelUrl(), false)) {
@@ -106,17 +109,17 @@ public class CommonUserWatchPageController extends WatchPageController {
         }
         return isSubscribed;
     }
-    protected boolean isUserLikedTheVideo(String videoUrl){
+    boolean isUserLikedTheVideo(String videoUrl){
         if(Application.getCurrentUser().getUserType() != UserType.UN_SIGNED)
             return  ((SignedViewer) Application.getCurrentUser()).getLikedVideo().getOrDefault(videoUrl,false);
         return false;
     }
-    protected boolean isUserDislikedTheVideo(String videoUrl){
+    boolean isUserDislikedTheVideo(String videoUrl){
         if(Application.getCurrentUser().getUserType() != UserType.UN_SIGNED)
             return  ((SignedViewer) Application.getCurrentUser()).getDislikedVideo().getOrDefault(videoUrl,false);
         return false;
     }
-    protected void updateDB(Video video, Channel channel) {
+    void updateDB(Video video, Channel channel) {
         Viewer viewer = Application.getCurrentUser();
         if (viewer.getUserType() != UserType.UN_SIGNED) {
             if (video.getViewedUser().getOrDefault(Application.getCurrentUser(), false) == false) {
@@ -136,11 +139,11 @@ public class CommonUserWatchPageController extends WatchPageController {
         try {
             watchPage.displayAds(Application.getApplication().getDatabaseManager().getAdvertisement());
         }catch (IndexOutOfBoundsException e) {
-
+            //no ads is available at the moment
         }
 
     }
-    protected void comments(Viewer viewer,Video video){
+    void comments(Viewer viewer,Video video){
         watchPage.displayComments(video);
         if (viewer.getUserType() != UserType.UN_SIGNED) {
             SignedViewer signedViewer = (SignedViewer) viewer;
@@ -159,11 +162,11 @@ public class CommonUserWatchPageController extends WatchPageController {
             login();
         }
     }
-    protected void playVideo(Video video,Channel channel){
+    void playVideo(Video video,Channel channel){
         videoPlayer.playVideo(video);
         updateDB(video,channel);
     }
-    protected void pauseOrPlay(){
+    void pauseOrPlay(){
         videoPlayer.pauseOrPlay();
     }
     private void login() {

@@ -8,6 +8,7 @@ import application.controllers.buttons.SubscribeButton;
 import application.controllers.buttons.thumbsbuttons.ThumbsDownButton;
 import application.controllers.buttons.thumbsbuttons.ThumbsUpButton;
 
+import application.modal.channel.Channel;
 import application.modal.video.Video;
 import application.pages.WatchPage;
 import application.utilities.Colors;
@@ -23,26 +24,32 @@ public abstract class WatchPageController implements MediaPageController {
         this.watchPage = new WatchPage();
         this.videoPlayer = new VideoPlayer();
     }
-    protected WatchPage watchPage;
-    protected VideoPlayer videoPlayer;
+    final WatchPage watchPage;
+    final VideoPlayer videoPlayer;
     private Button subscribeButton,thumbsUpButton,thumbsDownButton;
 
     @Override
     public abstract void renderPage(String URL);
-    protected void like(String url){
+    void like(String url){
         this.thumbsUpButton = thumbsUpButton == null ? new ThumbsUpButton() : thumbsUpButton;
         thumbsUpButton.onClick(url);
     }
-    protected void dislike(String url){
+    void dislike(String url){
         this.thumbsDownButton = thumbsDownButton == null?new ThumbsDownButton():thumbsDownButton;
         thumbsDownButton.onClick(url);
     }
-    protected void subscribe(String url){
+    void subscribe(String url){
         this.subscribeButton = subscribeButton == null? new SubscribeButton():subscribeButton;
         subscribeButton.onClick(url);
     }
 
-    protected class VideoPlayer {
+    boolean checkVideoIsAvailable(Video video, Channel channel){
+        if(video == null || channel == null){
+            return false;
+        }
+        return true;
+    }
+    class VideoPlayer {
         private int volumePercentage;
         private Quality quality; //like 4k
         private Speed speed;

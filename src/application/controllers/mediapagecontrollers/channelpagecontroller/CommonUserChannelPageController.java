@@ -3,7 +3,7 @@ package application.controllers.mediapagecontrollers.channelpagecontroller;
 import application.Application;
 import application.controllers.buttons.Button;
 import application.controllers.buttons.SubscribeButton;
-import application.modal.users.channel.Channel;
+import application.modal.channel.Channel;
 
 public class CommonUserChannelPageController extends ChannelPageController {
 
@@ -19,7 +19,7 @@ public class CommonUserChannelPageController extends ChannelPageController {
             }
         }
     }
-    protected boolean commonOption(int userInput){
+     boolean commonOption(int userInput){
         switch (userInput) {
             case 1:
                 seeVideo(channel);

@@ -1,14 +1,15 @@
 package application.pages;
 
-import application.admin.SystemAdmin;
-import application.modal.users.channel.Channel;
+import application.modal.admin.SystemAdmin;
+import application.modal.channel.Channel;
 import application.utilities.helper.CustomScanner;
 
 import java.util.List;
 
 public class UploadPage extends  Page{
 
-    public String[] getTitle(){
+    public String[] getTitle(String channelName){
+        System.out.println("\t Current Channel: "+channelName);
         String title = CustomScanner.scanString("Enter title"),description = CustomScanner.scanString("Enter Description");
         return new String[]{title,description};
     }

@@ -1,4 +1,4 @@
-package application.modal.users.channel;
+package application.modal.channel;
 
 public class WithdrawHistory {
     private int subscribeCount;

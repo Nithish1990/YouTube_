@@ -1,7 +1,7 @@
 package application.pages;
 
-import application.modal.users.channel.Channel;
-import application.modal.users.channel.members.Member;
+import application.modal.channel.Channel;
+import application.modal.channel.members.Member;
 import application.modal.video.Thumbnail;
 import application.utilities.Colors;
 import application.utilities.helper.CustomScanner;
@@ -42,11 +42,6 @@ public class ChannelPage extends Page{
         System.out.println("5 To Member Menu");
     }
 
-
-    public int showLoginWarning() {
-        System.out.println("Oops you didn't login ");
-        return CustomScanner.scanInt("Enter 1 to Login");
-    }
     private void displayUploadedVideo(Channel channel){
         System.out.println("Uploaded videos");
         int i = 1;
@@ -104,10 +99,6 @@ public class ChannelPage extends Page{
             System.out.println("EmailID: "+member.getUserEmailID());
         }
         System.out.println();
-    }
-    public int  getInput(String str){
-        System.out.println(str);
-        return CustomScanner.scanInt();
     }
     public int getInput(){
         return CustomScanner.scanInt();

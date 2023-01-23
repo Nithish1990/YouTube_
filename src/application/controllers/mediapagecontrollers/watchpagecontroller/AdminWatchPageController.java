@@ -3,9 +3,7 @@ package application.controllers.mediapagecontrollers.watchpagecontroller;
 import application.Application;
 import application.controllers.options.Deletable;
 import application.modal.video.Video;
-import application.pages.AdminPage;
-import application.pages.WatchPage;
-import application.modal.users.channel.Channel;
+import application.modal.channel.Channel;
 public class AdminWatchPageController extends CommonUserWatchPageController implements Deletable {
 
     private Channel channel;
@@ -14,6 +12,10 @@ public class AdminWatchPageController extends CommonUserWatchPageController impl
     public void renderPage(String videoUrl) {
         video = Application.getApplication().getDatabaseManager().getVideo(videoUrl);
         channel = Application.getApplication().getChannel(video.getChannelURL());
+        if(checkVideoIsAvailable(video,channel) == false){
+            watchPage.displayVideoNotAvailable();
+            return;
+        }
         while (true) {
             playVideo(video,channel);
             int userInput = watchPage.displayAdminOption(video,isUserSubscribed(channel),isUserLikedTheVideo(video.getVideoUrl()),isUserDislikedTheVideo(video.getVideoUrl())

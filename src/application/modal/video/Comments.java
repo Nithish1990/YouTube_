@@ -1,6 +1,6 @@
 package application.modal.video;
 
-import application.modal.users.user.SignedViewer;
+import application.modal.users.SignedViewer;
 
 public class Comments {
     private final SignedViewer commentedBy;

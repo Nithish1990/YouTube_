@@ -1,11 +1,11 @@
 package application.database;
 
 import application.Application;
-import application.admin.SystemAdmin;
-import application.modal.users.channel.Channel;
-import application.modal.users.channel.ContentCreator;
-import application.modal.users.channel.members.Member;
-import application.modal.users.user.SignedViewer;
+import application.modal.admin.SystemAdmin;
+import application.modal.channel.Channel;
+import application.modal.channel.ContentCreator;
+import application.modal.channel.members.Member;
+import application.modal.users.SignedViewer;
 import application.modal.video.Advertisement;
 import application.modal.video.Thumbnail;
 import application.modal.video.Video;
@@ -17,11 +17,12 @@ import java.util.Map;
 
 public class DatabaseManager {
 
-    private Database database;
+    private final Database database;
     public DatabaseManager(){
         database = Database.setUpDatabase();
         addAdmin();
         addAds();
+        setMinAdvertisement(5);
         testing();
     }
 
@@ -31,7 +32,7 @@ public class DatabaseManager {
     public void addUser(SignedViewer viewer){
         database.getUserDB().put(viewer.getUserEmailID(), viewer);
     }
-    public void testing(){
+    private void testing(){
         SignedViewer signedViewer = new SignedViewer("Name","e","e","N","D");
         signedViewer.setPrimeUser(true);
         SignedViewer signedViewer1 = new SignedViewer("Name","r","r","N","D");
@@ -86,7 +87,7 @@ public class DatabaseManager {
     public void addMonetizationRequest(String url) {
         database.getMonetizationRequest().add(url);
     }
-    public void addAdmin() {
+    private void addAdmin() {
         SystemAdmin admin1 = new SystemAdmin("Admin", "Admin123@app.com", "Admin123@", "9876543210", "01/01/2001");
         addUser(admin1);
         SystemAdmin admin2 = new SystemAdmin("Admin", "a", "a", "1", "1");
@@ -112,6 +113,7 @@ public class DatabaseManager {
 
     public void addMember(String channelUrl,String emailID, Member member) {
         database.getChannel().get(channelUrl).getChannelMembers().put(emailID,member);
+//        database.getChannel().get(channelUrl).getMemberList().put(member.getMemberType(),)
     }
 
     public int getMinSubscribeForMonetization() {
@@ -139,10 +141,6 @@ public class DatabaseManager {
             database.getVideoBucket().remove(thumbnail.getUrl());
             database.getThumbnails().remove(thumbnail.getUrl());
         }
-
-
-
-
        contentCreator.getChannels().remove(channel.getChannelUrl());
        if(contentCreator.getChannels().isEmpty()){
            SignedViewer signedViewer = new SignedViewer(contentCreator);
@@ -178,5 +176,14 @@ public class DatabaseManager {
 
     public Map<String,Thumbnail> getThumbnails() {
         return database.getThumbnails();
+    }
+
+
+    public int getMinAdvertisementTime(){
+        return database.getMinAdvertisementTime();
+    }
+
+    public void setMinAdvertisement(int minAdvertisement){
+        database.setMinAdvertisementTime(minAdvertisement);
     }
 }

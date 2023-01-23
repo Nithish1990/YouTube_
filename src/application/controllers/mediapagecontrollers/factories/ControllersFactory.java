@@ -1,8 +1,8 @@
 package application.controllers.mediapagecontrollers.factories;
 
 import application.controllers.mediapagecontrollers.MediaPageController;
-import application.modal.users.channel.Channel;
-import application.modal.users.user.Viewer;
+import application.modal.channel.Channel;
+import application.modal.users.Viewer;
 
 
 public interface ControllersFactory {

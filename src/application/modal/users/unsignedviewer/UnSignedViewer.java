@@ -1,6 +1,6 @@
-package application.modal.users.user.unsignedviewer;
+package application.modal.users.unsignedviewer;
 
-import application.modal.users.user.Viewer;
+import application.modal.users.Viewer;
 import application.modal.video.Thumbnail;
 import application.utilities.constant.user.types.UserType;
 

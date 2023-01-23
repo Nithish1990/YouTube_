@@ -1,6 +1,6 @@
 package application.pages;
 
-import application.modal.users.channel.Channel;
+import application.modal.channel.Channel;
 import application.utilities.generator.Generator;
 import application.utilities.helper.CustomScanner;
 import application.modal.video.*;
@@ -16,6 +16,7 @@ public class AdminPage extends Page{
         System.out.println("3 Logout");
         System.out.println("4 Add New Advertisement");
         System.out.println("5 Change Monetization Settings (minimum count)");
+        System.out.println("9 To Exit");
         return CustomScanner.scanInt();
     }
 
@@ -36,13 +37,16 @@ public class AdminPage extends Page{
         System.out.println("No Request is there...!");
     }
 
-    public Advertisement createAdvertisement() {
-        line();
-        String name = CustomScanner.scanString("Enter Name Of The Advertisement");
-        int time = CustomScanner.scanInt("Enter Duration Of The Advertisement");
-        return new Advertisement(name, Generator.urlGenerate(name),time);
-    }
+//    public String[] createAdvertisement() {
+//        line();
+//        String name = CustomScanner.scanString("Enter Name Of The Advertisement");
+//        int time = CustomScanner.scanInt("Enter Duration Of The Advertisement");
+//        return new Advertisement(name, Generator.urlGenerate(name),time);
+//    }
 
+    public String getNameOfAdvertisement(){
+        return CustomScanner.scanNextLine("Enter Name Of The Advertisement");
+    }
     public int displayMonetizationProperty(int minSubscribeCount,int minViewCount,int minWithdraw) {
         line();
         System.out.println("1 Minimum Subscribe Count :"+minSubscribeCount);
@@ -53,5 +57,17 @@ public class AdminPage extends Page{
 
     public int getNewMinCount(String property) {
         return CustomScanner.scanInt("Enter new Minimum Count "+property);
+    }
+
+    public boolean askConfirmation() {
+        return CustomScanner.scanInt("Really Want To Exit Enter 1")==1;
+    }
+
+    public int getDurationOfAdvertisement() {
+        return CustomScanner.scanInt("Enter Duration of Advertisement");
+    }
+
+    public void displayAdWarning() {
+        System.out.println("The Advertisement Time Is To Long");
     }
 }

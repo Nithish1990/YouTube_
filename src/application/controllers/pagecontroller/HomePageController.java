@@ -5,12 +5,11 @@ import application.controllers.Controller;
 import application.controllers.mediapagecontrollers.MediaPageController;
 import application.controllers.mediapagecontrollers.factories.ControllersFactory;
 import application.controllers.mediapagecontrollers.factories.WatchPageControllerFactory;
-import application.modal.users.channel.Channel;
+import application.modal.channel.Channel;
 import application.modal.video.Thumbnail;
 import application.pages.HomePage;
-import application.modal.users.user.SignedViewer;
-import application.modal.users.user.Viewer;
-import application.utilities.helper.CustomScanner;
+import application.modal.users.SignedViewer;
+import application.modal.users.Viewer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,10 +40,6 @@ public class HomePageController implements Controller {
                         settingPageController = new SettingPageController();
                     settingPageController.renderPage();
                      break;
-                default:
-                    if(CustomScanner.scanInt("Really Want To Quit Enter 1")==1){
-                        return;
-                    }
             }
         }
     }
@@ -54,11 +49,16 @@ public class HomePageController implements Controller {
 
 
     private List<Thumbnail> getThumbnails(){
+        int i = 0;
        List<Thumbnail>thumbnails = new ArrayList<>();
        Map<String ,Thumbnail>map = Application.getApplication().getDatabaseManager().getThumbnails();
         for(Map.Entry<String ,Thumbnail>thumbnailEntry:map.entrySet()){
             if(thumbnailEntry.getValue() !=null)
                 thumbnails.add(thumbnailEntry.getValue());
+
+            if(i == 10)break;
+
+            i++;
         }
         return thumbnails;
     }
@@ -83,7 +83,7 @@ public class HomePageController implements Controller {
         return userInput;
     }
 
-    public void selectVideo(){
+    private void selectVideo(){
         int userInput = (homePage.getVideoPosition());
         Thumbnail selectedThumbnail = null;
         try {

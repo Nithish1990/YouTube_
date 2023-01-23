@@ -4,8 +4,8 @@ import application.Application;
 import application.controllers.Controller;
 import application.utilities.authentication.Authenticator;
 import application.pages.LoginPage;
-import application.modal.users.user.unsignedviewer.UnSignedViewer;
-import application.modal.users.user.Viewer;
+import application.modal.users.unsignedviewer.UnSignedViewer;
+import application.modal.users.Viewer;
 
 public class LoginPageController implements Controller {
 
@@ -29,6 +29,9 @@ public class LoginPageController implements Controller {
                     }
                     Application.getApplication().setCurrentUser(viewer);
                     break;
+                case 3:
+                    System.exit(1);
+                    break;
                 default:
                     break;
             }
@@ -48,7 +51,7 @@ public class LoginPageController implements Controller {
         loginPage = new LoginPage();
     }
 
-    public void login(){
+    private void login(){
         String[] emailIdPwd = loginPage.login();
         Viewer viewer = Authenticator.logIn(emailIdPwd[0], emailIdPwd[1]);
         if (viewer == null) {

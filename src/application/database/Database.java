@@ -1,14 +1,14 @@
 package application.database;
 
-import application.modal.users.channel.Channel;
-import application.modal.users.user.SignedViewer;
+import application.modal.channel.Channel;
+import application.modal.users.SignedViewer;
 import application.modal.video.Advertisement;
 import application.modal.video.Thumbnail;
 import application.modal.video.Video;
 
 import java.util.*;
 
-final class Database {
+class Database {
 
     private int numberOfTrendingVideos;
     private Thumbnail[] trendingVideo;
@@ -19,7 +19,7 @@ final class Database {
     private Map<String, Channel>channel;
     private Map<String ,Thumbnail>thumbnails;
     private List<String>monetizationRequest;
-
+    private int minAdvertisementTime;
     private int minSubscribeForMonetization;
     private int minViewCountForMonetization;
     private int minWithdrawAmount;
@@ -73,9 +73,6 @@ final class Database {
         return monetizationRequest;
     }
 
-    void setUserDB(Map<String, SignedViewer> userDB) {
-        this.userDB = userDB;
-    }
 
     int getMinSubscribeForMonetization() {
         return minSubscribeForMonetization;
@@ -104,6 +101,16 @@ final class Database {
     Map<String, Thumbnail> getThumbnails() {
         return thumbnails;
     }
+
+
+
+    int getMinAdvertisementTime(){
+        return minAdvertisementTime;
+    }
+    void setMinAdvertisementTime(int minAdvertisementTime){
+        this.minAdvertisementTime = minAdvertisementTime;
+    }
+
 /*
 
         int getNumberOfTrendingVideos() {

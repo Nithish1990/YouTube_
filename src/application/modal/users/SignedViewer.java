@@ -1,7 +1,7 @@
-package application.modal.users.user;
+package application.modal.users;
 
-import application.modal.users.channel.ContentCreator;
-import application.modal.users.channel.members.Member;
+import application.modal.channel.ContentCreator;
+import application.modal.channel.members.Member;
 import application.modal.video.Thumbnail;
 import application.utilities.constant.country.Country;
 import application.utilities.constant.user.types.MemberType;
@@ -27,12 +27,14 @@ public class SignedViewer extends Viewer{
     private Stack<Thumbnail> notification;
 
     private Map<String, Member> memberInChannels;
+    private Map<MemberType,Map<String,Member>>members;
     private Map<MemberType,List<String>> memberList;// string is url of channel
 
     private ArrayList<Thumbnail> watchLaterVideo;
     private Stack<Thumbnail> history;
     public SignedViewer(String userName, String userEmailID, String password, String userPhoneNumber, String dataOfBirth) {
         super(UserType.SIGNED);
+        //this constructor is used in creating automated user
         this.userEmailID = userEmailID;
         this.userName = userName;
         this.password = password;
@@ -72,6 +74,8 @@ public class SignedViewer extends Viewer{
         this.watchLaterVideo = unSignedViewer.getWatchLaterVideo();
     }
     public SignedViewer(SignedViewer viewer){
+
+        //when user is changing to cc
         super(UserType.CONTENT_CREATOR,viewer);
         this.userEmailID = viewer.getUserEmailID();
         this.userName = viewer.getUserName();
@@ -113,7 +117,7 @@ public class SignedViewer extends Viewer{
     }
     public SignedViewer(String userName, String userEmailID, String password, String userPhoneNumber, String dataOfBirth,UserType userType) {
         super(userType);
-       this.userEmailID = userEmailID;
+        this.userEmailID = userEmailID;
         this.userName = userName;
         this.password = password;
         this.userPhoneNumber = userPhoneNumber;
