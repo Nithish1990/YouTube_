@@ -3,16 +3,18 @@ package application.pages;
 import application.modal.users.channel.Channel;
 import application.modal.users.channel.members.Member;
 import application.modal.video.Thumbnail;
+import application.utilities.Colors;
 import application.utilities.helper.CustomScanner;
 
 import java.util.List;
 
 public class ChannelPage extends Page{
-    public void displayChannelInfo(Channel channel) {
+    public void displayChannel(Channel channel) {
         line();
         System.out.println("\t"+channel.getChannelName()+" "+channel.getSubscribersCount() +" Subscribe");
         System.out.println("\t"+channel.getChannelUrl());
         System.out.println(channel.getAbout()+" Category "+channel.getCategory());
+        displayUploadedVideo(channel);
     }
 
     public int getVideoPosition() {
@@ -26,9 +28,10 @@ public class ChannelPage extends Page{
     }
     public int pageOwnerOption(){
         System.out.println("1 View Video");
-        showEditorOption();
-        showMemberManagementOption();
-        System.out.println("8 Delete The Channel");
+        System.out.println("2 Edit Channel (name, about)");
+        System.out.println("3 Add Members (Manager,Moderator,Editor)");
+        System.out.println("4 To Member Menu");
+        System.out.println("9 Delete The Channel");
         return  CustomScanner.scanInt();
     }
     public void showEditorOption() {
@@ -44,10 +47,10 @@ public class ChannelPage extends Page{
         System.out.println("Oops you didn't login ");
         return CustomScanner.scanInt("Enter 1 to Login");
     }
-    public void displayUploadedVideo(Channel channel){
+    private void displayUploadedVideo(Channel channel){
         System.out.println("Uploaded videos");
         int i = 1;
-        for(Thumbnail thumbnail:channel.getdisplayUploadedVideo()){
+        for(Thumbnail thumbnail:channel.getUploadedVideo()){
             System.out.println(i+++" "+thumbnail.getVideoTitle());
         }
         line();
@@ -77,22 +80,17 @@ public class ChannelPage extends Page{
         System.out.println("4 Disable Monetization");
     }
 
-    public int getDeleteConfirmation() {
-        return CustomScanner.scanInt("To Delete The Channel enter 1 else any int");
-    }
-
-    public int getConfirmationForApproval() {
-        System.out.println("Enter 3 To Accept Monetization");
-        return  CustomScanner.scanInt("Enter 4 To Reject Monetization");
+    public boolean getDeleteConfirmation() {
+        return CustomScanner.scanInt("To Delete The Member enter 1 else any int") == 1;
     }
     public void displayUserNotFound(){
         System.out.println("User EmailID Is Wrong Else");
     }
 
-    public String   memberMenu(List<Member>moderators, List<Member> editors, List<Member>managers) {
+    public void   memberMenu(List<Member>moderators, List<Member> editors, List<Member>managers,int count) {
         line();
         System.out.println("\tMembers");
-        System.out.println("\tTotal Count: "+(managers.size()+ moderators.size()+editors.size()));
+        System.out.println("\tTotal Count: "+count);
         System.out.println("\t"+"Moderators");
         printMemberInformation(moderators);
         System.out.println("\t"+"Editors");
@@ -100,7 +98,6 @@ public class ChannelPage extends Page{
         System.out.println("\t"+"Managers");
         printMemberInformation(managers);
 
-        return CustomScanner.scanString("Want Remove Any Member Enter emailId Else No Enter -1");
     }
     private void printMemberInformation(List<Member>membersInformation){
         for (Member member:membersInformation){
@@ -120,18 +117,18 @@ public class ChannelPage extends Page{
         System.out.println(str);
     }
 
-    public void displayUploadButton() {
-
-        //
+    public boolean getDeleteChannelConfirmation() {
+        return CustomScanner.scanInt("To Delete The Channel enter 1 else any int") == 1;
     }
 
-    public void displayMonetizationOption() {
-
-        //
+    public String getEmailIdToRemove() {
+        return CustomScanner.scanString("Want Remove Any Member Enter emailId Else No Enter -1");
     }
 
-    public void displayDeleteOption() {
-
-        //
+    public void displayAcceptationMessage() {
+        System.out.println(Colors.GREEN+"The Channel's Monetization Is Enabled");
+    }
+    public void displayDeclineMessage() {
+        System.out.println(Colors.GREEN+"The Channel's Monetization Is Disabled");
     }
 }

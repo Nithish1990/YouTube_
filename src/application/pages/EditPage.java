@@ -24,7 +24,11 @@ public class EditPage extends Page {
         for(Thumbnail thumbnail: viewer.getNotification()){
             System.out.println("Video Title: "+thumbnail.getVideoTitle()+": "+thumbnail.getViews());
         }
-
+        System.out.println("\nHistory");
+        for(Thumbnail thumbnail:viewer.getHistory()){
+            System.out.println("VideoTile: "+thumbnail.getVideoTitle()+": "+thumbnail.getViews());
+        }
+        line();
     }
     public void  enablePrime(){
         System.out.println("Non Prime");
@@ -78,7 +82,7 @@ public class EditPage extends Page {
         return CustomScanner.scanInt("Do You Want Change The Plan Press 1 To Yes");
     }
 
-    public void displayMember(List<String> moderator, List<String> editor, List<String> channelManager) {
+    public String displayMember(List<String> moderator, List<String> editor, List<String> channelManager) {
         line();
         System.out.println("\t Member");
         System.out.println("Moderator");
@@ -87,7 +91,7 @@ public class EditPage extends Page {
         for(String channelName:editor) System.out.print(channelName+" ");
         System.out.println("\nChannelManager");
         for(String channelName:channelManager) System.out.print(channelName+" ");
-        System.out.println();
+        return CustomScanner.scanNextLine("Enter any to go back");
     }
 
     public int getInput() {

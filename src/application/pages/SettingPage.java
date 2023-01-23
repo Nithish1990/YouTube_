@@ -35,7 +35,6 @@ public class SettingPage extends Page {
         return userInput;
     }
     public void displayName(String name){
-        line();
         System.out.println("Current user is "+ name);
     }
     public void option(){
@@ -46,7 +45,7 @@ public class SettingPage extends Page {
     public int switchChannel(List<Channel> channels) {
         line();
         int i = 1;
-        System.out.println("List Of Channels"+channels);
+        System.out.println("List Of Channels: "+channels.size());
         for(Channel channel:channels){
             System.out.println(i+++" Channel Name "+channel.getChannelName() + " "+channel.getSubscribersCount());
         }
@@ -59,7 +58,6 @@ public class SettingPage extends Page {
         String name,about;
         name = CustomScanner.scanString("Enter name for channel");
         about = CustomScanner.scanNextLine("Enter about for Channel");
-        System.out.println("FOOD,NEWS,EDUCATIONAL_CONTENT,SPORTS,GAMING,DEFAULT");
         return new String[]{name,about};
     }
 
@@ -67,16 +65,4 @@ public class SettingPage extends Page {
         System.out.println("No Channel Found");
     }
 
-
-    public void displayMember(List<String> moderator, List<String> editor, List<String> channelManager) {
-        line();
-        System.out.println("\t Member");
-        System.out.println("Moderator");
-        for(String channelName:moderator) System.out.print(channelName+" ");
-        System.out.println("\nEditor");
-        for(String channelName:editor) System.out.print(channelName+" ");
-        System.out.println("\nChannelManager");
-        for(String channelName:channelManager) System.out.print(channelName+" ");
-        line();
-    }
 }

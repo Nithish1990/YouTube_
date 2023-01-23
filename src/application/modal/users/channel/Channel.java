@@ -116,7 +116,7 @@ public class Channel {
     public int getSubscribersCount() {
         return subscribersCount;
     }
-    public List<Thumbnail> getdisplayUploadedVideo() {
+    public List<Thumbnail> getUploadedVideo() {
         return displayUploadedVideo;
     }
 

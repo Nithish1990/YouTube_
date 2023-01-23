@@ -1,7 +1,6 @@
 package application.controllers.buttons;
 
-import application.modal.users.channel.Channel;
 
 public interface Button {
-    void onClick(Channel channel);
+    void onClick(String url);// url can be videoURL or ChannelURL;
 }

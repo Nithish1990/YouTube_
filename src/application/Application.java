@@ -2,7 +2,7 @@ package application;
 
 import application.controllers.Controller;
 import application.database.DatabaseManager;
-import application.controllers.HomePageController;
+import application.controllers.pagecontroller.HomePageController;
 import application.modal.users.channel.Channel;
 import application.modal.users.user.unsignedviewer.UnSignedViewer;
 import application.modal.users.user.Viewer;

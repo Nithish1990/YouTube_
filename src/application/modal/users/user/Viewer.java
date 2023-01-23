@@ -25,4 +25,14 @@ public abstract class Viewer {
 
 
     public abstract Stack<Thumbnail> getHistory();
+
+    public void addHistory(Thumbnail thumbnail) {
+        if(getHistory().empty()) {
+            getHistory().push(thumbnail);
+        }else{
+            if(getHistory().peek().getUrl().equals((thumbnail.getUrl())) == false){
+                getHistory().push(thumbnail);
+            }
+        }
+    }
 }

@@ -17,7 +17,7 @@ final class Database {
     private List<Advertisement> ads;
 
     private Map<String, Channel>channel;
-
+    private Map<String ,Thumbnail>thumbnails;
     private List<String>monetizationRequest;
 
     private int minSubscribeForMonetization;
@@ -33,6 +33,7 @@ final class Database {
         ads = new ArrayList<>();
         channel = new HashMap<>();
         this.monetizationRequest = new ArrayList<>();
+        this.thumbnails = new HashMap<>();
     }
 
     static Database setUpDatabase(){
@@ -100,10 +101,10 @@ final class Database {
         this.minWithdrawAmount = minWithdrawAmount;
     }
 
-
-
-
-    /*
+    Map<String, Thumbnail> getThumbnails() {
+        return thumbnails;
+    }
+/*
 
         int getNumberOfTrendingVideos() {
         return numberOfTrendingVideos;

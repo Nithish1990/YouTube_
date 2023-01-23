@@ -1,5 +1,6 @@
 package application.modal.video;
 
+import application.Application;
 import application.modal.users.user.SignedViewer;
 import application.utilities.constant.category.AgeCategory;
 import application.utilities.constant.category.Category;
@@ -13,7 +14,7 @@ import java.util.Stack;
 
 public class Video {
     private String videoTitle;
-    public final String channelURL;
+    private final String channelURL;
     private final String videoUrl;
     private String description;
     private boolean visibility;
@@ -27,7 +28,6 @@ public class Video {
     private Category category;
     private List<String> tags;
     private List<String> reportList;
-    private Thumbnail thumbnail;
     private HashMap<SignedViewer,Boolean> viewedUser;
 
     public Video(String videoTitle,String channelURL,String channelName,String description) {
@@ -47,7 +47,6 @@ public class Video {
         this.viewsCount = 0;
         this.tags = new ArrayList<>();
         this.reportList = new ArrayList<>();
-        this.thumbnail = new Thumbnail(videoTitle,channelName,duration,uploadedDateAndTime,videoUrl,viewsCount);
         this.viewedUser = new HashMap<>();
     }
 
@@ -57,7 +56,6 @@ public class Video {
 
     public void setVideoTitle(String videoTitle) {
         this.videoTitle = videoTitle;
-        this.thumbnail.setVideoTitle(videoTitle);
     }
 
     public String getChannelURL() {
@@ -142,18 +140,15 @@ public class Video {
         return tags;
     }
 
-    public void setTags(List<String> tags) {
-        this.tags = tags;
-    }
 
     public List<String> getReportList() {
         return reportList;
     }
-    public Thumbnail getThumbnail() {
-        return thumbnail;
-    }
 
     public HashMap<SignedViewer, Boolean> getViewedUser() {
         return viewedUser;
+    }
+    public Thumbnail getThumbnail() {
+        return Application.getApplication().getDatabaseManager().getThumbnail(this.videoUrl);
     }
 }

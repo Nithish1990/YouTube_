@@ -10,7 +10,7 @@ public class Thumbnail {
     private final String url;
     private int views;
 
-    public Thumbnail(String videoTitle, String channelURL, int duration, LocalDateTime uploadedDateAndTime, String url,int views) {
+    public Thumbnail(String videoTitle, String channelURL, int duration, LocalDateTime uploadedDateAndTime, String url, int views) {
         this.videoTitle = videoTitle;
         this.channelURL = channelURL;
         this.duration = duration;

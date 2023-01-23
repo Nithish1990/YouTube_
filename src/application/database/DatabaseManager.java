@@ -20,10 +20,9 @@ public class DatabaseManager {
     private Database database;
     public DatabaseManager(){
         database = Database.setUpDatabase();
-        testing();
         addAdmin();
         addAds();
-        database.setMinWithdrawAmount(1);
+        testing();
     }
 
     public Map<String, SignedViewer> accessViewerDatabase(){
@@ -44,6 +43,14 @@ public class DatabaseManager {
 
     public void addVideo(Video video){
         database.getVideoBucket().put(video.getVideoUrl(), video);
+        Thumbnail thumbnail = Application.getApplication().getDatabaseManager().getThumbnail(video.getVideoUrl());
+        thumbnail.setVideoTitle(video.getVideoTitle());
+        thumbnail.setViews(video.getViewsCount());
+        database.getThumbnails().put(video.getVideoUrl(),thumbnail);
+    }
+    public void addVideo(Video video,Thumbnail thumbnail){
+        database.getVideoBucket().put(video.getVideoUrl(), video);
+        database.getThumbnails().put(video.getVideoUrl(),thumbnail);
     }
 
     public Map<String,Video> getVideoBucket(){
@@ -51,10 +58,12 @@ public class DatabaseManager {
     }
 
     public Video getVideo(String url){
-        return database.getVideoBucket().get(url);
+        return database.getVideoBucket().getOrDefault(url,null);
     }
 
-
+    public Thumbnail getThumbnail(String url){
+        return database.getThumbnails().getOrDefault(url,null);
+    }
     public Advertisement getAdvertisement(){
         return  database.getAds().get((RandomNumber.getRandomNumberUsingNextInt(database.getAds().size())));
     }
@@ -84,6 +93,7 @@ public class DatabaseManager {
         addUser(admin2);
         database.setMinSubscribeForMonetization(1);
         database.setMinViewCountForMonetization(1);
+        database.setMinWithdrawAmount(1);
     }
     private void addAds() {
         addAdvertisement(new Advertisement("GoogleAds",Generator.urlGenerate("ads"),1));
@@ -101,9 +111,7 @@ public class DatabaseManager {
     }
 
     public void addMember(String channelUrl,String emailID, Member member) {
-
         database.getChannel().get(channelUrl).getChannelMembers().put(emailID,member);
-
     }
 
     public int getMinSubscribeForMonetization() {
@@ -127,15 +135,10 @@ public class DatabaseManager {
     public void deleteChannel(Channel channel) {
         ContentCreator contentCreator = (ContentCreator) database.getUserDB().get(channel.getOwnBy());
         contentCreator.removeChannel(channel);
-        for(Thumbnail thumbnail: channel.getdisplayUploadedVideo()){
+        for(Thumbnail thumbnail: channel.getUploadedVideo()){
             database.getVideoBucket().remove(thumbnail.getUrl());
+            database.getThumbnails().remove(thumbnail.getUrl());
         }
-
-
-        // every member should deleted
-//        for(channel.getChannelMe
-//        mbers();
-//        database.getChannel().remove(channel.getChannelUrl());
 
 
 
@@ -146,6 +149,7 @@ public class DatabaseManager {
            Application.getApplication().setCurrentUser(signedViewer);
            addUser(signedViewer);
        }
+       database.getChannel().remove(channel.getChannelUrl());
     }
 
     public int getMinWithdrawAmount() {
@@ -168,6 +172,11 @@ public class DatabaseManager {
 
     public void deleteVideo(String videoUrl, String channelURL, Thumbnail thumbnail) {
         database.getVideoBucket().remove(videoUrl);
-        database.getChannel().get(channelURL).getdisplayUploadedVideo().remove(thumbnail);
+        database.getChannel().get(channelURL).getUploadedVideo().remove(thumbnail);
+        database.getThumbnails().remove(videoUrl);
+    }
+
+    public Map<String,Thumbnail> getThumbnails() {
+        return database.getThumbnails();
     }
 }

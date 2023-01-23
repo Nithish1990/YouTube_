@@ -41,16 +41,12 @@ public class WatchPage extends  Page{
     public void askWantToComment(){
         System.out.println("0 To Enter Comment");
     }
-    public void displayChannelNotAvailable() {
-        System.out.println("Wrong url");
-    }
+//    public void displayChannelNotAvailable() {
+//        System.out.println("Wrong url");
+//    }
 
     public int displayCommentDeletion() {
-        return CustomScanner.scanInt("Enter Position To Delete Chat Or 0 To Go Back");
-    }
-    public void displayEditOption() {
-        System.out.println("8 To Edit Title");
-        System.out.println("9 To Edit Description");
+        return CustomScanner.scanInt("Enter Position To Delete Chat Or -1 To Go Back");
     }
 
     public String getDetail(String enter_description) {

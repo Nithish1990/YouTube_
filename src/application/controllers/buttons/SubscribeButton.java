@@ -2,7 +2,7 @@ package application.controllers.buttons;
 
 import application.Application;
 import application.controllers.Controller;
-import application.controllers.LoginPageController;
+import application.controllers.pagecontroller.LoginPageController;
 import application.modal.users.channel.Channel;
 import application.modal.users.channel.ContentCreator;
 import application.modal.users.user.SignedViewer;
@@ -10,8 +10,9 @@ import application.modal.users.user.Viewer;
 
 public class SubscribeButton implements Button{
     @Override
-    public void onClick(Channel channel) {
+    public void onClick(String url) {
         Viewer viewer = Application.getCurrentUser();
+        Channel channel = Application.getApplication().getChannel(url);
         switch (viewer.getUserType()) {
             case UN_SIGNED:
                 Controller controller = new LoginPageController();

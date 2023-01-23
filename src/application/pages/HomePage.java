@@ -30,11 +30,11 @@ public class HomePage extends Page{
         line();
         displayName(name);
         System.out.println("Home page");
-        System.out.println(thumbnails.isEmpty()?"Nom Video Uploaded":"Videos:");
+        System.out.println(thumbnails.isEmpty()?"No Video Uploaded":"Videos:");
         display(thumbnails);
         line();
         option();
-        return CustomScanner.scanInt();
+        return CustomScanner.scanIntLine();
     }
 
     public void warning() {

@@ -18,7 +18,8 @@ public class WithdrawHistory {
         return viewCount;
     }
 
-    public int getRevenue() {
+    public int getRevenue(){
         return revenue;
     }
+
 }
