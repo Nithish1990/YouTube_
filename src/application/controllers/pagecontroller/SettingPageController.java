@@ -109,7 +109,7 @@ public class SettingPageController implements Controller {
         contentCreator.addMember(member);
         Application.getApplication().getDatabaseManager().addChannel(channel);
         Application.getApplication().getDatabaseManager().addUser(contentCreator);
-        Application.getApplication().getDatabaseManager().addMember(channel.getChannelUrl(),contentCreator.getUserEmailID(),member);
+        Application.getApplication().getDatabaseManager().addMember(member);
     }
     /*
     ContentCreator contentCreator = new ContentCreator(viewer);

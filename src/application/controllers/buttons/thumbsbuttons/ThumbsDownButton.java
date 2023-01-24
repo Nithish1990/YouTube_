@@ -16,7 +16,7 @@ public class ThumbsDownButton extends ThumbsButton{
                 //which means user want to dislike
                 setDislikeForUser(true, video.getVideoUrl());
                 video.setDislikesCount(video.getDislikesCount() + 1);
-                if (isUserLikedTheVideo(video.getVideoUrl())) { // should be change
+                if (isUserLikedTheVideo(video.getVideoUrl())) {
                     video.setLikesCount(video.getLikesCount() - 1);
                     setLikeForUser(false, video.getVideoUrl());
                 }

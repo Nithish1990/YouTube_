@@ -12,7 +12,7 @@ public class EditPage extends Page {
     public void display(SignedViewer viewer, List<Channel> channels){
         line();
         System.out.println("Current user "+viewer.getUserName()+" Type: "+viewer.getUserType());
-        System.out.println("Date of birth "+viewer.getDataOfBirth());
+        System.out.println("Date of birth "+viewer.getDateOfBirth());
         System.out.println("Phone number "+viewer.getUserPhoneNumber());
 
         System.out.println("\tSubscribed Channel");

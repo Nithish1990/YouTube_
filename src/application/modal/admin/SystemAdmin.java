@@ -5,8 +5,8 @@ import application.modal.users.SignedViewer;
 import application.utilities.constant.user.types.UserType;
 
 public class SystemAdmin extends SignedViewer {
-    public SystemAdmin(String userName, String userEmailID, String password, String userPhoneNumber, String dataOfBirth) {
-        super(userName, userEmailID, password, userPhoneNumber, dataOfBirth,UserType.ADMIN);
+    public SystemAdmin(String userName, String userEmailID, String password, String userPhoneNumber, String dateOfBirth) {
+        super(userName, userEmailID, password, userPhoneNumber, dateOfBirth,UserType.ADMIN);
         setPrimeUser(true);
     }
 }

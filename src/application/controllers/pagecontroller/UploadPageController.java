@@ -16,9 +16,10 @@ import application.modal.users.Viewer;
 import application.utilities.constant.user.types.MemberType;
 import application.utilities.generator.Generator;
 
+import java.util.Map;
+
 public class UploadPageController implements Controller {
     private UploadPage uploadPage;
-    private Authenticator authenticator;
 
     @Override
     public void renderPage(){
@@ -43,10 +44,10 @@ public class UploadPageController implements Controller {
         contentCreator.addChannel(channel.getChannelUrl());
         contentCreator.setCurrentChannel(channel);
         Member member = new ChannelManager(contentCreator.getUserEmailID(), MemberType.CHANNEL_MANAGER,channel.getChannelUrl());
-        contentCreator.addMember(member);
+        addMember(contentCreator,member);
         Application.getApplication().getDatabaseManager().addUser(contentCreator);
         Application.getApplication().getDatabaseManager().addChannel(channel);
-        Application.getApplication().getDatabaseManager().addMember(channel.getChannelUrl(),contentCreator.getUserEmailID(),member);
+        Application.getApplication().getDatabaseManager().addMember(member);
         Application.getApplication().setCurrentUser(contentCreator);
         uploadPage.displayWelcomeMessage();
         upload(contentCreator);
@@ -70,7 +71,6 @@ public class UploadPageController implements Controller {
     //constructor
     public UploadPageController(){
         uploadPage = new UploadPage();
-        this.authenticator = new Authenticator();
     }
 
 
@@ -78,5 +78,12 @@ public class UploadPageController implements Controller {
         for(SignedViewer viewer: channel.getSubscribers()){
             viewer.getNotification().push(thumbnail);
         }
+    }
+
+    private void addMember(ContentCreator contentCreator,Member member){
+        contentCreator.addMember(member);
+        Map<String,Member> map = contentCreator.getMemberMap().get(MemberType.CHANNEL_MANAGER);
+        map.put(member.getChannelURL(), member);
+        contentCreator.getMemberMap().put(MemberType.CHANNEL_MANAGER,map);
     }
 }

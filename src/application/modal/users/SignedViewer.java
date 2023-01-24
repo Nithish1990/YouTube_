@@ -15,7 +15,7 @@ public class SignedViewer extends Viewer{
     private final String userEmailID;
     private String password;
     private String userPhoneNumber;
-    private String dataOfBirth;//will be changed to date
+    private String dateOfBirth;//will be changed to date
     // naming is not convenient to be change
     private Country country;
     private boolean primeUser;
@@ -27,19 +27,19 @@ public class SignedViewer extends Viewer{
     private Stack<Thumbnail> notification;
 
     private Map<String, Member> memberInChannels;
-    private Map<MemberType,Map<String,Member>>members;
+    private Map<MemberType,Map<String,Member>>membersMap; //string is channel URL
     private Map<MemberType,List<String>> memberList;// string is url of channel
 
     private ArrayList<Thumbnail> watchLaterVideo;
     private Stack<Thumbnail> history;
-    public SignedViewer(String userName, String userEmailID, String password, String userPhoneNumber, String dataOfBirth) {
+    public SignedViewer(String userName, String userEmailID, String password, String userPhoneNumber, String dateOfBirth) {
         super(UserType.SIGNED);
         //this constructor is used in creating automated user
         this.userEmailID = userEmailID;
         this.userName = userName;
         this.password = password;
         this.userPhoneNumber = userPhoneNumber;
-        this.dataOfBirth = dataOfBirth;
+        this.dateOfBirth = dateOfBirth;
         this.country = Country.INDIA;
         this.primeUser = false;
         this.isBannedUser = false;
@@ -53,13 +53,13 @@ public class SignedViewer extends Viewer{
         this.history = new Stack<>();
         generateMemberList();
     }
-    public SignedViewer(String userName, String userEmailID, String password, String userPhoneNumber, String dataOfBirth,Viewer unSignedViewer) {
+    public SignedViewer(String userName, String userEmailID, String password, String userPhoneNumber, String dateOfBirth,Viewer unSignedViewer) {
         super(UserType.SIGNED);
         this.userEmailID = userEmailID;
         this.userName = userName;
         this.password = password;
         this.userPhoneNumber = userPhoneNumber;
-        this.dataOfBirth = dataOfBirth;
+        this.dateOfBirth = dateOfBirth;
         this.country = Country.INDIA;
         this.primeUser = false;
         this.isBannedUser = false;
@@ -81,7 +81,7 @@ public class SignedViewer extends Viewer{
         this.userName = viewer.getUserName();
         this.password =  viewer.getPassword();
         this.userPhoneNumber =  viewer.getUserPhoneNumber();
-        this.dataOfBirth =viewer.dataOfBirth;
+        this.dateOfBirth =viewer.dateOfBirth;
         this.country = Country.INDIA;
         this.isBannedUser = false;
         this.subscribedChannels = new HashMap<>();
@@ -103,7 +103,7 @@ public class SignedViewer extends Viewer{
         this.userEmailID = contentCreator.getUserEmailID();
         this.password = contentCreator.getPassword();
         this.userPhoneNumber = contentCreator.getUserPhoneNumber();
-        this.dataOfBirth = contentCreator.getDataOfBirth();
+        this.dateOfBirth = contentCreator.getDateOfBirth();
         this.country = contentCreator.getCountry();
         this.primeUser = contentCreator.isPrimeUser();
         this.isBannedUser = contentCreator.isBannedUser();
@@ -115,13 +115,13 @@ public class SignedViewer extends Viewer{
         this.memberList = new HashMap<>();
         generateMemberList();
     }
-    public SignedViewer(String userName, String userEmailID, String password, String userPhoneNumber, String dataOfBirth,UserType userType) {
+    public SignedViewer(String userName, String userEmailID, String password, String userPhoneNumber, String dateOfBirth,UserType userType) {
         super(userType);
         this.userEmailID = userEmailID;
         this.userName = userName;
         this.password = password;
         this.userPhoneNumber = userPhoneNumber;
-        this.dataOfBirth = dataOfBirth;
+        this.dateOfBirth = dateOfBirth;
         this.country = Country.INDIA;
         this.primeUser = false;
         this.isBannedUser = false;
@@ -164,12 +164,12 @@ public class SignedViewer extends Viewer{
         this.userPhoneNumber = userPhoneNumber;
     }
 
-    public String getDataOfBirth() {
-        return dataOfBirth;
+    public String getDateOfBirth() {
+        return dateOfBirth;
     }
 
-    public void setDataOfBirth(String dataOfBirth) {
-        this.dataOfBirth = dataOfBirth;
+    public void setDateOfBirth(String dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 
 
@@ -233,6 +233,12 @@ public class SignedViewer extends Viewer{
         memberList.put(MemberType.MODERATOR,mods);
         memberList.put(MemberType.MODERATOR,editors);
         memberList.put(MemberType.MODERATOR,channelManager);
+        Map<String,Member> moderators= new HashMap<>();
+        Map<String,Member> editor= new HashMap<>();
+        Map<String,Member> channelManagers= new HashMap<>();
+        this.membersMap.put(MemberType.MODERATOR,moderators);
+        this.membersMap.put(MemberType.EDITOR,editor);
+        this.membersMap.put(MemberType.CHANNEL_MANAGER,channelManagers);
     }
 
     @Override
@@ -243,5 +249,9 @@ public class SignedViewer extends Viewer{
     @Override
     public Stack<Thumbnail> getHistory() {
         return history;
+    }
+
+    public Map<MemberType,Map<String,Member>> getMemberMap(){
+        return membersMap;
     }
 }

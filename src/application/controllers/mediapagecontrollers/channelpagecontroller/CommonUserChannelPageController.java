@@ -11,6 +11,10 @@ public class CommonUserChannelPageController extends ChannelPageController {
     @Override
     public void renderPage(String URL) {
         channel = Application.getApplication().getChannel(URL);
+        if(channel == null){
+            channelPage.showWarning("Incorrect URL");
+            return;
+        }
         while (true) {
             channelPage.displayChannel(channel);
             channelPage.commonOption();

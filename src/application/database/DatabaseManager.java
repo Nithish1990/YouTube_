@@ -111,8 +111,8 @@ public class DatabaseManager {
         return channels;
     }
 
-    public void addMember(String channelUrl,String emailID, Member member) {
-        database.getChannel().get(channelUrl).getChannelMembers().put(emailID,member);
+    public void addMember(Member member) {
+        database.getChannel().get(member.getChannelURL()).getChannelMembers().put(member.getUserEmailID(),member);
 //        database.getChannel().get(channelUrl).getMemberList().put(member.getMemberType(),)
     }
 

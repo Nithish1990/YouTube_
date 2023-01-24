@@ -26,6 +26,10 @@ public class MemberChannelPageController extends CommonUserChannelPageController
     @Override
     public void renderPage(String URL){
         channel = Application.getApplication().getChannel(URL);
+        if(channel == null){
+            channelPage.showWarning("Incorrect URL");
+            return;
+        }
         if(isOwner(URL)) { //owner
             ownerOption();
         }else{
@@ -141,7 +145,7 @@ public class MemberChannelPageController extends CommonUserChannelPageController
                 }
                 Member member = getMember(role, emailID, channel.getChannelUrl());
                 if (member != null) {
-                    Application.getApplication().getDatabaseManager().addMember(channel.getChannelUrl(), emailID, member);
+                    Application.getApplication().getDatabaseManager().addMember(member);
                     signedViewer.addMember(member);
                 } else {
                     channelPage.displayIndexOfOutBound();

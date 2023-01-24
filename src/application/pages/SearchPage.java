@@ -21,7 +21,7 @@ public class SearchPage extends Page{
         System.out.println();
         System.out.println(channels.isEmpty()?"No Channel Found":"Channel related to query ");
         for (Channel channel:channels){
-            System.out.println("    "+i+" "+channel.getChannelName() + channel.getSubscribersCount());
+            System.out.println("    "+i+" "+channel.getChannelName()+": " + channel.getSubscribersCount());
             i++;
         }
         line();
@@ -33,9 +33,5 @@ public class SearchPage extends Page{
             System.out.println("    "+i+++" Video Title: "+thumbnail.getVideoTitle() + " Views:"+thumbnail.getViews());
         }
         iterateChannels(channels,i);
-    }
-
-    public void showWarning() {
-        System.out.println("Invalid input");
     }
 }

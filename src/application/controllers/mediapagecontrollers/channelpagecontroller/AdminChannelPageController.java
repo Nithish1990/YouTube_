@@ -8,7 +8,11 @@ public class AdminChannelPageController extends CommonUserChannelPageController 
     private Channel channel;
     @Override
     public void renderPage(String URL){
-        channel = Application.getApplication().getChannel(URL);
+            channel = Application.getApplication().getChannel(URL);
+            if(channel == null){
+                channelPage.showWarning("Incorrect URL");
+                return;
+            }
             channelPage.displayChannel(channel);
             channelPage.displayAdminOption();
             switch (channelPage.getInput()) {

@@ -36,7 +36,7 @@ public class EditPageController implements Controller, Editable {
     @Override
     public void edit(){
         SignedViewer viewer = (SignedViewer) Application.getCurrentUser();
-        String name = viewer.getUserName(),password = viewer.getPassword(),dateOfBirth = viewer.getDataOfBirth(),phoneNumber = viewer.getUserPhoneNumber();
+        String name = viewer.getUserName(),password = viewer.getPassword(),dateOfBirth = viewer.getDateOfBirth(),phoneNumber = viewer.getUserPhoneNumber();
         boolean isPrime = viewer.isPrimeUser();
         switch (editPage.getInput()){
             case 1:
@@ -62,7 +62,7 @@ public class EditPageController implements Controller, Editable {
         viewer.setUserPhoneNumber(phoneNumber);
         viewer.setPassword(password);
         viewer.setUserName(name);
-        viewer.setDataOfBirth(dateOfBirth);
+        viewer.setDateOfBirth(dateOfBirth);
         viewer.setPrimeUser(isPrime);
         Application.getApplication().getDatabaseManager().addUser(viewer);
     }
